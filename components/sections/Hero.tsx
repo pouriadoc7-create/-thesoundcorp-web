@@ -16,19 +16,23 @@ export async function Hero() {
         <div className="absolute left-1/2 top-1/2 h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.07),transparent_68%)] blur-2xl" />
       </Parallax>
 
-      <Reveal as="h1" blur className="text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">
+      <Reveal
+        as="h1"
+        blur
+        className="text-balance text-4xl font-bold leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl"
+      >
         {SITE_NAME}
       </Reveal>
 
-      <Reveal as="p" delayMs={90} className="mt-6 text-xl text-gray-400 sm:text-2xl">
+      <Reveal as="p" delayMs={90} className="mt-6 text-balance text-xl leading-snug text-gray-400 sm:text-2xl">
         {t("tagline")}
       </Reveal>
 
-      <Reveal as="p" delayMs={170} className="mt-4 max-w-3xl leading-8 text-gray-500">
+      <Reveal as="p" delayMs={170} className="mt-5 max-w-2xl text-base leading-relaxed text-gray-500 sm:text-lg">
         {t("description")}
       </Reveal>
 
-      <Reveal delayMs={260} className="mt-12 flex flex-wrap items-center justify-center gap-5">
+      <Reveal delayMs={260} className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:mt-12 sm:gap-5">
         <MagneticButton>
           <Button href="/brands" variant="primary" size="lg">
             {t("exploreBrands")}

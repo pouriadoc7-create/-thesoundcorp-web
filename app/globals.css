@@ -598,6 +598,28 @@ html[lang="fa"] * {
   animation: logoMenuReveal 600ms var(--ease-premium);
 }
 
+/* -- Contact page: seamless flowing signal waveform --------
+   The gold waveform is drawn across two identical periods (0..2880 over a 1440
+   viewBox) and scrolls left by exactly one period, so it reads as an endless,
+   jump-free flowing signal — slow, smooth and understated. The off-viewBox
+   copy fills the gap as it enters from the right. Disabled under reduced-motion. */
+@keyframes contactWaveFlow {
+  from { transform: translateX(0); }
+  to { transform: translateX(-1440px); }
+}
+.contact-flow {
+  animation: contactWaveFlow 22s linear infinite;
+  will-change: transform;
+}
+/* On mobile the wave lifts up over the headline / copy — a deliberate overlap
+   that mirrors the desktop composition (kept prominent, not dimmed). */
+@media (max-width: 767px) {
+  .contact-wave { transform: translateY(-18%) scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-flow { animation: none !important; }
+}
+
 /* -- Reduced motion: disable everything, reveal immediately -- */
 @media (prefers-reduced-motion: reduce) {
   [data-reveal],

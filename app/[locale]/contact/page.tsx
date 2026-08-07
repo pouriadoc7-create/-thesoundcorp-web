@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { ContactChannels } from "@/components/contact/ContactChannels";
+import { ContactHero } from "@/components/contact/ContactHero";
 import { ContactMap } from "@/components/contact/ContactMap";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Container } from "@/components/ui/Container";
-import { Section } from "@/components/ui/Section";
-import { SectionHeader } from "@/components/ui/SectionHeader";
 import { CONTACT, SITE_NAME, SITE_URL } from "@/lib/constants/site";
 import { buildPageMetadata } from "@/lib/utils/metadata";
 
@@ -47,14 +45,12 @@ export default async function ContactPage({ params }: ContactPageProps) {
   };
 
   return (
-    <Section>
+    <>
       <JsonLd data={contactPageJsonLd} />
-      <Container className="flex flex-col items-center">
-        <SectionHeader eyebrow={t("eyebrow")} title={t("title")} description={t("description")} />
-
-        <ContactChannels />
+      <ContactHero />
+      <Container className="pb-24">
         <ContactMap />
       </Container>
-    </Section>
+    </>
   );
 }

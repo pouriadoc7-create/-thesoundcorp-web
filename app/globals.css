@@ -599,17 +599,38 @@ html[lang="fa"] * {
 }
 
 /* -- Contact page: seamless flowing signal waveform --------
-   The gold waveform is drawn across two identical periods (0..2880 over a 1440
-   viewBox) and scrolls left by exactly one period, so it reads as an endless,
-   jump-free flowing signal — slow, smooth and understated. The off-viewBox
-   copy fills the gap as it enters from the right. Disabled under reduced-motion. */
+   The gold waveform is two identical periods laid side-by-side (a marquee track
+   twice the hero's width). Translating the track left by exactly one period
+   (-50% of its own width) reads as an endless, jump-free flowing signal — slow,
+   smooth and understated. The off-screen copy fills the gap as it enters.
+
+   PERFORMANCE: the animation runs on this HTML wrapper (.contact-flow), NOT on
+   an inner SVG <g>. That lets the browser rasterize the whole waveform — the
+   Gaussian-blur glow included — ONCE into a single GPU compositor layer, then
+   move it each frame as a pure transform composite (no per-frame re-blur, no
+   main-thread reflow). Result: smooth ~60fps on mobile Safari/Chrome, even
+   while scrolling. translate3d + will-change + backface-visibility keep the
+   layer promoted. Disabled under reduced-motion. */
 @keyframes contactWaveFlow {
-  from { transform: translateX(0); }
-  to { transform: translateX(-1440px); }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+.contact-wave {
+  position: absolute;
+  inset: 0;
 }
 .contact-flow {
-  animation: contactWaveFlow 22s linear infinite;
+  display: flex;
+  width: 200%;
+  height: 100%;
+  transform: translateZ(0);
   will-change: transform;
+  backface-visibility: hidden;
+  animation: contactWaveFlow 22s linear infinite;
+}
+.contact-wave-tile {
+  flex: 0 0 50%;
+  height: 100%;
 }
 /* On mobile the wave lifts up over the headline / copy — a deliberate overlap
    that mirrors the desktop composition (kept prominent, not dimmed). */

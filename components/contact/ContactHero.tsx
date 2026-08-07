@@ -1,6 +1,6 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
+import { type FormEvent, memo, useState } from "react";
 
 import { CONTACT } from "@/lib/constants/site";
 
@@ -10,6 +10,11 @@ import { CONTACT } from "@/lib/constants/site";
  * a glass contact form, and the brand's contact channels. The waveform is a purely
  * decorative background (aria-hidden, pointer-events:none). On mobile it is lifted
  * up over the headline/copy — a deliberate overlap that mirrors the desktop feel.
+ *
+ * The waveform is a marquee of two identical tiles animated on their HTML wrapper
+ * (not on the inner SVG group), so the glow filter rasterizes once into a single
+ * GPU layer and each frame is a pure compositor translate — smooth on mobile.
+ * It is memoized (ContactWave) so typing in the form never re-renders it.
  *
  * The form composes the visitor's message into an email to the official inbox and
  * opens their mail client (works with no server/credentials). A WhatsApp shortcut
@@ -69,6 +74,55 @@ function PinGlyph() {
   );
 }
 
+/**
+ * One period of the waveform (glow + gold line + faint echo). Two of these tiled
+ * side by side make the seamless flowing marquee. Filter/gradient ids are suffixed
+ * per tile so the two inlined SVGs don't share ids in the same document.
+ */
+function WaveTile({ idSuffix }: { idSuffix: string }) {
+  const grad = `contactWaveGrad-${idSuffix}`;
+  const glow = `contactWaveGlow-${idSuffix}`;
+  return (
+    <svg
+      className="contact-wave-tile"
+      viewBox="0 0 1440 900"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <defs>
+        <linearGradient id={grad} x1="0" x2="1">
+          <stop offset="0" stopColor="#b8912e" stopOpacity="0.2" />
+          <stop offset="0.3" stopColor="#d4af37" stopOpacity="0.9" />
+          <stop offset="0.5" stopColor="#f4e3b4" />
+          <stop offset="0.7" stopColor="#d4af37" stopOpacity="0.9" />
+          <stop offset="1" stopColor="#b8912e" stopOpacity="0.2" />
+        </linearGradient>
+        <filter id={glow} x="-10%" y="-40%" width="120%" height="180%">
+          <feGaussianBlur stdDeviation="7" />
+        </filter>
+      </defs>
+      <path d={WAVE} fill="none" stroke="#d4af37" strokeOpacity="0.42" strokeWidth="8" filter={`url(#${glow})`} />
+      <path d={WAVE} fill="none" stroke={`url(#${grad})`} strokeWidth="2.3" />
+      <path d={WAVE_ECHO} fill="none" stroke={`url(#${grad})`} strokeWidth="1.4" strokeOpacity="0.13" />
+    </svg>
+  );
+}
+
+/**
+ * Decorative flowing waveform. Memoized with no props, so it mounts once and is
+ * never re-rendered when the form's state changes on every keystroke. The motion
+ * lives entirely in CSS (.contact-flow) on the GPU.
+ */
+const ContactWave = memo(function ContactWave() {
+  return (
+    <div className="contact-wave pointer-events-none" aria-hidden="true">
+      <div className="contact-flow">
+        <WaveTile idSuffix="a" />
+        <WaveTile idSuffix="b" />
+      </div>
+    </div>
+  );
+});
+
 const fieldClass =
   "mt-2 w-full rounded-xl border border-white/10 bg-white/[0.035] px-4 py-3 text-sm text-white placeholder:text-zinc-500 outline-none transition-colors focus:border-[color:var(--color-gold)]/50 focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/30";
 const labelClass = "block text-[10.5px] font-medium uppercase tracking-[0.16em] text-zinc-500";
@@ -99,31 +153,7 @@ export function ContactHero() {
       className="relative flex min-h-[86vh] items-center overflow-hidden bg-[radial-gradient(135%_120%_at_50%_45%,#0d0e12,#06070a_60%)]"
     >
       {/* Flowing golden signal waveform (decorative). */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <svg
-          className="contact-wave absolute inset-0 h-full w-full"
-          viewBox="0 0 1440 900"
-          preserveAspectRatio="xMidYMid slice"
-        >
-          <defs>
-            <linearGradient id="contactWaveGrad" x1="0" x2="1">
-              <stop offset="0" stopColor="#b8912e" stopOpacity="0.2" />
-              <stop offset="0.3" stopColor="#d4af37" stopOpacity="0.9" />
-              <stop offset="0.5" stopColor="#f4e3b4" />
-              <stop offset="0.7" stopColor="#d4af37" stopOpacity="0.9" />
-              <stop offset="1" stopColor="#b8912e" stopOpacity="0.2" />
-            </linearGradient>
-            <filter id="contactWaveGlow" x="-10%" y="-40%" width="120%" height="180%">
-              <feGaussianBlur stdDeviation="7" />
-            </filter>
-          </defs>
-          <g className="contact-flow">
-            <path d={WAVE} fill="none" stroke="#d4af37" strokeOpacity="0.42" strokeWidth="8" filter="url(#contactWaveGlow)" />
-            <path d={WAVE} fill="none" stroke="url(#contactWaveGrad)" strokeWidth="2.3" />
-            <path d={WAVE_ECHO} fill="none" stroke="url(#contactWaveGrad)" strokeWidth="1.4" strokeOpacity="0.13" />
-          </g>
-        </svg>
-      </div>
+      <ContactWave />
       {/* Vignette for depth. */}
       <div
         aria-hidden="true"

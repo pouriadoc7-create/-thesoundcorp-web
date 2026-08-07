@@ -33,19 +33,23 @@ export function SectionHeader({
       {eyebrow ? (
         <Reveal
           as="p"
-          className="text-sm font-medium uppercase tracking-[0.2em] text-[color:var(--color-gold-soft)]/85"
+          className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--color-gold-soft)]/90 sm:text-sm"
         >
           {eyebrow}
         </Reveal>
       ) : null}
-      <Reveal as={titleAs} delayMs={eyebrow ? 80 : 0} className="mt-4 text-4xl font-bold sm:text-5xl">
+      <Reveal
+        as={titleAs}
+        delayMs={eyebrow ? 80 : 0}
+        className="mt-5 text-balance text-4xl font-bold leading-[1.08] sm:text-5xl lg:text-[3.25rem]"
+      >
         {title}
       </Reveal>
       {description ? (
         <Reveal
           as="p"
           delayMs={160}
-          className={cn("mt-6 max-w-2xl leading-8 text-gray-400", centered && "mx-auto")}
+          className={cn("mt-5 max-w-2xl text-lg leading-relaxed text-gray-400", centered && "mx-auto")}
         >
           {description}
         </Reveal>

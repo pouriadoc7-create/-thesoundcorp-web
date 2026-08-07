@@ -244,7 +244,91 @@ html[lang="fa"] * {
 }
 .card-lux:hover {
   transform: translateY(-6px);
-  box-shadow: var(--shadow-luxe), 0 0 0 1px rgba(212, 175, 55, 0.12);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: var(--shadow-luxe), 0 0 0 1px rgba(212, 175, 55, 0.16),
+    0 26px 64px -28px rgba(212, 175, 55, 0.14);
+}
+
+/* ============================================================
+   Premium visual system — glass, holographic accents, depth,
+   floating and animated gradients. Kept subtle and elegant;
+   all motion is disabled under prefers-reduced-motion below.
+   ============================================================ */
+
+/* Refined layered glass surface (header, panels, elevated cards). */
+.glass-panel {
+  background: color-mix(in srgb, var(--color-surface) 58%, transparent);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), var(--shadow-luxe);
+}
+
+/* Subtle holographic top light-line — a whisper of white→gold→white,
+   drawn as an overlay so it layers over any surface. */
+.holo-edge {
+  position: relative;
+  isolation: isolate;
+}
+.holo-edge::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    rgba(212, 175, 55, 0.3),
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* Premium hairline separator (gold-tinted center fade). */
+.hr-premium {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    rgba(212, 175, 55, 0.22),
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+}
+
+/* Gentle floating for decorative accents only. */
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.float-slow {
+  animation: floatY 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Very slow animated gold gradient — for decorative accent text/edges. */
+@keyframes gradientDrift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradientDrift 8s linear infinite;
 }
 
 /* -- Gold-glow CTA modifier ---------------------------------
@@ -344,5 +428,7 @@ html[lang="fa"] * {
   .card-lux:hover { transform: none !important; }
   .btn-lux:hover::after { transform: translateX(-130%) !important; }
   .loader-shimmer { animation: none !important; }
+  .float-slow,
+  .animate-gradient { animation: none !important; }
   html { scroll-behavior: auto !important; }
 }

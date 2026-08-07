@@ -18,110 +18,97 @@ interface MobileNavProps {
   panelRef: RefObject<HTMLDivElement | null>;
 }
 
-function Backdrop({ isOpen }: { isOpen: boolean }) {
-  return (
-    <div
-      aria-hidden="true"
-      className={cn(
-        "fixed inset-x-0 top-[var(--header-height)] bottom-0 z-[var(--z-overlay)] bg-black/60 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
-        isOpen ? "opacity-100" : "pointer-events-none opacity-0"
-      )}
-    />
-  );
-}
-
+/**
+ * Fullscreen mobile menu that fills the viewport below the sticky header. A
+ * frosted-glass overlay that fades + slides in, with its items staggering into
+ * place. Portaled to <body> so the header's own backdrop-filter can't clip its
+ * fixed position. `inert` + pointer-events-none while closed keep it out of the
+ * tab order and hit-testing though it stays mounted (so it can animate). Motion
+ * resolves instantly under prefers-reduced-motion.
+ */
 export function MobileNav({ isOpen, onNavigate, panelRef }: MobileNavProps) {
   const t = useTranslations("nav");
-
-  // The header this panel lives in has `backdrop-blur`, which establishes a
-  // containing block for `position: fixed` descendants — a fixed element
-  // using both `top` and `bottom` (like the backdrop) would then size
-  // itself against the header's own ~64px box instead of the viewport,
-  // collapsing to near-zero height. Portaling to <body> sidesteps that
-  // entirely. Mounted-check avoids an SSR crash (no `document` on the
-  // server) and the hydration mismatch that would come from rendering
-  // portal content only on the client without it.
   const mounted = useIsMounted();
+  if (!mounted) return null;
 
-  return (
-    <>
-      {mounted ? createPortal(<Backdrop isOpen={isOpen} />, document.body) : null}
-
-      {/* Panel — always mounted so it can animate open/closed instead of
-          popping in and out instantly. `inert` while closed keeps it out
-          of both the tab order and hit-testing despite still being in the
-          DOM at zero height. */}
-      <div
-        id="mobile-nav-panel"
-        ref={panelRef}
-        inert={!isOpen}
-        className={cn(
-          "grid overflow-hidden bg-black transition-[grid-template-rows] duration-300 ease-[var(--ease-premium)] lg:hidden",
-          isOpen ? "grid-rows-[1fr] border-t border-zinc-800" : "grid-rows-[0fr]"
-        )}
-      >
-        <div className="min-h-0">
-          <nav
-            className="flex flex-col px-4 py-3"
-            style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
-          >
-            {NAV_LINKS.map((link) => {
-              if (link.key === "brands") {
-                return (
-                  <details key={link.key} className="group">
-                    <summary className="flex cursor-pointer list-none items-center justify-between rounded-md py-2 text-sm font-medium text-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">
-                      {t("brands")}
-                      <svg
-                        className="h-4 w-4 transition-transform duration-200 group-open:rotate-180"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </summary>
-                    <div className="mt-2 rounded-[20px] border border-white/[0.08] bg-surface/90 p-4 backdrop-blur-xl">
-                      <div className="grid grid-cols-2 gap-x-4 gap-y-1 sm:grid-cols-3">
-                        {BRANDS.map((brand) => (
-                          <Link
-                            key={brand.slug}
-                            href={`/brands/${brand.slug}`}
-                            className="block rounded-md px-2 py-1.5 text-sm tracking-wide text-white/60 transition-all duration-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-                            onClick={onNavigate}
-                          >
-                            {brand.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </details>
-                );
-              }
-
-              return (
-                <Link
-                  key={link.key}
-                  href={link.href}
-                  className="rounded-md py-2 text-sm font-medium text-zinc-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-                  onClick={onNavigate}
-                >
-                  {t(link.key)}
-                </Link>
-              );
-            })}
-
-            <div className="mt-3 border-t border-zinc-800 pt-3">
-              <LocaleSwitcher />
-            </div>
-          </nav>
-        </div>
-      </div>
-    </>
+  const stagger = (i: number) => ({ transitionDelay: isOpen ? `${70 + i * 45}ms` : "0ms" });
+  const itemMotion = cn(
+    "transition-[opacity,transform] duration-500 ease-[var(--ease-premium)] motion-reduce:transition-none",
+    isOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
   );
+
+  const panel = (
+    <div
+      id="mobile-nav-panel"
+      ref={panelRef}
+      inert={!isOpen}
+      className={cn(
+        "fixed inset-x-0 top-[var(--header-height)] bottom-0 z-[var(--z-overlay)] flex flex-col overflow-y-auto overscroll-contain bg-black/85 backdrop-blur-2xl backdrop-saturate-150 transition-[opacity,transform] duration-[400ms] ease-[var(--ease-premium)] motion-reduce:transition-none lg:hidden",
+        isOpen
+          ? "pointer-events-auto translate-y-0 opacity-100"
+          : "pointer-events-none -translate-y-2 opacity-0"
+      )}
+      style={{ paddingBottom: "max(1.5rem, env(safe-area-inset-bottom))" }}
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent"
+      />
+
+      <nav className="flex flex-1 flex-col px-6 pt-8">
+        {NAV_LINKS.map((link, i) => {
+          if (link.key === "brands") {
+            return (
+              <div key={link.key} style={stagger(i)} className={itemMotion}>
+                <details className="group border-b border-white/[0.07]">
+                  <summary className="flex min-h-[56px] cursor-pointer list-none items-center justify-between text-2xl font-semibold tracking-tight text-zinc-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">
+                    {t("brands")}
+                    <svg
+                      className="h-5 w-5 text-zinc-500 transition-transform duration-300 ease-[var(--ease-premium)] group-open:rotate-180"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </summary>
+                  <div className="mb-5 grid grid-cols-2 gap-x-5 gap-y-0.5 pb-1">
+                    {BRANDS.map((brand) => (
+                      <Link
+                        key={brand.slug}
+                        href={`/brands/${brand.slug}`}
+                        onClick={onNavigate}
+                        className="flex min-h-[44px] items-center rounded-md text-[15px] tracking-wide text-white/55 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                      >
+                        {brand.name}
+                      </Link>
+                    ))}
+                  </div>
+                </details>
+              </div>
+            );
+          }
+
+          return (
+            <div key={link.key} style={stagger(i)} className={itemMotion}>
+              <Link
+                href={link.href}
+                onClick={onNavigate}
+                className="flex min-h-[56px] items-center border-b border-white/[0.07] text-2xl font-semibold tracking-tight text-zinc-100 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+              >
+                {t(link.key)}
+              </Link>
+            </div>
+          );
+        })}
+
+        <div style={stagger(NAV_LINKS.length)} className={cn(itemMotion, "mt-8")}>
+          <LocaleSwitcher />
+        </div>
+      </nav>
+    </div>
+  );
+
+  return createPortal(panel, document.body);
 }

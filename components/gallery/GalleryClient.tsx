@@ -37,7 +37,7 @@ export function GalleryClient() {
               onClick={() => setCategory(c)}
               aria-pressed={active}
               className={cn(
-                "rounded-full border px-4 py-2 text-sm transition-all duration-300 ease-[var(--ease-premium)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
+                "inline-flex min-h-[44px] items-center rounded-full border px-5 text-sm transition-all duration-300 ease-[var(--ease-premium)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
                 active
                   ? "border-white bg-white text-black"
                   : "border-white/15 text-zinc-300 hover:border-white/40 hover:text-white"

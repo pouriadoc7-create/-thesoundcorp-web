@@ -133,7 +133,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             >
               {product.brand} · {categoryLabel}
             </Link>
-            <h1 className="mt-3 text-3xl font-bold sm:text-4xl">{product.name}</h1>
+            <h1 className="mt-3 text-3xl font-semibold sm:text-4xl">{product.name}</h1>
             <p className="mt-3 text-lg text-zinc-400">{product.tagline}</p>
             <p className="mt-5 text-sm uppercase tracking-wider text-zinc-500">
               {product.priceNote}

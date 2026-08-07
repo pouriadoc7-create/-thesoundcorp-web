@@ -19,7 +19,7 @@ export async function Hero() {
       <Reveal
         as="h1"
         blur
-        className="text-balance text-4xl font-bold leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl"
+        className="text-balance text-4xl font-semibold tracking-tight leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl"
       >
         {SITE_NAME}
       </Reveal>
@@ -28,7 +28,7 @@ export async function Hero() {
         {t("tagline")}
       </Reveal>
 
-      <Reveal as="p" delayMs={170} className="mt-5 max-w-2xl text-base leading-relaxed text-gray-500 sm:text-lg">
+      <Reveal as="p" delayMs={170} className="mt-5 max-w-2xl text-base font-light leading-relaxed text-gray-400 sm:text-lg">
         {t("description")}
       </Reveal>
 

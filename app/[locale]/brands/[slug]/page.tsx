@@ -110,7 +110,7 @@ export default async function BrandPage({ params }: BrandPageProps) {
           <p className="text-xs font-medium uppercase tracking-[0.24em] text-[color:var(--color-gold-soft)]/85">
             {tNav("brands")}
           </p>
-          <h1 className="mt-3 text-4xl font-bold sm:text-5xl">{brand.name}</h1>
+          <h1 className="mt-3 text-4xl font-semibold sm:text-5xl">{brand.name}</h1>
           <p className="mt-6 max-w-2xl leading-8 text-gray-300">
             {t("intro", { brand: brand.name, count: BRANDS.length, siteName: SITE_NAME })}
           </p>

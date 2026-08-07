@@ -246,31 +246,53 @@ html[lang="fa"] * {
   transition: transform 0.5s var(--ease-premium), border-color 0.5s var(--ease-premium),
     background-color 0.5s var(--ease-premium), box-shadow 0.5s var(--ease-premium);
 }
-/* Whisper-soft edge-light that fades in on hover (opacity-only → GPU, no
-   repaint; the gradient itself is static). Deliberately barely perceptible. */
+/* Animated edge-light border that appears only on hover — a soft gold→white
+   arc that rotates slowly around the card, giving a premium "lit edge" like
+   Linear/Arc. The angle is a registered custom property so it animates via
+   transform-free interpolation; only the hovered card paints. Reduced-motion
+   keeps a static lit edge (see the reduced-motion block). */
+@property --card-glow-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
 .card-lux::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(255, 255, 255, 0.1) 42%, transparent 70%);
+  background: conic-gradient(
+    from var(--card-glow-angle),
+    transparent 0deg,
+    rgba(212, 175, 55, 0.5) 46deg,
+    rgba(255, 255, 255, 0.42) 82deg,
+    rgba(212, 175, 55, 0.32) 120deg,
+    transparent 175deg,
+    transparent 360deg
+  );
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask-composite: exclude;
   opacity: 0;
-  transition: opacity 0.6s var(--ease-premium);
+  transition: opacity 0.45s var(--ease-premium);
   pointer-events: none;
 }
 .card-lux:hover {
-  transform: translateY(-5px);
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), var(--shadow-luxe),
-    0 0 0 1px rgba(212, 175, 55, 0.08), 0 24px 60px -30px rgba(212, 175, 55, 0.06);
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-luxe),
+    0 0 0 1px rgba(212, 175, 55, 0.14), 0 30px 66px -28px rgba(212, 175, 55, 0.12);
 }
 .card-lux:hover::after {
   opacity: 1;
+  animation: cardGlowSpin 4.5s linear infinite;
+}
+@keyframes cardGlowSpin {
+  to {
+    --card-glow-angle: 360deg;
+  }
 }
 
 /* ============================================================
@@ -379,21 +401,21 @@ html[lang="fa"] * {
   height: 62vmax;
   top: -22vmax;
   left: -12vmax;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.04), transparent 62%);
-  animation: ambientDrift1 34s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.09), transparent 60%);
+  animation: ambientDrift1 30s ease-in-out infinite;
 }
 .ambient-bg::after {
   width: 52vmax;
   height: 52vmax;
   right: -14vmax;
   bottom: -18vmax;
-  background: radial-gradient(circle, rgba(150, 165, 255, 0.022), transparent 62%);
-  animation: ambientDrift2 42s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(140, 158, 255, 0.05), transparent 62%);
+  animation: ambientDrift2 38s ease-in-out infinite;
 }
 .ambient-bg .noise {
   position: absolute;
   inset: 0;
-  opacity: 0.018;
+  opacity: 0.03;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -517,5 +539,6 @@ html[lang="fa"] * {
   .animate-gradient { animation: none !important; }
   .ambient-bg::before,
   .ambient-bg::after { animation: none !important; }
+  .card-lux:hover::after { animation: none !important; }
   html { scroll-behavior: auto !important; }
 }

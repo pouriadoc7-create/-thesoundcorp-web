@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
 import { OPEN_COMMAND_PALETTE } from "@/components/features/CommandPalette";
+import { MagneticButton } from "@/components/motion/MagneticButton";
 import { Link, usePathname } from "@/i18n/navigation";
 import { NAV_LINKS } from "@/lib/constants/site";
 import { getBrandColumns } from "@/lib/data/brands";
@@ -198,14 +199,15 @@ export function Header() {
 
               const active = isActive(link.href);
               return (
-                <Link
-                  key={link.key}
-                  href={link.href}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(NAV_ITEM, active ? "text-white" : "text-zinc-400 hover:text-white")}
-                >
-                  {t(link.key)}
-                </Link>
+                <MagneticButton key={link.key} strength={0.18} className="align-middle">
+                  <Link
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(NAV_ITEM, active ? "text-white" : "text-zinc-400 hover:text-white")}
+                  >
+                    {t(link.key)}
+                  </Link>
+                </MagneticButton>
               );
             })}
           </nav>

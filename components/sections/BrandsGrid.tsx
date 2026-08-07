@@ -10,7 +10,7 @@ export async function BrandsGrid() {
   return (
     <section className="bg-zinc-950 py-24 text-white">
       <div className="mx-auto max-w-7xl px-8">
-        <Reveal as="h2" className="mb-12 text-center text-4xl font-bold">
+        <Reveal as="h2" className="mb-12 text-center text-4xl font-semibold">
           {t("heading")}
         </Reveal>
 

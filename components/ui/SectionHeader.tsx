@@ -41,7 +41,7 @@ export function SectionHeader({
       <Reveal
         as={titleAs}
         delayMs={eyebrow ? 80 : 0}
-        className="mt-5 text-balance text-4xl font-bold leading-[1.08] sm:text-5xl lg:text-[3.25rem]"
+        className="mt-5 text-balance text-4xl font-semibold leading-[1.08] sm:text-5xl lg:text-[3.25rem]"
       >
         {title}
       </Reveal>

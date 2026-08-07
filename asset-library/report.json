@@ -1,0 +1,916 @@
+[
+  {
+    "brand": "AAI (Authentic Audio Industry)",
+    "slug": "aai",
+    "domain": "https://aai.sk/en/",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Aavik",
+    "slug": "aavik",
+    "domain": "https://aavik-acoustics.com",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Acoustic Arts",
+    "slug": "acoustic-arts",
+    "domain": "https://acoustic-arts.de",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Audes",
+    "slug": "audes",
+    "domain": "https://audes.eu",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Audioflight",
+    "slug": "audioflight",
+    "domain": "https://www.audioflight.it",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Audiovector",
+    "slug": "audiovector",
+    "domain": "https://audiovector.com",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Børresen",
+    "slug": "borresen",
+    "domain": "https://borresen-acoustics.com",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Cayin",
+    "slug": "cayin",
+    "domain": "https://en.cayin.cn",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Chord Electronics",
+    "slug": "chord-electronics",
+    "domain": "https://chordelectronics.co.uk",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Davis Acoustics",
+    "slug": "davis-acoustics",
+    "domain": "https://www.davis-acoustics.com",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "European Audio Team (E.A.T.)",
+    "slug": "eat",
+    "domain": "https://www.europeanaudioteam.com",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Esoteric",
+    "slug": "esoteric",
+    "domain": "https://www.esoteric.jp/en",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Graham Audio",
+    "slug": "graham-audio",
+    "domain": "https://grahamaudio.co.uk",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Jadis",
+    "slug": "jadis",
+    "domain": "https://jadis-electronics.com",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Jorma Design",
+    "slug": "jorma-design",
+    "domain": "https://jormadesign.com",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Marten",
+    "slug": "marten",
+    "domain": "https://www.marten.se",
+    "counts": {
+      "logos": 0,
+      "products": 1,
+      "heroes": 1,
+      "lifestyle": 1,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 5,
+      "desktopDerivatives": 5
+    },
+    "products": [
+      "dexter"
+    ],
+    "downloaded": 5,
+    "qc": {
+      "scanned": 5,
+      "broken": 0,
+      "lowResolution": 3,
+      "nearDuplicates": 0
+    },
+    "missing": [
+      "01 Logos",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 33,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "3 image(s) below the resolution threshold — source larger originals if available."
+    ]
+  },
+  {
+    "brand": "Mastersound",
+    "slug": "mastersound",
+    "domain": "https://mastersoundsas.it",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Merason",
+    "slug": "merason",
+    "domain": "https://merason.com",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Primare",
+    "slug": "primare",
+    "domain": "https://primare.net",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "QLN",
+    "slug": "qln",
+    "domain": "https://qln.se",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Qualiton",
+    "slug": "qualiton",
+    "domain": "https://qualiton.eu",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Roksan",
+    "slug": "roksan",
+    "domain": "https://www.roksan.com",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Soulnote",
+    "slug": "soulnote",
+    "domain": "https://www.soulnote.audio",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "TEAC",
+    "slug": "teac",
+    "domain": "https://teac.jp",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Van den Hul",
+    "slug": "van-den-hul",
+    "domain": "https://www.vandenhul.com",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  },
+  {
+    "brand": "Vienna Acoustics",
+    "slug": "vienna-acoustics",
+    "domain": "https://www.vienna-acoustics.com",
+    "counts": {
+      "logos": 0,
+      "products": 0,
+      "heroes": 0,
+      "lifestyle": 0,
+      "catalogs": 0,
+      "manuals": 0,
+      "datasheets": 0,
+      "videos": 0,
+      "mobileDerivatives": 0,
+      "desktopDerivatives": 0
+    },
+    "products": [],
+    "downloaded": 0,
+    "qc": null,
+    "missing": [
+      "01 Logos",
+      "02 Hero Images",
+      "03 Products",
+      "06 Catalogs",
+      "07 Manuals",
+      "08 Datasheets"
+    ],
+    "completeness": 0,
+    "recommendations": [
+      "No logo captured yet — seed manifest with the official SVG/PNG logo.",
+      "No products yet — add product hero images to the manifest.",
+      "No PDFs — check the brand's Downloads/Support page for manuals & catalogs.",
+      "Manifest empty — run recon to list official asset URLs before downloading."
+    ]
+  }
+]

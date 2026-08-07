@@ -1,0 +1,7 @@
+{
+  "brand": "AAI (Authentic Audio Industry)",
+  "slug": "aai",
+  "domain": "https://aai.sk/en/",
+  "note": "Add {url, category, product?, angle?, filename?} entries. category must match a Master Assets folder name.",
+  "assets": []
+}

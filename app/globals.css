@@ -1,0 +1,308 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. This site ships a single fixed dark theme (no light-mode
+ * variant exists anywhere in the UI), so tokens are fixed values rather
+ * than the create-next-app default of swapping CSS vars per color scheme.
+ * Anything defined under @theme also becomes a Tailwind utility (e.g.
+ * --color-surface -> bg-surface, --breakpoint-3xl -> the `3xl:` variant).
+ */
+@theme {
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+  /* Matte, faintly-warm surfaces (was slate-blue #111827) — reads as
+     brushed graphite rather than "UI grey". */
+  --color-surface: #121317;
+  --color-surface-muted: #171719;
+
+  /* Signature gold accent, used sparingly (nav underline, CTA glow, hovers). */
+  --color-gold: #d4af37;
+  --color-gold-soft: #e4c878;
+  --color-gold-deep: #b8912e;
+
+  --font-sans: var(--font-geist-sans);
+  /* No mono webfont is loaded (font-mono isn't used anywhere in the UI);
+     this keeps the utility class available with a sane system fallback
+     instead of paying for an unused font download. */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Ultrawide breakpoint, on top of Tailwind's default scale */
+  --breakpoint-3xl: 1920px;
+
+  /* Panel radius used by glass/elevated surfaces (mega menu, cards) */
+  --radius-panel: 24px;
+
+  /* Shared easing/duration for premium, non-jarring motion */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: dark;
+
+  /*
+   * Z-index scale. Not all values are consumed yet (modal/toast have no
+   * component today) — keeping them here means future overlays pick a
+   * documented layer instead of an arbitrary number.
+   */
+  --z-header: 50;
+  --z-dropdown: 50;
+  --z-overlay: 40;
+  --z-modal: 100;
+  --z-toast: 110;
+
+  /*
+   * Actual rendered height of <header> (logo height + its vertical
+   * padding, see components/layout/Header.tsx). Single source of truth
+   * for anything that needs to sit flush below the header — the desktop
+   * mega menu and the mobile nav backdrop both position off this instead
+   * of a hardcoded value, so the two can't drift out of sync.
+   */
+  --header-height: 124px;
+
+  /* Premium depth: layered soft shadow, plus a faint gold glow for accents. */
+  --shadow-luxe: 0 30px 60px -30px rgba(0, 0, 0, 0.85), 0 12px 28px -14px rgba(0, 0, 0, 0.6);
+  --glow-gold: 0 18px 50px -18px rgba(212, 175, 55, 0.28);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-height: 160px;
+  }
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Tighten large display type a touch for a more crafted, editorial hierarchy.
+   Scoped to LTR so it never touches Persian (see the fa override below). */
+[dir="ltr"] h1,
+[dir="ltr"] h2 {
+  letter-spacing: -0.015em;
+}
+[dir="ltr"] h3 {
+  letter-spacing: -0.01em;
+}
+
+/* Persian/Arabic script is cursive — any letter-spacing breaks the joins
+   between letters. Force it off across the entire fa locale, overriding any
+   tracking-* utility inherited from shared components (eyebrows, nav, etc.). */
+html[lang="fa"] * {
+  letter-spacing: normal !important;
+}
+
+/*
+ * Slow, low-contrast halo for the floating WhatsApp button. Kept subtle
+ * (small scale, fades to nothing) so it reads as "premium" rather than a
+ * loud attention-grabber. Applied via motion-safe: so it's inert for users
+ * who prefer reduced motion.
+ */
+/* Floating action button attention halo. */
+@keyframes waPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   Premium motion system
+   Every effect is opt-in (via a class or data-attribute) and is
+   fully disabled under prefers-reduced-motion at the bottom of
+   this block. Motion is deliberately soft and slow — a settle,
+   not a bounce — using the shared --ease-premium curve.
+   ============================================================ */
+
+/* -- Fade-up on scroll --------------------------------------
+   Elements marked [data-reveal] start slightly low and clear,
+   then settle when the ScrollReveal observer adds .is-visible.
+   Stagger neighbours with an inline --reveal-delay. */
+/* Driven by the <Reveal> client component, which owns the is-visible class in
+   React state — so the hidden→shown change happens after hydration and never
+   races it. The hidden state applies only while [data-reveal] lacks
+   .is-visible; once React adds it (post-mount), the element settles. */
+[data-reveal]:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+[data-reveal] {
+  transition: opacity 0.7s var(--ease-premium), transform 0.7s var(--ease-premium);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+/* -- Page transition ----------------------------------------
+   A soft cross-fade of incoming page content on every
+   navigation (applied by app/[locale]/template.tsx). Opacity
+   only, so it never fights the per-element fade-up above. */
+@keyframes pageEnter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.page-enter {
+  animation: pageEnter 0.45s var(--ease-premium) both;
+}
+
+/* -- Luxury button ------------------------------------------
+   Soft lift, a gentle press, and a single slow sheen that
+   sweeps once on hover. The highlight is low-opacity so it
+   reads as a sheen, not a flash. */
+.btn-lux {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-premium), box-shadow 0.4s var(--ease-premium),
+    border-color 0.4s var(--ease-premium), opacity 0.4s var(--ease-premium);
+}
+.btn-lux:hover {
+  transform: translateY(-2px);
+}
+.btn-lux:active {
+  transform: translateY(0) scale(0.985);
+}
+.btn-lux::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 65%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.9s var(--ease-premium);
+  pointer-events: none;
+}
+.btn-lux:hover::after {
+  transform: translateX(130%);
+}
+/* On dark/outline buttons the sheen is dimmer so it stays subtle. */
+.btn-lux--ghost::after {
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 65%
+  );
+}
+
+/* -- Luxury card hover --------------------------------------
+   Rises on a layered soft shadow with a whisper of gold at the edge. */
+.card-lux {
+  transition: transform 0.5s var(--ease-premium), border-color 0.5s var(--ease-premium),
+    background-color 0.5s var(--ease-premium), box-shadow 0.5s var(--ease-premium);
+}
+.card-lux:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-luxe), 0 0 0 1px rgba(212, 175, 55, 0.12);
+}
+
+/* -- Gold-glow CTA modifier ---------------------------------
+   For the primary action: a soft warm halo blooms on hover. */
+.btn-lux--gold:hover {
+  box-shadow: var(--glow-gold);
+}
+
+/* -- Elegant nav underline ----------------------------------
+   A centred gold hairline that sweeps out on hover / current page. */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -7px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.32s var(--ease-premium), opacity 0.32s var(--ease-premium);
+  opacity: 0;
+  pointer-events: none;
+}
+.nav-link:hover::after,
+.nav-link[aria-current="page"]::after,
+.nav-link[aria-expanded="true"]::after {
+  transform: scaleX(1);
+  opacity: 0.9;
+}
+
+/* -- Soft glass surface -------------------------------------- */
+.glass {
+  background: color-mix(in srgb, var(--color-surface) 62%, transparent);
+  backdrop-filter: blur(18px) saturate(1.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* -- Blur-to-sharp reveal ------------------------------------
+   A cinematic variant of the fade-up (opt in via <Reveal blur>). */
+[data-reveal-blur]:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(20px) scale(1.012);
+  filter: blur(14px);
+}
+[data-reveal-blur] {
+  transition: opacity 0.85s var(--ease-premium), transform 0.85s var(--ease-premium),
+    filter 0.85s var(--ease-premium);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform, filter;
+}
+
+/* -- Elegant loading ----------------------------------------
+   A slow shimmer across the wordmark plus a thin sweeping line. */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes lineSweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+.loader-shimmer {
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0.28) 20%,
+    #ffffff 50%,
+    rgba(255, 255, 255, 0.28) 80%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 2.6s linear infinite;
+}
+
+/* -- Reduced motion: disable everything, reveal immediately -- */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal].is-visible,
+  [data-reveal-blur],
+  [data-reveal-blur].is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+  .page-enter { animation: none !important; }
+  .btn-lux,
+  .btn-lux::after,
+  .card-lux,
+  .nav-link::after { transition: none !important; }
+  .btn-lux:hover,
+  .btn-lux:active,
+  .card-lux:hover { transform: none !important; }
+  .btn-lux:hover::after { transform: translateX(-130%) !important; }
+  .loader-shimmer { animation: none !important; }
+}

@@ -1,0 +1,70 @@
+{
+  "brand": "Marten",
+  "scanned": 5,
+  "broken": 0,
+  "lowResolution": 3,
+  "nearDuplicates": 0,
+  "details": {
+    "broken": [],
+    "lowres": [
+      {
+        "file": "02 Hero Images\\marten-dexter-hero.jpg",
+        "longest": 2560,
+        "required": 5000
+      },
+      {
+        "file": "04 Lifestyle\\marten-dexter-lifestyle.jpg",
+        "longest": 2560,
+        "required": 4000
+      },
+      {
+        "file": "05 Rooms\\marten-dexter-listening-room.jpg",
+        "longest": 2560,
+        "required": 4000
+      }
+    ],
+    "dups": []
+  },
+  "items": [
+    {
+      "file": "02 Hero Images\\marten-dexter-hero.jpg",
+      "w": 2560,
+      "h": 1920,
+      "longest": 2560,
+      "format": "jpeg",
+      "lowres": true
+    },
+    {
+      "file": "03 Products\\dexter\\Original\\dexter-front.jpg",
+      "w": 3194,
+      "h": 2395,
+      "longest": 3194,
+      "format": "jpeg",
+      "lowres": false
+    },
+    {
+      "file": "03 Products\\dexter\\Original\\dexter-rear.jpg",
+      "w": 3788,
+      "h": 2841,
+      "longest": 3788,
+      "format": "jpeg",
+      "lowres": false
+    },
+    {
+      "file": "04 Lifestyle\\marten-dexter-lifestyle.jpg",
+      "w": 2560,
+      "h": 1920,
+      "longest": 2560,
+      "format": "jpeg",
+      "lowres": true
+    },
+    {
+      "file": "05 Rooms\\marten-dexter-listening-room.jpg",
+      "w": 2560,
+      "h": 1919,
+      "longest": 2560,
+      "format": "jpeg",
+      "lowres": true
+    }
+  ]
+}

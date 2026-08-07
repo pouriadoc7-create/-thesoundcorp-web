@@ -1,0 +1,7 @@
+{
+  "brand": "Audiovector",
+  "slug": "audiovector",
+  "domain": "https://audiovector.com",
+  "note": "Add {url, category, product?, angle?, filename?} entries. category must match a Master Assets folder name.",
+  "assets": []
+}

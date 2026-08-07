@@ -1,0 +1,7 @@
+{
+  "brand": "Primare",
+  "slug": "primare",
+  "domain": "https://primare.net",
+  "note": "Add {url, category, product?, angle?, filename?} entries. category must match a Master Assets folder name.",
+  "assets": []
+}

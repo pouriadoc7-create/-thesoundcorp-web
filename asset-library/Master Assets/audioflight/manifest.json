@@ -1,0 +1,7 @@
+{
+  "brand": "Audioflight",
+  "slug": "audioflight",
+  "domain": "https://www.audioflight.it",
+  "note": "Add {url, category, product?, angle?, filename?} entries. category must match a Master Assets folder name.",
+  "assets": []
+}

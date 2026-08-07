@@ -1,0 +1,17 @@
+# Heavy binary originals & derivatives — do not commit
+Master Assets/**/Original/
+Master Assets/**/13 Archive/
+Master Assets/**/*.jpg
+Master Assets/**/*.jpeg
+Master Assets/**/*.png
+Master Assets/**/*.webp
+Master Assets/**/*.avif
+Master Assets/**/*.tif
+Master Assets/**/*.pdf
+Master Assets/**/*.mp4
+Master Assets/**/*.mov
+# Keep: manifests, seo.csv/json, qc + reports, and the _pipeline scripts
+!Master Assets/**/manifest.json
+!Master Assets/**/seo.csv
+!Master Assets/**/seo.json
+!Master Assets/**/qc-report.json

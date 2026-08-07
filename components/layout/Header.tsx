@@ -94,9 +94,10 @@ export function Header() {
       >
         {/* Logo — the hero. Generous room on the start edge, subtle scale on scroll/hover. */}
         <Logo
+          menuOpen={mobileNavOpen}
           imageClassName={cn(
             "transition-[height] duration-700 ease-[var(--ease-premium)]",
-            scrolled ? "h-[46px] md:h-[52px]" : "h-[54px] md:h-[64px]"
+            scrolled ? "h-[74.75px] md:h-[84.5px]" : "h-[87.75px] md:h-[104px]"
           )}
         />
 
@@ -171,7 +172,7 @@ export function Header() {
                                     <li key={brand.slug}>
                                       <Link
                                         href={`/brands/${brand.slug}`}
-                                        className="block rounded-md px-2 py-2.5 text-sm tracking-wide text-white/60 transition-all duration-300 ease-out hover:text-white hover:[text-shadow:0_0_16px_rgba(255,255,255,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ltr:hover:-translate-x-1 rtl:hover:translate-x-1"
+                                        className="block rounded-md px-2 py-2.5 text-sm tracking-wide text-[color:var(--color-gold-soft)]/90 transition-all duration-300 ease-out hover:text-[color:var(--color-gold-soft)] hover:[text-shadow:0_0_16px_rgba(255,255,255,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ltr:hover:-translate-x-1 rtl:hover:translate-x-1"
                                       >
                                         {brand.logoUrl ? (
                                           <BrandLogo

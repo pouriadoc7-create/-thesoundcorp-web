@@ -23,15 +23,15 @@ export function ProductCard({ product, categoryLabel }: ProductCardProps) {
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         className="aspect-[4/3] w-full rounded-none border-0 border-b border-white/[0.06]"
       />
-      <div className="flex flex-1 flex-col p-5">
-        <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-zinc-500">
+      <div className="flex flex-1 flex-col p-4">
+        <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-zinc-500 xl:text-[11px]">
           {product.brand} · {categoryLabel}
         </span>
-        <h3 className="mt-2 text-lg font-semibold text-white transition-colors group-hover:text-white">
+        <h3 className="mt-2 text-[14px] font-medium text-white transition-colors group-hover:text-white xl:text-lg">
           {product.name}
         </h3>
-        <p className="mt-1 line-clamp-2 text-sm leading-6 text-zinc-400">{product.tagline}</p>
-        <span className="mt-4 text-sm text-zinc-500">{product.priceNote}</span>
+        <p className="mt-1 line-clamp-2 text-[12px] leading-5 text-zinc-400 xl:text-sm">{product.tagline}</p>
+        <span className="mt-3 text-[12px] text-zinc-500 xl:text-sm">{product.priceNote}</span>
       </div>
     </Link>
   );

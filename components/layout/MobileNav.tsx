@@ -55,31 +55,31 @@ export function MobileNav({ isOpen, onNavigate, panelRef }: MobileNavProps) {
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent"
       />
 
-      <nav className="flex flex-1 flex-col px-6 pt-8">
+      <nav className="flex flex-1 flex-col px-6 pt-5">
         {NAV_LINKS.map((link, i) => {
           if (link.key === "brands") {
             return (
               <div key={link.key} style={stagger(i)} className={itemMotion}>
-                <details className="group border-b border-white/[0.07]">
-                  <summary className="flex min-h-[56px] cursor-pointer list-none items-center justify-between text-2xl font-semibold tracking-tight text-zinc-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">
+                <details className="group">
+                  <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between text-[14px] font-normal leading-[1.1] tracking-[-0.015em] text-holo opacity-90 transition-opacity duration-300 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">
                     {t("brands")}
                     <svg
-                      className="h-5 w-5 text-zinc-500 transition-transform duration-300 ease-[var(--ease-premium)] group-open:rotate-180"
+                      className="h-4 w-4 text-white/25 transition-transform duration-300 ease-[var(--ease-premium)] group-open:rotate-180"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       aria-hidden="true"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M19 9l-7 7-7-7" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
                     </svg>
                   </summary>
-                  <div className="mb-5 grid grid-cols-2 gap-x-5 gap-y-0.5 pb-1">
+                  <div className="mb-5 grid grid-cols-2 gap-x-4 gap-y-0.5 pb-1">
                     {BRANDS.map((brand) => (
                       <Link
                         key={brand.slug}
                         href={`/brands/${brand.slug}`}
                         onClick={onNavigate}
-                        className="flex min-h-[44px] items-center rounded-md text-[15px] tracking-wide text-white/55 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                        className="flex min-h-[40px] items-center rounded-md text-[12px] font-light tracking-[0.01em] text-[color:var(--color-gold-soft)]/90 transition-colors duration-300 hover:text-[color:var(--color-gold-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                       >
                         {brand.name}
                       </Link>
@@ -95,7 +95,7 @@ export function MobileNav({ isOpen, onNavigate, panelRef }: MobileNavProps) {
               <Link
                 href={link.href}
                 onClick={onNavigate}
-                className="flex min-h-[56px] items-center border-b border-white/[0.07] text-2xl font-semibold tracking-tight text-zinc-100 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                className="flex min-h-[44px] items-center text-[14px] font-normal leading-[1.1] tracking-[-0.015em] text-holo opacity-90 transition-opacity duration-300 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
               >
                 {t(link.key)}
               </Link>
@@ -103,7 +103,7 @@ export function MobileNav({ isOpen, onNavigate, panelRef }: MobileNavProps) {
           );
         })}
 
-        <div style={stagger(NAV_LINKS.length)} className={cn(itemMotion, "mt-8")}>
+        <div style={stagger(NAV_LINKS.length)} className={cn(itemMotion, "mt-6")}>
           <LocaleSwitcher />
         </div>
       </nav>

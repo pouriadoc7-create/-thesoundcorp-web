@@ -8,7 +8,7 @@ import { SITE_NAME } from "@/lib/constants/site";
 export default function Loading() {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6 px-6">
-      <span className="loader-shimmer text-2xl font-bold tracking-[0.04em] sm:text-3xl">
+      <span className="loader-shimmer text-[16px] font-medium tracking-[0.04em] sm:text-[19px] xl:text-2xl">
         {SITE_NAME}
       </span>
       <span

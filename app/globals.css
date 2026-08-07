@@ -334,6 +334,26 @@ html[lang="fa"] * {
   pointer-events: none;
 }
 
+/* Brushed-platinum text — an extremely subtle silver/platinum optical wash
+   applied via background-clip to premium display and navigation type. Every
+   stop is a cool light neutral (silver → white → faint platinum), so on the
+   dark UI it reads as a clean near-white with only a whisper of brushed metal —
+   no rainbow, no RGB, no neon, no glow, and no obvious gradient. Safe on Persian
+   too: it changes the text fill, never the letter joins. */
+.text-holo {
+  background-image: linear-gradient(
+    105deg,
+    #e8ebf0 0%,
+    #ffffff 46%,
+    #ffffff 58%,
+    #eceef2 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
 /* Premium hairline separator (gold-tinted center fade). */
 .hr-premium {
   height: 1px;
@@ -514,6 +534,70 @@ html[lang="fa"] * {
   animation: shimmer 2.6s linear infinite;
 }
 
+/* -- Logo: cinematic reveal + one platinum light sweep ------
+   The brand mark fades and settles once on initial page load (GPU
+   transform/opacity only — no layout shift), then a single, almost
+   imperceptible platinum sheen crosses it, like light catching brushed
+   metal. A shorter micro-reveal replays only when the mobile nav opens.
+   Nothing loops; all of it is disabled under reduced-motion below. */
+@keyframes logoReveal {
+  from { opacity: 0; transform: translateY(4px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes logoMenuReveal {
+  from { opacity: 0; transform: translateY(-3px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes logoSweep {
+  0% { opacity: 0; background-position: 160% 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { opacity: 0; background-position: -60% 0; }
+}
+/* Three gentle "heartbeat" pulses on first page load, then completely static.
+   Scale stays within 2.5% and each peak lifts brightness a hair — luxury,
+   cinematic, understated; never bouncy. Plays ONCE (no loop); `both` fill locks
+   the end state at scale(1)/brightness(1) so the mark is fully still afterward.
+   Natural pauses between beats (not a mechanical loop). Disabled under
+   reduced-motion below. */
+@keyframes logoHeartbeat {
+  0% { transform: scale(1); filter: brightness(1); }
+  6% { transform: scale(1.025); filter: brightness(1.04); }
+  14% { transform: scale(1); filter: brightness(1); }
+  32% { transform: scale(1); filter: brightness(1); }
+  38% { transform: scale(1.025); filter: brightness(1.04); }
+  46% { transform: scale(1); filter: brightness(1); }
+  64% { transform: scale(1); filter: brightness(1); }
+  70% { transform: scale(1.025); filter: brightness(1.04); }
+  78% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+.logo-reveal {
+  animation: logoHeartbeat 3200ms var(--ease-premium) both;
+  will-change: transform, filter;
+}
+/* One slow platinum reflection, screen-blended so it only adds light (no wash,
+   no glow, no colour). Contained to the mark by `isolate` on .logo-reveal. */
+.logo-sweep {
+  background-image: linear-gradient(
+    100deg,
+    transparent 43%,
+    rgba(226, 232, 240, 0.08) 48%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(226, 232, 240, 0.08) 52%,
+    transparent 57%
+  );
+  background-repeat: no-repeat;
+  background-size: 220% 100%;
+  background-position: 160% 0;
+  mix-blend-mode: screen;
+  /* Sweep disabled — the logo's only load motion is now the heartbeat above. */
+  opacity: 0;
+}
+.logo-reveal[data-menu-open="true"] .logo-img {
+  animation: logoMenuReveal 600ms var(--ease-premium);
+}
+
 /* -- Reduced motion: disable everything, reveal immediately -- */
 @media (prefers-reduced-motion: reduce) {
   [data-reveal],
@@ -540,5 +624,13 @@ html[lang="fa"] * {
   .ambient-bg::before,
   .ambient-bg::after { animation: none !important; }
   .card-lux:hover::after { animation: none !important; }
+  .logo-reveal,
+  .logo-reveal[data-menu-open="true"] .logo-img {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .logo-sweep { animation: none !important; opacity: 0 !important; }
   html { scroll-behavior: auto !important; }
 }

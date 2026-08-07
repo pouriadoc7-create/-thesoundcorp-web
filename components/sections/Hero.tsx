@@ -19,20 +19,20 @@ export async function Hero() {
       <Reveal
         as="h1"
         blur
-        className="text-balance text-4xl font-semibold tracking-tight leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl"
+        className="text-holo text-balance text-[26px] font-medium tracking-tight leading-[1.08] sm:text-[34px] md:text-[42px] lg:text-[52px] xl:text-7xl"
       >
         {SITE_NAME}
       </Reveal>
 
-      <Reveal as="p" delayMs={90} className="mt-6 text-balance text-xl leading-snug text-gray-400 sm:text-2xl">
+      <Reveal as="p" delayMs={90} className="mt-4 text-balance text-[14px] leading-snug text-gray-400 sm:text-[16px] xl:text-2xl">
         {t("tagline")}
       </Reveal>
 
-      <Reveal as="p" delayMs={170} className="mt-5 max-w-2xl text-base font-light leading-relaxed text-gray-400 sm:text-lg">
+      <Reveal as="p" delayMs={170} className="mt-4 max-w-2xl text-[13px] font-light leading-relaxed text-gray-400 sm:text-[14px] xl:text-lg">
         {t("description")}
       </Reveal>
 
-      <Reveal delayMs={260} className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:mt-12 sm:gap-5">
+      <Reveal delayMs={260} className="mt-7 flex flex-wrap items-center justify-center gap-4 sm:mt-10 sm:gap-5">
         <MagneticButton>
           <Button href="/brands" variant="primary" size="lg">
             {t("exploreBrands")}

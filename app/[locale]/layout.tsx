@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Vazirmatn } from "next/font/google";
+import { Vazirmatn } from "next/font/google";
+import localFont from "next/font/local";
 import { hasLocale } from "next-intl";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -24,9 +25,20 @@ import { buildLanguageAlternates } from "@/lib/utils/alternates";
 // stay at module scope. `preload: false` on both stops Next from emitting
 // a <link rel="preload"> for the family that ends up unused, which browsers
 // otherwise flag as "preloaded but not used within a few seconds."
-const inter = Inter({
+// Satoshi (Indian Type Foundry, via Fontshare — free for commercial use),
+// self-hosted through next/font/local so it ships from our own origin — no
+// external CDN and no runtime font request. A refined contemporary grotesk
+// with a full variable weight axis (300–900); its light/regular weights give
+// navigation and display type a thin, compact, Swiss-editorial / Bang &
+// Olufsen / Porsche Design character rather than a generic corporate sans.
+// (PP Neue Montreal was requested first but is a commercial font with no
+// licence present in this project, so it is deliberately NOT used — no fake
+// substitution. Satoshi is the licensed self-hosted fallback.)
+const satoshi = localFont({
+  src: "../fonts/Satoshi-Variable.woff2",
   variable: "--font-sans-latin",
-  subsets: ["latin"],
+  weight: "300 900",
+  display: "swap",
   preload: false,
 });
 
@@ -98,7 +110,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   setRequestLocale(locale);
 
   const direction = getLocaleDirection(locale);
-  const fontVariables = (locale as AppLocale) === "fa" ? vazirmatn.variable : inter.variable;
+  const fontVariables = (locale as AppLocale) === "fa" ? vazirmatn.variable : satoshi.variable;
   const bodyFontClassName =
     (locale as AppLocale) === "fa" ? "font-[family-name:var(--font-vazirmatn)]" : "font-sans";
 

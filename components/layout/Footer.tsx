@@ -25,13 +25,13 @@ export async function Footer() {
               <Link
                 key={link.key}
                 href={link.href}
-                className="rounded-md text-sm text-zinc-400 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                className="rounded-md text-[12px] font-light tracking-[0.01em] text-zinc-400 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
               >
                 {tNav(link.key)}
               </Link>
             ))}
           </nav>
-          <p className="text-sm text-zinc-500">{t("rights", { year, siteName: SITE_NAME })}</p>
+          <p className="text-[11px] tracking-[0.01em] text-zinc-500">{t("rights", { year, siteName: SITE_NAME })}</p>
         </div>
 
         <SocialLinks className="lg:justify-end" />

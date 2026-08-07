@@ -7,7 +7,7 @@ export type ButtonVariant = "primary" | "gold" | "ghost" | "subtle";
 export type ButtonSize = "md" | "lg";
 
 const BASE =
-  "btn-lux inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50";
+  "btn-lux inline-flex items-center justify-center gap-2 rounded-full font-medium xl:font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50";
 
 const VARIANTS: Record<ButtonVariant, string> = {
   // Light action with a warm gold halo on hover.
@@ -24,8 +24,8 @@ const VARIANTS: Record<ButtonVariant, string> = {
 };
 
 const SIZES: Record<ButtonSize, string> = {
-  md: "px-6 py-3 text-sm",
-  lg: "px-8 py-4",
+  md: "px-5 py-2.5 text-[12.5px] xl:px-6 xl:py-3 xl:text-sm",
+  lg: "px-6 py-3 text-[13px] xl:px-8 xl:py-4 xl:text-base",
 };
 
 interface BaseProps {

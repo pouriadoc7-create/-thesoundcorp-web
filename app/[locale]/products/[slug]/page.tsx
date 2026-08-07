@@ -133,9 +133,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
             >
               {product.brand} · {categoryLabel}
             </Link>
-            <h1 className="mt-3 text-3xl font-semibold sm:text-4xl">{product.name}</h1>
-            <p className="mt-3 text-lg text-zinc-400">{product.tagline}</p>
-            <p className="mt-5 text-sm uppercase tracking-wider text-zinc-500">
+            <h1 className="mt-3 text-holo text-[21px] font-medium sm:text-[25px] lg:text-[28px] xl:text-4xl">{product.name}</h1>
+            <p className="mt-2 text-[14px] text-zinc-400 xl:text-lg">{product.tagline}</p>
+            <p className="mt-4 text-[12px] uppercase tracking-wider text-zinc-500">
               {product.priceNote}
             </p>
 
@@ -163,13 +163,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </a>
             </div>
 
-            <p className="mt-8 leading-8 text-zinc-300">{product.description}</p>
+            <p className="mt-6 text-[13.5px] leading-7 text-zinc-300 xl:text-base">{product.description}</p>
           </div>
         </div>
 
         {/* Technical specifications */}
         <div className="mt-16">
-          <h2 className="text-xl font-semibold">{t("detail.specifications")}</h2>
+          <h2 className="text-[16px] font-medium xl:text-xl">{t("detail.specifications")}</h2>
           <dl className="mt-6 grid grid-cols-1 gap-x-12 sm:grid-cols-2">
             {product.specs.map((spec) => (
               <div
@@ -188,7 +188,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {/* Related products */}
         {related.length > 0 ? (
           <div className="mt-20">
-            <h2 className="text-xl font-semibold">{t("detail.related")}</h2>
+            <h2 className="text-[16px] font-medium xl:text-xl">{t("detail.related")}</h2>
             <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((rel) => (
                 <ProductCard

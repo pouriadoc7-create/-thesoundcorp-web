@@ -107,11 +107,11 @@ export default async function BrandPage({ params }: BrandPageProps) {
               imgClassName="ltr:object-left rtl:object-right"
             />
           ) : null}
-          <p className="text-xs font-medium uppercase tracking-[0.24em] text-[color:var(--color-gold-soft)]/85">
+          <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[color:var(--color-gold-soft)]/85 xl:text-xs">
             {tNav("brands")}
           </p>
-          <h1 className="mt-3 text-4xl font-semibold sm:text-5xl">{brand.name}</h1>
-          <p className="mt-6 max-w-2xl leading-8 text-gray-300">
+          <h1 className="mt-3 text-holo text-[23px] font-medium sm:text-[28px] lg:text-[32px] xl:text-5xl">{brand.name}</h1>
+          <p className="mt-5 max-w-2xl text-[13.5px] leading-7 text-gray-300 xl:text-base">
             {t("intro", { brand: brand.name, count: BRANDS.length, siteName: SITE_NAME })}
           </p>
 
@@ -136,7 +136,7 @@ export default async function BrandPage({ params }: BrandPageProps) {
 
         {/* Featured products (real catalogue data, cross-linked to product pages) */}
         <div className="mt-16">
-          <h2 className="text-xl font-semibold">{t("featured")}</h2>
+          <h2 className="text-[16px] font-medium xl:text-xl">{t("featured")}</h2>
           {products.length > 0 ? (
             <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {products.map((product) => (
@@ -148,7 +148,7 @@ export default async function BrandPage({ params }: BrandPageProps) {
               ))}
             </div>
           ) : (
-            <p className="mt-4 max-w-2xl leading-8 text-gray-500">
+            <p className="mt-4 max-w-2xl text-[13.5px] leading-7 text-gray-500 xl:text-base">
               {t("noProducts", { brand: brand.name })}
             </p>
           )}
@@ -156,8 +156,8 @@ export default async function BrandPage({ params }: BrandPageProps) {
 
         {/* Brand story — clearly marked as forthcoming rather than invented. */}
         <div className="mt-16 max-w-2xl border-t border-white/[0.08] pt-8">
-          <h2 className="text-xl font-semibold">{t("storyTitle")}</h2>
-          <p className="mt-4 leading-8 text-gray-500">{t("storyComingSoon", { brand: brand.name })}</p>
+          <h2 className="text-[16px] font-medium xl:text-xl">{t("storyTitle")}</h2>
+          <p className="mt-4 text-[13.5px] leading-7 text-gray-500 xl:text-base">{t("storyComingSoon", { brand: brand.name })}</p>
         </div>
       </Container>
     </Section>

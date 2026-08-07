@@ -221,7 +221,7 @@ export function Header() {
             onClick={() => window.dispatchEvent(new Event(OPEN_COMMAND_PALETTE))}
             aria-label={tSearch("open")}
             title={tSearch("open")}
-            className="group inline-flex h-11 w-11 items-center justify-center rounded-full text-zinc-300 transition-colors duration-300 hover:text-[color:var(--color-gold-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/60"
+            className="group inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-zinc-300 transition-colors duration-300 hover:text-[color:var(--color-gold-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/60"
           >
             <svg
               className="h-[24px] w-[24px] transition-transform duration-300 ease-[var(--ease-premium)] group-hover:scale-110 group-hover:rotate-[10deg] group-hover:drop-shadow-[0_0_9px_rgba(212,175,55,0.55)]"
@@ -241,7 +241,7 @@ export function Header() {
           <button
             ref={mobileNavTriggerRef}
             type="button"
-            className="inline-flex items-center justify-center rounded-md p-2 text-zinc-200 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 lg:hidden"
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md p-2 text-zinc-200 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 lg:hidden"
             onClick={toggleMobileNav}
             aria-expanded={mobileNavOpen}
             aria-controls="mobile-nav-panel"

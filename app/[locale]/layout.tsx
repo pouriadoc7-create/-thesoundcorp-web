@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Vazirmatn } from "next/font/google";
+import { Inter, Vazirmatn } from "next/font/google";
 import { hasLocale } from "next-intl";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -24,8 +24,8 @@ import { buildLanguageAlternates } from "@/lib/utils/alternates";
 // stay at module scope. `preload: false` on both stops Next from emitting
 // a <link rel="preload"> for the family that ends up unused, which browsers
 // otherwise flag as "preloaded but not used within a few seconds."
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-sans-latin",
   subsets: ["latin"],
   preload: false,
 });
@@ -98,7 +98,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   setRequestLocale(locale);
 
   const direction = getLocaleDirection(locale);
-  const fontVariables = (locale as AppLocale) === "fa" ? vazirmatn.variable : geistSans.variable;
+  const fontVariables = (locale as AppLocale) === "fa" ? vazirmatn.variable : inter.variable;
   const bodyFontClassName =
     (locale as AppLocale) === "fa" ? "font-[family-name:var(--font-vazirmatn)]" : "font-sans";
 

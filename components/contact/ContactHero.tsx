@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import { type FormEvent, memo, useEffect, useRef, useState } from "react";
 
 import { CONTACT } from "@/lib/constants/site";
@@ -185,29 +186,70 @@ const fieldClass =
   "mt-2 w-full rounded-xl border border-white/10 bg-white/[0.035] px-4 py-3 text-sm text-white placeholder:text-zinc-500 outline-none transition-colors focus:border-[color:var(--color-gold)]/50 focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/30";
 const labelClass = "block text-[10.5px] font-medium uppercase tracking-[0.16em] text-zinc-500";
 
+type SubmitStatus = "idle" | "sending" | "sent" | "sentMail" | "error";
+
 export function ContactHero() {
+  const t = useTranslations("contact");
+  const locale = useLocale();
+  const dir = locale === "fa" ? "rtl" : "ltr";
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [sent, setSent] = useState(false);
+  const [company, setCompany] = useState(""); // honeypot — must stay empty
+  const [status, setStatus] = useState<SubmitStatus>("idle");
 
   const valid = name.trim().length > 0 && email.includes("@") && message.trim().length > 0;
+  const sending = status === "sending";
+  const done = status === "sent" || status === "sentMail";
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!valid) return;
+  function openMailFallback() {
     const subject = encodeURIComponent(`New enquiry from ${name.trim()}`);
-    const body = encodeURIComponent(
-      `Name: ${name.trim()}\nEmail: ${email.trim()}\n\n${message.trim()}\n`
-    );
+    const body = encodeURIComponent(`Name: ${name.trim()}\nEmail: ${email.trim()}\n\n${message.trim()}\n`);
     // Opens the visitor's mail client, pre-addressed to the official inbox.
     window.location.href = `${CONTACT.email.href}?subject=${subject}&body=${body}`;
-    setSent(true);
+  }
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!valid || sending) return;
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          message: message.trim(),
+          company, // honeypot
+        }),
+      });
+      if (res.ok) {
+        setStatus("sent");
+        return;
+      }
+      let code = "";
+      try {
+        code = ((await res.json()) as { code?: string })?.code ?? "";
+      } catch {
+        /* ignore non-JSON error bodies */
+      }
+      // Email backend not configured yet → gracefully fall back to the mail client.
+      if (res.status === 503 || code === "not_configured") {
+        openMailFallback();
+        setStatus("sentMail");
+        return;
+      }
+      setStatus("error");
+    } catch {
+      setStatus("error");
+    }
   }
 
   return (
     <section
-      dir="ltr"
+      dir={dir}
       className="relative flex min-h-[86vh] items-center overflow-hidden bg-[radial-gradient(135%_120%_at_50%_45%,#0d0e12,#06070a_60%)]"
     >
       {/* Flowing golden signal waveform (decorative) — desktop + mobile renderings. */}
@@ -223,36 +265,36 @@ export function ContactHero() {
         {/* Left — copy + channels */}
         <div>
           <p className="text-xs font-medium uppercase tracking-[0.3em] text-[color:var(--color-gold-soft)]/90">
-            Get in touch
+            {t("hero.eyebrow")}
           </p>
           <h1 className="mt-6 text-[34px] font-medium leading-[1.05] tracking-[-0.02em] text-[#f4f5f7] sm:text-5xl lg:text-[3.4rem]">
-            For Those
+            {t("hero.headingLine1")}
             <br />
             <span className="bg-[linear-gradient(96deg,#efdcac,var(--color-gold)_52%,var(--color-gold-deep))] bg-clip-text text-transparent">
-              Who Listen.
+              {t("hero.headingLine2")}
             </span>
           </h1>
           <p className="mt-6 max-w-md text-[15px] font-light leading-relaxed text-zinc-400">
-            Great sound begins with knowing what matters.
-            <br className="hidden sm:block" /> We&rsquo;d be pleased to hear from you.
+            {t("hero.lead1")}
+            <br className="hidden sm:block" /> {t("hero.lead2")}
           </p>
 
           <div className="mt-9 flex flex-col gap-4 text-[14.5px] text-zinc-300">
             <a className="inline-flex w-fit items-center gap-3 transition-colors hover:text-white" href={CONTACT.phone.href}>
               <PhoneGlyph />
-              <span>{CONTACT.phone.display}</span>
+              <span dir="ltr">{CONTACT.phone.display}</span>
             </a>
             <a className="inline-flex w-fit items-center gap-3 transition-colors hover:text-white" href={CONTACT.whatsapp.href} target="_blank" rel="noopener noreferrer">
               <WhatsAppGlyph />
-              <span>WhatsApp</span>
+              <span>{t("items.whatsapp")}</span>
             </a>
             <a className="inline-flex w-fit items-center gap-3 transition-colors hover:text-white" href={CONTACT.instagram.href} target="_blank" rel="noopener noreferrer">
               <InstagramGlyph />
-              <span>{CONTACT.instagram.display}</span>
+              <span dir="ltr">{CONTACT.instagram.display}</span>
             </a>
             <div className="inline-flex w-fit items-center gap-3">
               <PinGlyph />
-              <span>Manzariyeh, Tehran</span>
+              <span>{t("hero.location")}</span>
             </div>
           </div>
         </div>
@@ -260,18 +302,19 @@ export function ContactHero() {
         {/* Right — glass form */}
         <form
           onSubmit={handleSubmit}
+          noValidate
           className="rounded-[22px] border border-white/[0.09] bg-[rgba(15,17,22,0.52)] p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_40px_80px_-40px_rgba(0,0,0,0.9)] backdrop-blur-xl backdrop-saturate-150"
         >
-          {sent ? (
+          {done ? (
             <div className="flex min-h-[300px] flex-col items-center justify-center text-center">
               <span className="grid h-14 w-14 place-items-center rounded-full border border-[color:var(--color-gold)]/40 text-[color:var(--color-gold-soft)]">
                 <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M20 6 9 17l-5-5" />
                 </svg>
               </span>
-              <p className="mt-5 text-lg font-medium text-white">Thank you.</p>
+              <p className="mt-5 text-lg font-medium text-white">{t("form.successTitle")}</p>
               <p className="mt-2 max-w-xs text-sm font-light text-zinc-400">
-                Your message is ready in your email app. We&rsquo;ll be in touch shortly.
+                {status === "sentMail" ? t("form.successBodyMail") : t("form.successBody")}
               </p>
               <a
                 href={CONTACT.whatsapp.href}
@@ -279,32 +322,60 @@ export function ContactHero() {
                 rel="noopener noreferrer"
                 className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--color-gold-soft)] transition-opacity hover:opacity-80"
               >
-                <WhatsAppGlyph /> Or reach us instantly on WhatsApp
+                <WhatsAppGlyph /> {t("form.whatsappFallback")}
               </a>
             </div>
           ) : (
             <>
+              {/* Honeypot — hidden from users, catches bots. */}
+              <input
+                type="text"
+                name="company"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="pointer-events-none absolute -left-[9999px] h-0 w-0 opacity-0"
+              />
               <div className="mb-[18px]">
-                <label className={labelClass} htmlFor="c-name">Name</label>
-                <input id="c-name" className={fieldClass} placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
+                <label className={labelClass} htmlFor="c-name">{t("form.name")}</label>
+                <input id="c-name" className={fieldClass} placeholder={t("form.namePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
               </div>
               <div className="mb-[18px]">
-                <label className={labelClass} htmlFor="c-email">Email</label>
-                <input id="c-email" type="email" className={fieldClass} placeholder="you@email.com" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
+                <label className={labelClass} htmlFor="c-email">{t("form.email")}</label>
+                <input id="c-email" type="email" dir="ltr" className={fieldClass} placeholder={t("form.emailPlaceholder")} value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
               </div>
               <div className="mb-[18px]">
-                <label className={labelClass} htmlFor="c-message">Message</label>
-                <textarea id="c-message" className={`${fieldClass} min-h-[92px] resize-none`} placeholder="How can we help you?" value={message} onChange={(e) => setMessage(e.target.value)} />
+                <label className={labelClass} htmlFor="c-message">{t("form.message")}</label>
+                <textarea id="c-message" className={`${fieldClass} min-h-[92px] resize-none`} placeholder={t("form.messagePlaceholder")} value={message} onChange={(e) => setMessage(e.target.value)} />
               </div>
+              {status === "error" ? (
+                <p role="alert" className="mb-3 text-[13px] font-medium text-red-300/90">
+                  {t("form.errorBody")}
+                </p>
+              ) : null}
               <button
                 type="submit"
-                disabled={!valid}
+                disabled={!valid || sending}
+                aria-busy={sending}
                 className="btn-lux mt-1 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(100deg,var(--color-gold),#ecd6a0)] px-6 py-4 text-sm font-semibold tracking-[0.02em] text-[#231a05] shadow-[0_14px_34px_-12px_rgba(212,175,55,0.5)] transition-opacity disabled:cursor-not-allowed disabled:opacity-45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               >
-                Send message
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
+                {sending ? (
+                  <>
+                    {t("form.sending")}
+                    <svg viewBox="0 0 24 24" className="h-4 w-4 animate-spin" fill="none" stroke="currentColor" strokeWidth={2.4} aria-hidden="true">
+                      <path d="M21 12a9 9 0 1 1-6.2-8.5" strokeLinecap="round" />
+                    </svg>
+                  </>
+                ) : (
+                  <>
+                    {t("form.send")}
+                    <svg viewBox="0 0 24 24" className="h-4 w-4 rtl:-scale-x-100" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </>
+                )}
               </button>
             </>
           )}

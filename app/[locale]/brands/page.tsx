@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -47,9 +48,14 @@ export default async function BrandsPage({ params }: BrandsPageProps) {
             <Link
               key={brand.slug}
               href={`/brands/${brand.slug}`}
-              className="rounded-xl border border-zinc-700 p-6 text-center transition hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+              className="flex items-center justify-center rounded-xl border border-zinc-700 p-6 text-center transition hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
-              <h2 className="text-lg font-semibold">{brand.name}</h2>
+              <BrandLogo
+                name={brand.name}
+                logoUrl={brand.logoUrl}
+                className="h-10 w-full"
+                wordmarkClassName="text-lg font-semibold text-white"
+              />
             </Link>
           ))}
         </div>

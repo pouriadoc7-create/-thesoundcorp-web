@@ -1,20 +1,23 @@
 "use client";
 
-import { type FormEvent, memo, useState } from "react";
+import { type FormEvent, memo, useEffect, useRef, useState } from "react";
 
 import { CONTACT } from "@/lib/constants/site";
 
 /**
  * Contact hero — the approved "Concept B": a deep-dark stage with a champagne-gold
- * signal waveform flowing seamlessly across it (see .contact-flow in globals.css),
- * a glass contact form, and the brand's contact channels. The waveform is a purely
- * decorative background (aria-hidden, pointer-events:none). On mobile it is lifted
- * up over the headline/copy — a deliberate overlap that mirrors the desktop feel.
+ * signal waveform flowing seamlessly across it, a glass contact form, and the
+ * brand's contact channels. The waveform is a purely decorative background
+ * (aria-hidden, pointer-events:none). On mobile it is lifted up over the
+ * headline/copy — a deliberate overlap that mirrors the desktop feel.
  *
- * The waveform is a marquee of two identical tiles animated on their HTML wrapper
- * (not on the inner SVG group), so the glow filter rasterizes once into a single
- * GPU layer and each frame is a pure compositor translate — smooth on mobile.
- * It is memoized (ContactWave) so typing in the form never re-renders it.
+ * Two renderings of the SAME waveform (identical look), split only for performance:
+ *  - Desktop (>= md): ContactWaveDesktop — the original, approved SVG whose inner
+ *    <g> translates one period in user space. Untouched.
+ *  - Mobile (< md): ContactWaveMobile — one continuous SVG whose ELEMENT translates
+ *    one on-screen period, so the blur glow rasterizes once into a single GPU layer
+ *    (no per-frame re-blur → smooth on iOS Safari / Android Chrome). See globals.css.
+ * Both are one unbroken path — no tiling, so there is no seam anywhere.
  *
  * The form composes the visitor's message into an email to the official inbox and
  * opens their mail client (works with no server/credentials). A WhatsApp shortcut
@@ -22,11 +25,12 @@ import { CONTACT } from "@/lib/constants/site";
  */
 
 // Periodic waveform: y(x) has period 1440 (harmonics are integer multiples of the
-// fundamental), so drawing it across two periods (0..2880) tiles seamlessly and can
-// scroll left by exactly one period for an endless, jump-free flow.
-function periodicWave(yb: number, amp: number): string {
+// fundamental), so it can be scrolled left by exactly one period for an endless,
+// jump-free flow. `xmax` sets how many periods are drawn (desktop needs 2, the
+// mobile element-scroll needs enough to cover viewport + one period of travel).
+function periodicWave(yb: number, amp: number, xmax = 2880): string {
   const pts: string[] = [];
-  for (let x = 0; x <= 2880; x += 5) {
+  for (let x = 0; x <= xmax; x += 5) {
     const t = (2 * Math.PI * x) / 1440;
     const f =
       0.5 * Math.sin(t) +
@@ -39,6 +43,9 @@ function periodicWave(yb: number, amp: number): string {
 }
 const WAVE = periodicWave(432, 118);
 const WAVE_ECHO = periodicWave(596, 58);
+// Mobile draws four periods so the continuously-scrolling element never runs dry.
+const WAVE_M = periodicWave(432, 118, 5760);
+const WAVE_ECHO_M = periodicWave(596, 58, 5760);
 
 const goldIcon = "h-[18px] w-[18px] flex-none text-[color:var(--color-gold-soft)]/90";
 
@@ -75,50 +82,101 @@ function PinGlyph() {
 }
 
 /**
- * One period of the waveform (glow + gold line + faint echo). Two of these tiled
- * side by side make the seamless flowing marquee. Filter/gradient ids are suffixed
- * per tile so the two inlined SVGs don't share ids in the same document.
+ * Desktop waveform (>= md). The exact approved rendering: one SVG covering the hero,
+ * inner <g class="contact-flow"> scrolls one period (-1440) in user space. Hidden on
+ * mobile, where the composited ContactWaveMobile takes over. Memoized so it never
+ * re-renders while the form's state changes.
  */
-function WaveTile({ idSuffix }: { idSuffix: string }) {
-  const grad = `contactWaveGrad-${idSuffix}`;
-  const glow = `contactWaveGlow-${idSuffix}`;
+const ContactWaveDesktop = memo(function ContactWaveDesktop() {
   return (
-    <svg
-      className="contact-wave-tile"
-      viewBox="0 0 1440 900"
-      preserveAspectRatio="xMidYMid slice"
-    >
-      <defs>
-        <linearGradient id={grad} x1="0" x2="1">
-          <stop offset="0" stopColor="#b8912e" stopOpacity="0.2" />
-          <stop offset="0.3" stopColor="#d4af37" stopOpacity="0.9" />
-          <stop offset="0.5" stopColor="#f4e3b4" />
-          <stop offset="0.7" stopColor="#d4af37" stopOpacity="0.9" />
-          <stop offset="1" stopColor="#b8912e" stopOpacity="0.2" />
-        </linearGradient>
-        <filter id={glow} x="-10%" y="-40%" width="120%" height="180%">
-          <feGaussianBlur stdDeviation="7" />
-        </filter>
-      </defs>
-      <path d={WAVE} fill="none" stroke="#d4af37" strokeOpacity="0.42" strokeWidth="8" filter={`url(#${glow})`} />
-      <path d={WAVE} fill="none" stroke={`url(#${grad})`} strokeWidth="2.3" />
-      <path d={WAVE_ECHO} fill="none" stroke={`url(#${grad})`} strokeWidth="1.4" strokeOpacity="0.13" />
-    </svg>
+    <div className="pointer-events-none absolute inset-0 hidden md:block" aria-hidden="true">
+      <svg
+        className="contact-wave absolute inset-0 h-full w-full"
+        viewBox="0 0 1440 900"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <defs>
+          <linearGradient id="contactWaveGrad" x1="0" x2="1">
+            <stop offset="0" stopColor="#b8912e" stopOpacity="0.2" />
+            <stop offset="0.3" stopColor="#d4af37" stopOpacity="0.9" />
+            <stop offset="0.5" stopColor="#f4e3b4" />
+            <stop offset="0.7" stopColor="#d4af37" stopOpacity="0.9" />
+            <stop offset="1" stopColor="#b8912e" stopOpacity="0.2" />
+          </linearGradient>
+          <filter id="contactWaveGlow" x="-10%" y="-40%" width="120%" height="180%">
+            <feGaussianBlur stdDeviation="7" />
+          </filter>
+        </defs>
+        <g className="contact-flow">
+          <path d={WAVE} fill="none" stroke="#d4af37" strokeOpacity="0.42" strokeWidth="8" filter="url(#contactWaveGlow)" />
+          <path d={WAVE} fill="none" stroke="url(#contactWaveGrad)" strokeWidth="2.3" />
+          <path d={WAVE_ECHO} fill="none" stroke="url(#contactWaveGrad)" strokeWidth="1.4" strokeOpacity="0.13" />
+        </g>
+      </svg>
+    </div>
   );
-}
+});
 
 /**
- * Decorative flowing waveform. Memoized with no props, so it mounts once and is
- * never re-rendered when the form's state changes on every keystroke. The motion
- * lives entirely in CSS (.contact-flow) on the GPU.
+ * Mobile waveform (< md). Same visual as desktop, but GPU-composited so it is smooth
+ * on phones. One continuous SVG; the SVG ELEMENT (not an inner group) translates left
+ * by exactly one on-screen period. `--wave-shift` = 1440 * (height / 900) px — the
+ * height-driven slice scale — and the element is sized to viewport + one period so a
+ * period of travel never reveals a gap. Kept in sync on resize/orientation change.
+ * Memoized; the effect runs once on mount.
  */
-const ContactWave = memo(function ContactWave() {
+const ContactWaveMobile = memo(function ContactWaveMobile() {
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    const el = svgRef.current;
+    const container = el?.parentElement;
+    if (!el || !container) return;
+
+    const update = () => {
+      const h = container.clientHeight;
+      const w = container.clientWidth;
+      if (!h || !w) return;
+      // One on-screen period = 1440 user-units * slice scale. On a portrait phone the
+      // slice scale is height-driven (= h / 900), so one period = 1440/900 * h = 1.6 h.
+      const shift = (1440 / 900) * h;
+      el.style.setProperty("--wave-shift", `${shift.toFixed(2)}px`);
+      // Cover the viewport plus a full period of leftward travel, with a small margin.
+      el.style.width = `${(w + shift + 6).toFixed(2)}px`;
+    };
+
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
+
   return (
-    <div className="contact-wave pointer-events-none" aria-hidden="true">
-      <div className="contact-flow">
-        <WaveTile idSuffix="a" />
-        <WaveTile idSuffix="b" />
-      </div>
+    <div className="contact-wave-m pointer-events-none md:hidden" aria-hidden="true">
+      <svg
+        ref={svgRef}
+        className="contact-flow-m"
+        viewBox="0 0 5760 900"
+        preserveAspectRatio="xMinYMid slice"
+      >
+        <defs>
+          <linearGradient id="contactWaveGrad-m" x1="0" x2="1">
+            <stop offset="0" stopColor="#b8912e" stopOpacity="0.2" />
+            <stop offset="0.3" stopColor="#d4af37" stopOpacity="0.9" />
+            <stop offset="0.5" stopColor="#f4e3b4" />
+            <stop offset="0.7" stopColor="#d4af37" stopOpacity="0.9" />
+            <stop offset="1" stopColor="#b8912e" stopOpacity="0.2" />
+          </linearGradient>
+          <filter id="contactWaveGlow-m" x="-10%" y="-40%" width="120%" height="180%">
+            <feGaussianBlur stdDeviation="7" />
+          </filter>
+        </defs>
+        <g>
+          <path d={WAVE_M} fill="none" stroke="#d4af37" strokeOpacity="0.42" strokeWidth="8" filter="url(#contactWaveGlow-m)" />
+          <path d={WAVE_M} fill="none" stroke="url(#contactWaveGrad-m)" strokeWidth="2.3" />
+          <path d={WAVE_ECHO_M} fill="none" stroke="url(#contactWaveGrad-m)" strokeWidth="1.4" strokeOpacity="0.13" />
+        </g>
+      </svg>
     </div>
   );
 });
@@ -152,8 +210,9 @@ export function ContactHero() {
       dir="ltr"
       className="relative flex min-h-[86vh] items-center overflow-hidden bg-[radial-gradient(135%_120%_at_50%_45%,#0d0e12,#06070a_60%)]"
     >
-      {/* Flowing golden signal waveform (decorative). */}
-      <ContactWave />
+      {/* Flowing golden signal waveform (decorative) — desktop + mobile renderings. */}
+      <ContactWaveDesktop />
+      <ContactWaveMobile />
       {/* Vignette for depth. */}
       <div
         aria-hidden="true"

@@ -599,46 +599,55 @@ html[lang="fa"] * {
 }
 
 /* -- Contact page: seamless flowing signal waveform --------
-   The gold waveform is two identical periods laid side-by-side (a marquee track
-   twice the hero's width). Translating the track left by exactly one period
-   (-50% of its own width) reads as an endless, jump-free flowing signal — slow,
-   smooth and understated. The off-screen copy fills the gap as it enters.
+   The gold waveform is ONE continuous path drawn across two identical periods
+   (0..2880 over a 1440 viewBox) and scrolled left by exactly one period, so it
+   reads as an endless, jump-free flowing signal — slow, smooth, understated.
+   One SVG = one unbroken line: no tiling, no seam.
 
-   PERFORMANCE: the animation runs on this HTML wrapper (.contact-flow), NOT on
-   an inner SVG <g>. That lets the browser rasterize the whole waveform — the
-   Gaussian-blur glow included — ONCE into a single GPU compositor layer, then
-   move it each frame as a pure transform composite (no per-frame re-blur, no
-   main-thread reflow). Result: smooth ~60fps on mobile Safari/Chrome, even
-   while scrolling. translate3d + will-change + backface-visibility keep the
-   layer promoted. Disabled under reduced-motion. */
+   DESKTOP (>= md): the inner <g class="contact-flow"> translates by one period
+   in the SVG's own user space (-1440). Robustly seamless at any size. This is
+   the original, approved rendering — untouched. */
 @keyframes contactWaveFlow {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
-}
-.contact-wave {
-  position: absolute;
-  inset: 0;
+  from { transform: translateX(0); }
+  to { transform: translateX(-1440px); }
 }
 .contact-flow {
-  display: flex;
-  width: 200%;
+  animation: contactWaveFlow 22s linear infinite;
+  will-change: transform;
+}
+
+/* MOBILE (< md): same look, but the jank is fixed. On phones the group-transform
+   above forced the Gaussian-blur glow to re-rasterize every frame (main thread,
+   esp. iOS Safari) — that was the stutter. Here the ENTIRE svg (.contact-flow-m)
+   is one continuous path and it is the element that translates, so the browser
+   rasterizes the whole waveform + glow ONCE into a single GPU layer and each
+   frame is a pure compositor move. It scrolls left by exactly one on-screen
+   period (--wave-shift, set in JS = 1.6 x height, the height-driven slice scale),
+   so the loop is jump-free and seamless at any viewport. The wave still lifts up
+   over the headline/copy (the deliberate desktop-like overlap). */
+.contact-wave-m {
+  position: absolute;
+  inset: 0;
+  transform: translateY(-18%) scale(1.08);
+}
+@keyframes contactWaveFlowM {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(calc(var(--wave-shift, 0px) * -1), 0, 0); }
+}
+.contact-flow-m {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%; /* placeholder until JS sets the exact px width (viewport + one period) */
   height: 100%;
   transform: translateZ(0);
   will-change: transform;
   backface-visibility: hidden;
-  animation: contactWaveFlow 22s linear infinite;
-}
-.contact-wave-tile {
-  flex: 0 0 50%;
-  height: 100%;
-}
-/* On mobile the wave lifts up over the headline / copy — a deliberate overlap
-   that mirrors the desktop composition (kept prominent, not dimmed). */
-@media (max-width: 767px) {
-  .contact-wave { transform: translateY(-18%) scale(1.08); }
+  animation: contactWaveFlowM 22s linear infinite;
 }
 @media (prefers-reduced-motion: reduce) {
-  .contact-flow { animation: none !important; }
+  .contact-flow,
+  .contact-flow-m { animation: none !important; }
 }
 
 /* -- Reduced motion: disable everything, reveal immediately -- */

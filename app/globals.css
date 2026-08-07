@@ -75,6 +75,40 @@ body {
   color: var(--color-foreground);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga", "calt";
+}
+
+/* Premium text selection — a soft gold wash. */
+::selection {
+  background: color-mix(in srgb, var(--color-gold-soft) 30%, transparent);
+  color: #fff;
+}
+
+/* Smooth in-page scrolling, with the sticky header accounted for when jumping
+   to anchors (skip-link, back-to-top). Disabled under reduced-motion below. */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 1rem);
+}
+
+/* Subtle, unobtrusive dark scrollbars. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.26);
+  background-clip: padding-box;
 }
 
 /* Tighten large display type a touch for a more crafted, editorial hierarchy.
@@ -305,4 +339,5 @@ html[lang="fa"] * {
   .card-lux:hover { transform: none !important; }
   .btn-lux:hover::after { transform: translateX(-130%) !important; }
   .loader-shimmer { animation: none !important; }
+  html { scroll-behavior: auto !important; }
 }

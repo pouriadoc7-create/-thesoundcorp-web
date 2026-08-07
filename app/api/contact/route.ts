@@ -20,6 +20,32 @@ import nodemailer from "nodemailer";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// Lightweight in-memory per-IP rate limit. Bounds how often a single client can
+// trigger an actual email send (single PM2 instance → one shared map; resets on
+// restart, which is fine for a contact form). Genuine visitors send once or twice.
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+const hits = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  recent.push(now);
+  hits.set(ip, recent);
+  if (hits.size > 5000) {
+    for (const [k, v] of hits) {
+      if (v.every((t) => now - t >= RATE_WINDOW_MS)) hits.delete(k);
+    }
+  }
+  return recent.length > RATE_LIMIT;
+}
+
+function clientIp(request: Request): string {
+  const fwd = request.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0]!.trim();
+  return request.headers.get("x-real-ip") ?? "unknown";
+}
+
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -70,10 +96,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ code: "not_configured" }, { status: 503 });
   }
 
+  if (isRateLimited(clientIp(request))) {
+    return NextResponse.json({ code: "rate_limited" }, { status: 429 });
+  }
+
   const transporter = nodemailer.createTransport({
     host,
     port,
-    secure: port === 465, // SSL on 465; STARTTLS on 587/others
+    secure: port === 465, // implicit TLS on 465
+    requireTLS: port !== 465, // force STARTTLS on 587/others (no cleartext fallback)
     auth: { user, pass },
   });
 

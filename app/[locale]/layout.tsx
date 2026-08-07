@@ -157,6 +157,11 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   return (
     <html lang={locale} dir={direction} className={`${fontVariables} h-full antialiased`}>
       <body className={`flex min-h-full flex-col bg-black text-white ${bodyFontClassName}`}>
+        {/* Ambient depth layer — soft drifting glows + faint noise behind all
+            content (decorative; purely CSS, GPU-only, reduced-motion aware). */}
+        <div className="ambient-bg" aria-hidden="true">
+          <div className="noise" />
+        </div>
         <NextIntlClientProvider>
           <ScrollProgress />
           <SkipLink />

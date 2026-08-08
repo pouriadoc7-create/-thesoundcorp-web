@@ -742,7 +742,12 @@ html[lang="fa"] * {
 /* hero */
 .ab-hero {
   position: relative;
-  min-height: calc(100svh - var(--header-height, 110px));
+  /* Fixed header allowance — deliberately NOT the live --header-height var. The
+     header rewrites that var on every frame while it shrinks/grows on scroll, so
+     tying the hero height to it made the whole (tall, SVG-filtered) About page
+     reflow every frame — a scroll<->reflow feedback loop that pegged CPU/GPU and
+     jittered the header. A constant fully decouples About's layout from the header. */
+  min-height: calc(100svh - 110px);
   overflow: hidden;
   background: radial-gradient(130% 130% at 74% 34%, #0c0d11, #050506 60%);
 }
@@ -776,7 +781,7 @@ html[lang="fa"] * {
 .ab-body p + p { margin-top: 1.7em; }
 
 /* detail (heat-sink) */
-.ab-detail { position: relative; min-height: calc(100svh - var(--header-height, 110px)); overflow: hidden; background: #050506; }
+.ab-detail { position: relative; min-height: calc(100svh - 110px); overflow: hidden; background: #050506; } /* fixed allowance, not live --header-height (see .ab-hero note) */
 .ab-detail .ab-stage { position: absolute; inset: -4%; will-change: transform; }
 .ab-detail .ab-art { position: absolute; inset: 0; width: 100%; height: 100%; }
 .ab-detail .ab-cover {
@@ -820,4 +825,56 @@ html[lang="fa"] * {
   .ab-cue .ab-ln { animation: none; }
   .ab-hero .ab-stage, .ab-hero .ab-glow, .ab-detail .ab-stage { transform: none !important; will-change: auto; }
   .ab-detail .ab-veil { opacity: 0 !important; }
+}
+
+/* ============================================================
+   Download Center — quiet-luxury interactions. Scoped under .dl-*,
+   additive only; nothing here touches other pages. Transform/opacity
+   only (GPU), and every effect is disabled under reduced-motion.
+   ============================================================ */
+
+/* Level cross-fade: Brands → Brand → Products → Product → Documents.
+   Re-keyed per level in DownloadsExplorer, so it replays on each drill. */
+@keyframes dlViewIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.dl-view {
+  animation: dlViewIn 0.5s var(--ease-premium) both;
+}
+
+/* Brand tile: cursor-aware gold spotlight + a whisper of magnetic drift on the
+   inner content. Both driven by --mx/--my/--tx/--ty set in BrandTile. */
+.dl-brand {
+  --tx: 0px;
+  --ty: 0px;
+}
+.dl-spotlight {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    240px circle at var(--mx, 50%) var(--my, 0%),
+    rgba(212, 175, 55, 0.12),
+    rgba(212, 175, 55, 0.04) 42%,
+    transparent 72%
+  );
+  transition: opacity 0.55s var(--ease-premium);
+}
+.dl-brand:hover .dl-spotlight,
+.dl-brand:focus-visible .dl-spotlight {
+  opacity: 1;
+}
+.dl-brand-inner {
+  transform: translate3d(var(--tx, 0), var(--ty, 0), 0);
+  transition: transform 0.5s var(--ease-premium);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dl-view { animation: none !important; }
+  .dl-brand-inner { transform: none !important; }
+  .dl-spotlight { display: none !important; }
 }

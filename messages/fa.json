@@ -164,10 +164,55 @@
     }
   },
   "downloads": {
-    "eyebrow": "دانلودها",
+    "eyebrow": "مستندات رسمی",
     "title": "دانلودها",
-    "description": "بروشورها، مشخصات فنی و دفترچه‌های راهنما به‌زودی در این صفحه در دسترس قرار می‌گیرند.",
-    "cta": "مشاهده برندهای ما"
+    "description": "دفترچه‌های راهنما، دیتاشیت‌ها و اسناد فنی — مستقیماً از وب‌سایت رسمی هر سازنده، و بدون خروج از {siteName} دانلود می‌شوند.",
+    "brandCount": "{count, plural, =0 {بدون برند} other {# برند}}",
+    "productCount": "{count, plural, =0 {بدون محصول} other {# محصول}}",
+    "documentCount": "{count, plural, =0 {بدون سند} other {# سند}}",
+    "searchLabel": "جست‌وجوی دانلودها",
+    "searchPlaceholder": "جست‌وجو بر اساس برند، محصول، مدل یا نام سند…",
+    "clearSearch": "پاک کردن جست‌وجو",
+    "filterAll": "همه",
+    "crumbBrands": "همه برندها",
+    "productsEyebrow": "محصولات",
+    "moreBrandsSoon": "برندهای بیشتری در حال افزوده‌شدن هستند",
+    "brandEyebrow": "سازنده",
+    "brandMeta": "{products, plural, =0 {بدون محصول} other {# محصول}} · {documents, plural, =0 {بدون سند} other {# سند}}",
+    "explore": "مشاهده",
+    "openBrand": "باز کردن دانلودهای {brand}",
+    "viewDocuments": "اسناد",
+    "modelCode": "مدل {code}",
+    "resultsCount": "{count, plural, =0 {نتیجه‌ای یافت نشد} other {# نتیجه}}",
+    "noResults": "چیزی یافت نشد",
+    "noResultsHint": "یک برند، شماره مدل مانند «NP5» یا نام یک سند را امتحان کنید.",
+    "noDocuments": "هنوز سندی برای این محصول منتشر نشده است.",
+    "official": "رسمی",
+    "downloadTooltip": "دانلود · منبع رسمی",
+    "downloadAria": "دانلود {title}",
+    "status": {
+      "current": "جاری",
+      "legacy": "قدیمی"
+    },
+    "groups": {
+      "manuals": "دفترچه‌های راهنما",
+      "quickStart": "شروع سریع",
+      "datasheets": "دیتاشیت و مشخصات",
+      "technical": "اسناد فنی",
+      "brochures": "بروشورها",
+      "firmware": "فرم‌ور و نرم‌افزار",
+      "other": "سایر"
+    },
+    "types": {
+      "user-manual": "دفترچه راهنما",
+      "quick-start": "راهنمای شروع سریع",
+      "datasheet": "دیتاشیت",
+      "technical": "سند فنی",
+      "brochure": "بروشور",
+      "firmware": "فرم‌ور",
+      "software": "نرم‌افزار",
+      "other": "سند"
+    }
   },
   "notFound": {
     "eyebrow": "404",
@@ -226,7 +271,7 @@
     },
     "downloads": {
       "title": "دانلودها",
-      "description": "بروشورها، مشخصات فنی و دفترچه‌های راهنمای {siteName}."
+      "description": "دفترچه‌های راهنما، دیتاشیت و اسناد فنی رسمی هر سازنده، مستقیماً از طریق {siteName}."
     },
     "brands": {
       "title": "برندها",

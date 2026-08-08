@@ -46,8 +46,23 @@ export function Header() {
   // At the top the header is nearly transparent; once scrolled it solidifies
   // into stronger matte glass and shrinks a touch — a slow, cinematic settle.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
+    // Hysteresis, not a single threshold: solidify (and shrink) only past 40px, and
+    // relax only back below 8px. Toggling `scrolled` shrinks the header by ~16px, and
+    // that reflow can nudge scrollY (browser scroll-anchoring). A single 8px threshold
+    // let that nudge bounce scrollY back across it and re-toggle — a jitter loop. The
+    // 32px dead-zone is wider than the 16px shrink, so the toggle can't re-cross it.
+    let solid = window.scrollY > 40;
+    setScrolled(solid);
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (!solid && y > 40) {
+        solid = true;
+        setScrolled(true);
+      } else if (solid && y < 8) {
+        solid = false;
+        setScrolled(false);
+      }
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

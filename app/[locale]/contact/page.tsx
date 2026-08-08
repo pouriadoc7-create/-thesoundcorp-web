@@ -43,11 +43,18 @@ export default async function ContactPage({ params }: ContactPageProps) {
     },
   };
 
+  // Single wrapping element (not a bare Fragment): on a route transition React 19
+  // calls scrollIntoView on EACH top-level child of the page it renders. With a bare
+  // Fragment that meant it scrolled through to the last child — the Find Us section
+  // near the page bottom — yanking the page down ~725px on navigation, which then
+  // collided with the header's height transition and made the header jump/loop. One
+  // root element makes React scroll to the page top instead. (Full-width layout is
+  // unchanged: the div is a plain block and both sections stay full-bleed.)
   return (
-    <>
+    <div>
       <JsonLd data={contactPageJsonLd} />
       <ContactHero />
       <ContactMap />
-    </>
+    </div>
   );
 }

@@ -18,7 +18,8 @@ export interface ProductSpec {
  */
 export interface ProductView {
   label: string;
-  /** Image path under /public (e.g. "/products/marten-dexter/front.jpg") or a remote URL. */
+  /** Local image path under /public (e.g. "/products/marten-dexter/front.jpg").
+   *  Remote hosts are intentionally not permitted by next.config images. */
   src?: string;
   /** Tiny base64 LQIP used for the blur-up placeholder. */
   blurDataURL?: string;
@@ -46,8 +47,6 @@ export interface Product {
   imageBlurDataURL?: string;
   /** Gallery angles. Views with a `src` render real photos; the rest fall back. */
   gallery: ProductView[];
-  /** Downloadable brochure/manual (sample PDF until real assets are supplied). */
-  brochureUrl: string;
   /** Luxury pricing is by enquiry; kept as a short note rather than a number. */
   priceNote: string;
 }

@@ -4,7 +4,7 @@ import { slugify } from "@/lib/utils/slugify";
 /**
  * Product catalogue. Product names and brands are real marques TheSoundCorp
  * distributes. Specifications/taglines remain representative until official
- * datasheets are supplied; the brochure link points to a sample PDF.
+ * datasheets are supplied.
  *
  * IMAGES ARE DATA-DRIVEN: give a product an `imageUrl` (primary, used on the
  * card + OG) and per-view `src` on its `gallery` items to render real, optimized
@@ -12,7 +12,6 @@ import { slugify } from "@/lib/utils/slugify";
  * premium branded placeholder automatically — no component changes required.
  * The Marten Dexter below is wired to real photography as the reference.
  */
-const SAMPLE_BROCHURE = "/downloads/sample-brochure.pdf";
 
 // LQIP blur-up placeholders for the Marten Dexter photography (generated from
 // the source images; regenerate if the photos change).
@@ -28,7 +27,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   "accessories",
 ];
 
-type ProductSeed = Omit<Product, "slug" | "brandSlug" | "brochureUrl">;
+type ProductSeed = Omit<Product, "slug" | "brandSlug">;
 
 const SEED: ProductSeed[] = [
   // ---- Loudspeakers ----
@@ -262,7 +261,6 @@ export const PRODUCTS: Product[] = SEED.map((p) => ({
   ...p,
   slug: slugify(`${p.brand}-${p.name}`),
   brandSlug: slugify(p.brand),
-  brochureUrl: SAMPLE_BROCHURE,
 }));
 
 export function getAllProductSlugs(): string[] {

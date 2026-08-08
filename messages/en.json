@@ -170,7 +170,7 @@
     "detail": {
       "back": "All products",
       "specifications": "Technical specifications",
-      "downloadBrochure": "Download brochure (PDF)",
+      "specsNote": "Specifications are indicative and may be refined against the manufacturer's final datasheet.",
       "officialDocuments": "Official documents",
       "inquire": "Inquire on WhatsApp",
       "related": "Related products",

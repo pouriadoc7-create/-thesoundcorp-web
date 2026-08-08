@@ -20,9 +20,11 @@ export function WhatsAppInquiry({ message, label }: WhatsAppInquiryProps) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="btn-lux inline-flex items-center justify-center gap-2.5 rounded-full bg-[#25D366] px-6 py-3.5 font-semibold text-white shadow-[0_10px_30px_-8px_rgba(37,211,102,0.5)] hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+      className="btn-lux inline-flex items-center justify-center gap-2.5 rounded-full border border-white/15 bg-white/[0.04] px-6 py-3.5 font-medium text-white transition-colors hover:border-white/30 hover:bg-white/[0.07] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
     >
-      <WhatsAppIcon className="h-5 w-5" />
+      {/* Palette-matched dark control; the glyph keeps WhatsApp's green so it's
+          still instantly recognisable without the loud full-green button. */}
+      <WhatsAppIcon className="h-5 w-5 text-[#25D366]" />
       {label}
     </a>
   );

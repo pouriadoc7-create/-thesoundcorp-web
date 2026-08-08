@@ -135,8 +135,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             >
               {product.brand} · {categoryLabel}
             </Link>
-            <h1 className="mt-3 text-holo text-[21px] font-medium sm:text-[25px] lg:text-[28px] xl:text-4xl">{product.name}</h1>
-            <p className="mt-2 text-[14px] text-zinc-400 xl:text-lg">{product.tagline}</p>
+            <h1 className="mt-3 text-holo display-2 font-medium">{product.name}</h1>
+            <p className="mt-3 text-[14px] font-light text-zinc-400 xl:text-lg">{product.tagline}</p>
             <p className="mt-4 text-[12px] uppercase tracking-wider text-zinc-500">
               {product.priceNote}
             </p>
@@ -173,6 +173,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {/* Technical specifications */}
         <div className="mt-16">
           <h2 className="text-[16px] font-medium xl:text-xl">{t("detail.specifications")}</h2>
+          <p className="mt-2 max-w-2xl text-[12px] leading-relaxed text-zinc-500">{t("detail.specsNote")}</p>
           <dl className="mt-6 grid grid-cols-1 gap-x-12 sm:grid-cols-2">
             {product.specs.map((spec) => (
               <div

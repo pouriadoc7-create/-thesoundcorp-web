@@ -1,0 +1,48 @@
+# =============================================================================
+# TheSoundCorp — portable nginx reverse proxy (recommended for a NEW server).
+# deploy.sh copies this to /etc/nginx/sites-available/<domain>, substitutes
+# __DOMAIN__ and __PORT__, enables it, and (optionally) runs certbot to add HTTPS.
+#
+# As written this serves plain HTTP and proxies to the Next.js app on
+# 127.0.0.1:__PORT__. To add HTTPS with a free Let's Encrypt certificate:
+#     sudo certbot --nginx -d __DOMAIN__ -d www.__DOMAIN__
+# certbot edits THIS file in place to add the `listen 443 ssl` block and an
+# HTTP->HTTPS redirect. (deploy.sh can do this step for you.)
+#
+# See DISASTER-RECOVERY.md for the other HTTPS option (Cloudflare origin cert),
+# which is what the original VPS used — captured in thesoundcorp.current-vps.conf.
+# =============================================================================
+server {
+    listen 80;
+    listen [::]:80;
+    server_name __DOMAIN__ www.__DOMAIN__;
+
+    # Let's Encrypt HTTP-01 challenge lives here (certbot writes to it).
+    location /.well-known/acme-challenge/ { root /var/www/html; }
+
+    # --- OPTIONAL pre-launch gate (HTTP Basic Auth) --------------------------
+    # The original site was kept behind Basic Auth before launch. To reproduce,
+    # create the password file (you choose the user + password), then uncomment:
+    #   sudo apt-get install -y apache2-utils
+    #   sudo htpasswd -c /etc/nginx/.htpasswd-thesoundcorp admin
+    # auth_basic "Restricted";
+    # auth_basic_user_file /etc/nginx/.htpasswd-thesoundcorp;
+    # -------------------------------------------------------------------------
+
+    client_max_body_size 2m;
+    gzip on;
+    gzip_types text/plain text/css application/javascript application/json image/svg+xml;
+
+    location / {
+        proxy_pass http://127.0.0.1:__PORT__;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        # X-Forwarded-For is used by the contact API's per-IP rate limit.
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_read_timeout 60s;
+    }
+}

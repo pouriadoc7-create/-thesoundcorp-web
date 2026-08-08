@@ -4,6 +4,15 @@ Marketing & catalogue site for **TheSoundCorp**, an official importer/distributo
 of premium Hi‑Fi / Hi‑End audio brands in Iran. Bilingual **English / Persian
 (RTL)**, built on the Next.js App Router.
 
+## Deployment & disaster recovery
+
+Deploy to any fresh Ubuntu server (any provider/country) with one command —
+`sudo bash deploy.sh` — and rebuild the entire site from this project alone if the
+server is ever lost. Nothing is tied to a specific server IP. Full copy/paste guide:
+**[DISASTER-RECOVERY.md](DISASTER-RECOVERY.md)**. Environment variables are documented
+in `.env.example` (real secrets live in `.env.local`, which is never committed).
+Make a dated source archive any time with `bash backup-site.sh`.
+
 ## Stack
 
 - **Next.js 16** (App Router, Turbopack) · **React 19** · **TypeScript** (strict)

@@ -65,8 +65,9 @@
     "documentsCount": "{count, plural, one {# document} other {# documents}}"
   },
   "brandDetail": {
-    "backToAll": "All Brands",
     "comingSoon": "Detailed information about {brand} is coming soon.",
+    "distributorFact": "Official distributor",
+    "productCount": "{count, plural, one {# product} other {# products}}",
     "intro": "{brand} is one of the {count} world-class marques distributed by {siteName} across Iran. Audition the range in our Tehran showroom.",
     "featured": "Featured products",
     "noProducts": "Selected {brand} products are being catalogued. Contact us for current availability and pricing.",

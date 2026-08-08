@@ -101,23 +101,53 @@ export default async function BrandPage({ params }: BrandPageProps) {
           ]}
         />
 
-        <div className="mt-8 max-w-3xl">
-          {brandLogo ? (
-            <BrandLogo
-              name={brand.name}
-              logoUrl={brandLogo}
-              priority
-              className="mb-6 h-16 w-52 ltr:justify-start rtl:justify-end"
-              imgClassName="ltr:object-left rtl:object-right"
-            />
-          ) : null}
-          <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[color:var(--color-gold-soft)]/85 xl:text-xs">
-            {tNav("brands")}
-          </p>
-          <h1 className="mt-3 text-holo text-[23px] font-medium sm:text-[28px] lg:text-[32px] xl:text-5xl">{brand.name}</h1>
-          <p className="mt-5 max-w-2xl text-[13.5px] leading-7 text-gray-300 xl:text-base">
+        {/* Masthead — the brand logo on architectural darkness. This stage is the
+            structural home for future brand imagery: swap the gradient for an
+            <Image fill className="object-cover" /> of the marque's flagship and
+            the framing already holds. */}
+        <div className="relative mt-8 overflow-hidden rounded-2xl border border-white/[0.08]">
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-[radial-gradient(120%_140%_at_50%_0%,rgba(212,175,55,0.07),transparent_55%)]"
+          />
+          <div className="holo-edge relative flex min-h-[220px] items-center justify-center px-6 py-14 sm:min-h-[280px]">
+            {brandLogo ? (
+              <BrandLogo
+                name={brand.name}
+                logoUrl={brandLogo}
+                priority
+                className="h-16 w-64 sm:h-20 sm:w-80"
+                imgClassName="opacity-95"
+              />
+            ) : (
+              <span className="text-holo display-2 font-medium">{brand.name}</span>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-10 max-w-3xl">
+          <h1 className="text-holo display-2 font-medium">{brand.name}</h1>
+          <p className="mt-5 max-w-2xl text-[14px] font-light leading-7 text-gray-300 xl:text-base">
             {t("intro", { brand: brand.name, count: BRANDS.length, siteName: SITE_NAME })}
           </p>
+
+          {/* Real-data facts — gives each brand page substance beyond the shared
+              intro line (counts differ per brand; zeros are hidden). */}
+          <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 border-y border-white/[0.08] py-5 text-[12px] uppercase tracking-[0.15em]">
+            <span className="font-medium tracking-[0.16em] text-[color:var(--color-gold-soft)]/85">
+              {t("distributorFact")}
+            </span>
+            {products.length > 0 ? (
+              <span className="border-white/[0.1] text-zinc-400 ltr:border-l ltr:pl-8 rtl:border-r rtl:pr-8">
+                {t("productCount", { count: products.length })}
+              </span>
+            ) : null}
+            {downloadDocs > 0 ? (
+              <span className="border-white/[0.1] text-zinc-400 ltr:border-l ltr:pl-8 rtl:border-r rtl:pr-8">
+                {t("officialDocuments", { count: downloadDocs })}
+              </span>
+            ) : null}
+          </div>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <WhatsAppInquiry

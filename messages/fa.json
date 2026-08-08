@@ -65,8 +65,9 @@
     "documentsCount": "{count, plural, =0 {بدون سند} other {# سند}}"
   },
   "brandDetail": {
-    "backToAll": "همه برندها",
     "comingSoon": "اطلاعات تکمیلی درباره {brand} به‌زودی منتشر می‌شود.",
+    "distributorFact": "توزیع‌کننده رسمی",
+    "productCount": "{count, plural, other {# محصول}}",
     "intro": "{brand} یکی از {count} برند جهانی‌ست که توسط {siteName} در سراسر ایران توزیع می‌شود. مجموعه را در شوروم ما در تهران بشنوید.",
     "featured": "محصولات منتخب",
     "noProducts": "محصولات منتخب {brand} در حال فهرست‌بندی است. برای موجودی و قیمت با ما تماس بگیرید.",

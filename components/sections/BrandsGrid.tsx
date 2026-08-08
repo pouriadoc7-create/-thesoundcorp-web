@@ -1,12 +1,11 @@
 import { getTranslations } from "next-intl/server";
 
+import { BrandLogoTile } from "@/components/brands/BrandLogoTile";
 import { Reveal } from "@/components/motion/Reveal";
-import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { Link } from "@/i18n/navigation";
 import { BRANDS } from "@/lib/data/brands";
-import { BRAND_LOGOS, LOGO_SCALE } from "@/lib/data/brand-logos";
 
 export async function BrandsGrid() {
   const t = await getTranslations("brandsGrid");
@@ -37,24 +36,7 @@ export async function BrandsGrid() {
         <div className="flex flex-wrap justify-center gap-4 sm:gap-5">
           {BRANDS.map((brand, i) => (
             <Reveal key={brand.slug} delayMs={(i % 5) * 55} className="w-[45%] sm:w-[30%] md:w-[22%] lg:w-[17.4%]">
-              <Link
-                href={`/brands/${brand.slug}`}
-                className="card-lux group flex h-24 items-center justify-center rounded-xl border border-white/[0.08] p-6 transition-colors hover:border-white/25 hover:bg-white/[0.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:h-28"
-              >
-                <div
-                  className="flex w-full items-center justify-center"
-                  style={LOGO_SCALE[brand.slug] ? { transform: `scale(${LOGO_SCALE[brand.slug]})` } : undefined}
-                >
-                  <BrandLogo
-                    name={brand.name}
-                    logoUrl={BRAND_LOGOS[brand.slug]}
-                    sizes="(max-width: 768px) 40vw, (max-width: 1024px) 22vw, 180px"
-                    className="h-11 w-full"
-                    imgClassName="opacity-80 transition-opacity duration-300 group-hover:opacity-100"
-                    wordmarkClassName="text-[15px] font-medium text-white/90 xl:text-lg"
-                  />
-                </div>
-              </Link>
+              <BrandLogoTile brand={brand} />
             </Reveal>
           ))}
         </div>

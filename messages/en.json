@@ -16,13 +16,44 @@
     "skipToContent": "Skip to content"
   },
   "hero": {
+    "headline": "High-end audio, as it was meant to be heard.",
+    "scroll": "Scroll",
     "tagline": "Premium Audio Brands Distributor",
     "description": "Official importer and distributor of premium Hi-Fi / Hi-End audio brands.",
     "exploreBrands": "Explore Brands",
     "aboutUs": "About Us"
   },
   "brandsGrid": {
-    "heading": "Our Brands"
+    "eyebrow": "The portfolio",
+    "heading": "Our Brands",
+    "viewAll": "View all brands",
+    "count": "{count} brands, one standard"
+  },
+  "home": {
+    "statement": {
+      "eyebrow": "Philosophy",
+      "lead": "More than a distributor — the bridge between the world's reference audio houses and the listeners who want to hear exactly what their makers intended.",
+      "body": "We hold a deliberately small roster, import it officially, and stand behind every system long after it leaves the showroom."
+    },
+    "pillars": {
+      "eyebrow": "What we do",
+      "oneTitle": "Curation",
+      "oneText": "A tightly held roster of marques we believe in — chosen for how they sound, never how they sell.",
+      "twoTitle": "Official import",
+      "twoText": "Brought in through official channels, with full manufacturer warranty and provenance.",
+      "threeTitle": "Lifetime support",
+      "threeText": "Guidance, room-matched setup and service for the life of the system."
+    },
+    "explore": {
+      "eyebrow": "Go further",
+      "productsTitle": "Products",
+      "productsText": "Browse systems and components across every brand we carry.",
+      "downloadsTitle": "Download Center",
+      "downloadsText": "Official manuals, brochures and firmware — straight from the source.",
+      "contactTitle": "Visit us",
+      "contactText": "Hear it for yourself. Find our showroom in Tehran.",
+      "cta": "Enter"
+    }
   },
   "footer": {
     "rights": "© {year} {siteName}. All rights reserved."

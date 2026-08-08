@@ -145,16 +145,21 @@ html[lang="fa"] * {
    replaces ~20 drifting ad-hoc recipes. Persian tracking is
    neutralised by the html[lang="fa"] rule above.
    ============================================================ */
-.display-1 { font-size: clamp(2.5rem, 1.55rem + 4vw, 4.75rem); line-height: 1.04; letter-spacing: -0.02em; }
-.display-2 { font-size: clamp(1.5rem, 1.05rem + 2.3vw, 3.25rem); line-height: 1.1; letter-spacing: -0.015em; }
-.display-3 { font-size: clamp(1.2rem, 1.05rem + 0.85vw, 1.9rem); line-height: 1.18; letter-spacing: -0.01em; }
-.eyebrow {
-  font-size: clamp(0.625rem, 0.585rem + 0.18vw, 0.875rem);
-  font-weight: 500;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.24em;
-  color: color-mix(in srgb, var(--color-gold-soft) 90%, transparent);
+/* In @layer components so a Tailwind utility (e.g. a looser `leading-*` on a
+   lead paragraph, or a `text-*` colour) can still override a step when a call
+   site needs it — utilities win over the components layer. */
+@layer components {
+  .display-1 { font-size: clamp(2.5rem, 1.55rem + 4vw, 4.75rem); line-height: 1.04; letter-spacing: -0.02em; }
+  .display-2 { font-size: clamp(1.5rem, 1.05rem + 2.3vw, 3.25rem); line-height: 1.1; letter-spacing: -0.015em; }
+  .display-3 { font-size: clamp(1.2rem, 1.05rem + 0.85vw, 1.9rem); line-height: 1.18; letter-spacing: -0.01em; }
+  .eyebrow {
+    font-size: clamp(0.625rem, 0.585rem + 0.18vw, 0.875rem);
+    font-weight: 500;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    color: color-mix(in srgb, var(--color-gold-soft) 90%, transparent);
+  }
 }
 
 /*

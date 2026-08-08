@@ -485,7 +485,7 @@ function SearchField({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         aria-label={label}
-        className="h-[52px] w-full rounded-full border border-white/12 bg-white/[0.03] px-12 py-3.5 text-[14px] text-white placeholder:text-zinc-500 outline-none transition-colors duration-300 focus:border-[color:var(--color-gold)]/45 focus:bg-white/[0.05]"
+        className="dl-search h-[52px] w-full rounded-full border border-white/[0.08] bg-white/[0.03] px-12 py-3.5 text-[14px] text-white placeholder:text-zinc-500 outline-none transition-colors duration-300 focus:border-[color:var(--color-gold)]/45 focus:bg-white/[0.05]"
       />
       {value ? (
         <button

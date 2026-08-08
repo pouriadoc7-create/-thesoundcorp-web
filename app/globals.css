@@ -909,11 +909,19 @@ html[lang="fa"] * {
   opacity: 0;
   background: radial-gradient(
     240px circle at var(--mx, 50%) var(--my, 0%),
-    rgba(212, 175, 55, 0.12),
-    rgba(212, 175, 55, 0.04) 42%,
+    color-mix(in srgb, var(--color-gold) 12%, transparent),
+    color-mix(in srgb, var(--color-gold) 4%, transparent) 42%,
     transparent 72%
   );
   transition: opacity 0.55s var(--ease-premium);
+}
+
+/* Hide the browser-native search clear button — the Download Center search has
+   its own custom clear affordance, so the extra native "x" clashed with it. */
+.dl-search::-webkit-search-cancel-button,
+.dl-search::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
 }
 .dl-brand:hover .dl-spotlight,
 .dl-brand:focus-visible .dl-spotlight {

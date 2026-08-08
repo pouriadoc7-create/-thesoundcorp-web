@@ -17,7 +17,7 @@ export function DocumentGroup({ groupKey, docs, brandSlug, productSlug }: Docume
   const t = useTranslations("downloads");
 
   return (
-    <section className="dl-group">
+    <section>
       <header className="flex items-center gap-4">
         <h3 className="text-[11px] font-medium uppercase tracking-[0.24em] text-zinc-400">
           {t(`groups.${groupKey}`)}

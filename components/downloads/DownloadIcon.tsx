@@ -47,7 +47,7 @@ export function DownloadIcon({
           : "";
 
   return (
-    <span className="dl-ic group/ic relative inline-flex">
+    <span className="group/ic relative inline-flex">
       <button
         type="button"
         aria-label={ariaLabel}

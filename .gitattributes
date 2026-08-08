@@ -1,0 +1,22 @@
+# Normalize line endings. Shell scripts and server-side config MUST use LF so the
+# one-command deploy and nginx/PM2 configs run correctly on Linux, regardless of the
+# OS this repo is edited/checked out on (e.g. Windows).
+* text=auto
+
+*.sh            text eol=lf
+*.cjs           text eol=lf
+*.mjs           text eol=lf
+*.conf          text eol=lf
+*.template      text eol=lf
+.env.example    text eol=lf
+.gitignore      text eol=lf
+
+# Binary assets — never touch line endings.
+*.woff2 binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.avif  binary
+*.ico   binary
+*.webm  binary

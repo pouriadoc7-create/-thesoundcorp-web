@@ -23,6 +23,16 @@ export function LocaleSwitcher() {
   const isRtl = getLocaleDirection(locale) === "rtl";
   const physicalSlot = isRtl ? count - 1 - activeIndex : activeIndex;
 
+  // Preserve the current query string when switching language so stateful
+  // deep-links survive — e.g. /downloads?brand=primare&product=np5. Read at
+  // click time from the live URL (no useSearchParams hook, which would
+  // otherwise force a Suspense boundary on every page that renders the header).
+  const switchTo = (loc: string) => {
+    const search = typeof window !== "undefined" ? window.location.search : "";
+    const query = search ? Object.fromEntries(new URLSearchParams(search)) : undefined;
+    router.replace(query ? { pathname, query } : pathname, { locale: loc });
+  };
+
   return (
     <div
       role="group"
@@ -41,7 +51,7 @@ export function LocaleSwitcher() {
           <button
             key={loc}
             type="button"
-            onClick={() => router.replace(pathname, { locale: loc })}
+            onClick={() => switchTo(loc)}
             aria-current={active ? "true" : undefined}
             className={cn(
               "relative z-10 rounded-full px-4 py-[7px] text-[13px] font-medium tracking-[0.02em] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",

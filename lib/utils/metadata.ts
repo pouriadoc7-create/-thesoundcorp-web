@@ -60,6 +60,9 @@ export function buildPageMetadata({
       siteName: SITE_NAME,
       url,
       locale: locale === "fa" ? "fa_IR" : "en_US",
+      // Advertise the sibling locale so scrapers know the page has an
+      // equivalent in the other language (pairs with the hreflang alternates).
+      alternateLocale: locale === "fa" ? "en_US" : "fa_IR",
       title,
       description,
       images: ogImages,

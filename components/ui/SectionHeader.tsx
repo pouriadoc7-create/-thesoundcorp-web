@@ -31,17 +31,14 @@ export function SectionHeader({
   return (
     <div className={cn("flex flex-col", centered ? "items-center text-center" : "items-start", className)}>
       {eyebrow ? (
-        <Reveal
-          as="p"
-          className="text-[10px] font-medium uppercase tracking-[0.24em] text-[color:var(--color-gold-soft)]/90 sm:text-[10.5px] xl:text-sm"
-        >
+        <Reveal as="p" className="eyebrow">
           {eyebrow}
         </Reveal>
       ) : null}
       <Reveal
         as={titleAs}
         delayMs={eyebrow ? 80 : 0}
-        className="mt-4 text-holo text-balance text-[22px] font-medium leading-[1.12] sm:text-[26px] lg:text-[30px] xl:text-[3.25rem]"
+        className="mt-4 text-holo text-balance display-2 font-medium"
       >
         {title}
       </Reveal>

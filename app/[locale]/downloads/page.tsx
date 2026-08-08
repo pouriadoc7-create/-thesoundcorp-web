@@ -3,10 +3,11 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { DownloadsExplorer } from "@/components/downloads/DownloadsExplorer";
 import { Reveal } from "@/components/motion/Reveal";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { SITE_NAME } from "@/lib/constants/site";
+import { SITE_NAME, SITE_URL } from "@/lib/constants/site";
 import { buildPageMetadata } from "@/lib/utils/metadata";
 import { countAllDocuments, getDownloadBrands } from "@/lib/utils/downloads";
 
@@ -31,14 +32,43 @@ export default async function DownloadsPage({ params }: DownloadsPageProps) {
   setRequestLocale(locale);
 
   const t = await getTranslations("downloads");
+  const tCommon = await getTranslations("common");
+  const tNav = await getTranslations("nav");
 
   const brands = getDownloadBrands();
   const brandCount = brands.length;
   const productCount = brands.reduce((n, b) => n + b.products.length, 0);
   const documentCount = countAllDocuments();
 
+  const collectionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: t("title"),
+    description: t("description", { siteName: SITE_NAME }),
+    url: `${SITE_URL}/${locale}/downloads`,
+    inLanguage: locale,
+    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+    about: { "@type": "Thing", name: "Official product documentation" },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: tCommon("home"), item: `${SITE_URL}/${locale}` },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: tNav("downloads"),
+        item: `${SITE_URL}/${locale}/downloads`,
+      },
+    ],
+  };
+
   return (
     <Section className="relative">
+      <JsonLd data={collectionJsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
       <Container>
         <div className="mx-auto max-w-3xl text-center">
           <SectionHeader

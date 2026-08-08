@@ -193,6 +193,12 @@
     "official": "رسمی",
     "downloadTooltip": "دانلود · منبع رسمی",
     "downloadAria": "دانلود {title}",
+    "breadcrumbLabel": "مسیر",
+    "dlStatus": {
+      "loading": "در حال دانلود…",
+      "success": "دانلود کامل شد",
+      "error": "دانلود ناموفق بود"
+    },
     "status": {
       "current": "جاری",
       "legacy": "قدیمی"

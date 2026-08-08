@@ -47,7 +47,7 @@ export function ProductHero({ brandName, product, docCount }: ProductHeroProps) 
           <span className="text-zinc-400">{product.category}</span>
         </Reveal>
 
-        <Reveal as="h2" delayMs={70} className="mt-3 text-holo text-balance text-[28px] font-medium leading-[1.08] sm:text-[34px] xl:text-[2.75rem]">
+        <Reveal as="h2" delayMs={70} className="mt-3 text-holo text-balance break-words text-[28px] font-medium leading-[1.08] sm:text-[34px] xl:text-[2.75rem]">
           {product.name}
         </Reveal>
 

@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useOfficialDownload } from "@/lib/hooks/useOfficialDownload";
 import { cn } from "@/lib/utils/cn";
 
@@ -31,9 +33,18 @@ export function DownloadIcon({
   ariaLabel,
   tooltip,
 }: DownloadIconProps) {
+  const t = useTranslations("downloads");
   const { status, progress, download } = useOfficialDownload();
   const busy = status === "loading";
   const pct = progress ?? 0;
+  const statusMessage =
+    status === "loading"
+      ? t("dlStatus.loading")
+      : status === "success"
+        ? t("dlStatus.success")
+        : status === "error"
+          ? t("dlStatus.error")
+          : "";
 
   return (
     <span className="dl-ic group/ic relative inline-flex">
@@ -153,6 +164,11 @@ export function DownloadIcon({
         )}
       >
         {tooltip}
+      </span>
+
+      {/* Screen-reader-only live announcement of the real download state. */}
+      <span role="status" aria-live="polite" className="sr-only">
+        {statusMessage}
       </span>
     </span>
   );

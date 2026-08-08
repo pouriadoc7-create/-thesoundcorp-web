@@ -193,6 +193,12 @@
     "official": "Official",
     "downloadTooltip": "Download · official source",
     "downloadAria": "Download {title}",
+    "breadcrumbLabel": "Breadcrumb",
+    "dlStatus": {
+      "loading": "Downloading…",
+      "success": "Download complete",
+      "error": "Download failed"
+    },
     "status": {
       "current": "Current",
       "legacy": "Legacy"

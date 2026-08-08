@@ -176,7 +176,7 @@ export function DownloadsExplorer() {
 
       {/* ---- Breadcrumb ---- */}
       {!searching && activeBrand ? (
-        <nav aria-label="Breadcrumb" className="mt-9 flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.16em] text-zinc-500">
+        <nav aria-label={t("breadcrumbLabel")} className="mt-9 flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.16em] text-zinc-500">
           <button type="button" onClick={goBrands} className="transition-colors duration-300 hover:text-zinc-200">
             {t("crumbBrands")}
           </button>

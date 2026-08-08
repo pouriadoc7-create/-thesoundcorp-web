@@ -79,7 +79,7 @@ export function DocumentRow({ brandSlug, productSlug, doc, context }: DocumentRo
         {context ? (
           <div className="mb-0.5 text-[10px] uppercase tracking-[0.16em] text-zinc-500">{context}</div>
         ) : null}
-        <div className="truncate text-[13.5px] font-medium text-zinc-100 transition-colors duration-500 group-hover/row:text-white sm:text-sm">
+        <div className="line-clamp-2 text-[13.5px] font-medium text-zinc-100 transition-colors duration-500 group-hover/row:text-white sm:text-sm">
           {doc.title}
         </div>
         <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-zinc-500">

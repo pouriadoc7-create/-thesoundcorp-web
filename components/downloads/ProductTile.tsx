@@ -44,7 +44,7 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
           ) : null}
         </div>
 
-        <h3 className="mt-2 text-lg font-medium text-zinc-100 transition-colors duration-500 group-hover:text-white">
+        <h3 className="mt-2 break-words text-lg font-medium text-zinc-100 transition-colors duration-500 group-hover:text-white">
           {product.name}
         </h3>
 

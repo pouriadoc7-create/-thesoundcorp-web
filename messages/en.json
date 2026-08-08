@@ -6,7 +6,8 @@
     "gallery": "Gallery",
     "downloads": "Downloads",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "primary": "Main navigation"
   },
   "header": {
     "toggleNavigation": "Toggle navigation",
@@ -114,6 +115,7 @@
   "products": {
     "eyebrow": "Products",
     "title": "Our Product Catalogue",
+    "catalogHeading": "Product catalogue",
     "description": "A curated selection of reference components from the world's finest audio houses. Filter by category or brand, or search to find your next system.",
     "cta": "Browse Our Brands",
     "searchLabel": "Search products",

@@ -55,7 +55,7 @@ export function MobileNav({ isOpen, onNavigate, panelRef }: MobileNavProps) {
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent"
       />
 
-      <nav className="flex flex-1 flex-col px-6 pt-5">
+      <nav aria-label={t("primary")} className="flex flex-1 flex-col px-6 pt-5">
         {NAV_LINKS.map((link, i) => {
           if (link.key === "brands") {
             return (

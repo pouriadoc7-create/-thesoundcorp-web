@@ -40,6 +40,7 @@ export function ProductCatalog() {
 
   return (
     <div>
+      <h2 className="sr-only">{t("catalogHeading")}</h2>
       {/* Controls */}
       <div className="flex flex-col gap-5">
         {/* Search */}

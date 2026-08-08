@@ -119,6 +119,7 @@ export function Header() {
         <div className="flex items-center gap-3 lg:gap-4">
           {/* Desktop nav — gated at lg; spacing opens up further at xl. */}
           <nav
+            aria-label={t("primary")}
             className={cn(
               "hidden items-center transition-[column-gap] duration-500 ease-[var(--ease-premium)] lg:flex",
               scrolled ? "lg:gap-5 xl:gap-10" : "lg:gap-6 xl:gap-12"

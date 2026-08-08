@@ -64,7 +64,7 @@ export function DocumentRow({ brandSlug, productSlug, doc, context }: DocumentRo
   const meta = [doc.format, doc.language, doc.version, doc.date, size].filter(Boolean) as string[];
 
   return (
-    <div className="group/row relative flex items-center gap-3 py-3.5 pl-4 pr-2 sm:gap-4 sm:pl-5">
+    <div className="group/row relative flex items-center gap-3 py-3.5 ps-4 pe-2 sm:gap-4 sm:ps-5">
       {/* Inline-start hairline that draws in on hover. */}
       <span
         aria-hidden="true"

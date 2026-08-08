@@ -20,7 +20,7 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
     <button
       type="button"
       onClick={onOpen}
-      className="card-lux group flex flex-col overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.08] bg-white/[0.02] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+      className="card-lux group flex flex-col overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.08] bg-white/[0.02] text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
     >
       <ProductImage
         brand={brandName}
@@ -44,9 +44,9 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
           ) : null}
         </div>
 
-        <h3 className="mt-2 break-words text-lg font-medium text-zinc-100 transition-colors duration-500 group-hover:text-white">
+        <h2 className="mt-2 break-words text-lg font-medium text-zinc-100 transition-colors duration-500 group-hover:text-white">
           {product.name}
-        </h3>
+        </h2>
 
         <div className="mt-3 flex items-center gap-2.5">
           {product.modelCode ? <Badge tone="gold">{t("modelCode", { code: product.modelCode })}</Badge> : null}

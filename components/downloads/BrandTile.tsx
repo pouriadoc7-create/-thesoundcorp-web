@@ -59,7 +59,7 @@ export function BrandTile({ brand, productCount, docCount, onOpen }: BrandTilePr
       onMouseLeave={handleLeave}
       onClick={onOpen}
       aria-label={t("openBrand", { brand: brand.name })}
-      className="dl-brand card-lux group relative flex min-h-[290px] w-full flex-col overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.08] bg-white/[0.02] p-7 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:min-h-[320px] sm:p-8"
+      className="dl-brand card-lux group relative flex min-h-[290px] w-full flex-col overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.08] bg-white/[0.02] p-7 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:min-h-[320px] sm:p-8"
     >
       <span aria-hidden="true" className="dl-spotlight" />
 
@@ -73,7 +73,7 @@ export function BrandTile({ brand, productCount, docCount, onOpen }: BrandTilePr
             name={brand.name}
             logoUrl={logoUrl}
             className="h-12 w-[172px] sm:h-14 sm:w-[196px]"
-            imgClassName="opacity-90 transition-opacity duration-500 group-hover:opacity-100 [object-position:left_center]"
+            imgClassName="opacity-90 transition-opacity duration-500 group-hover:opacity-100 ltr:object-left rtl:object-right"
             wordmarkClassName="text-holo text-2xl font-medium tracking-[0.14em]"
           />
         </div>

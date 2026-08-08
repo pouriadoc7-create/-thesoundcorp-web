@@ -38,7 +38,7 @@ export function ScrollProgress() {
     <div
       aria-hidden="true"
       ref={ref}
-      className="pointer-events-none fixed inset-x-0 top-0 z-[var(--z-toast)] h-0.5 origin-left bg-gradient-to-r from-[color:var(--color-gold-deep)] via-[color:var(--color-gold)] to-[color:var(--color-gold-soft)]"
+      className="pointer-events-none fixed inset-x-0 top-0 z-[var(--z-toast)] h-0.5 origin-left bg-gradient-to-r from-[color:var(--color-gold-deep)] via-[color:var(--color-gold)] to-[color:var(--color-gold-soft)] rtl:origin-right"
       style={{ transform: "scaleX(0)", willChange: "transform" }}
     />
   );

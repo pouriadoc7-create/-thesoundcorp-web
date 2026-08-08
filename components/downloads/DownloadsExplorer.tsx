@@ -385,13 +385,13 @@ function SearchResults({
           {groups.map((g) => (
             <Reveal key={`${g.brandName}-${g.productName}`}>
               <header className="flex items-center gap-3">
-                <h3 className="text-[11px] font-medium uppercase tracking-[0.2em] text-zinc-300">
+                <h2 className="text-[11px] font-medium uppercase tracking-[0.2em] text-zinc-300">
                   {g.brandName}
                   <span aria-hidden="true" className="mx-2 text-zinc-600">
                     ›
                   </span>
                   <span className="text-zinc-400">{g.productName}</span>
-                </h3>
+                </h2>
                 <span aria-hidden="true" className="hr-premium flex-1" />
               </header>
               <div className="mt-3 overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.06] bg-white/[0.015]">

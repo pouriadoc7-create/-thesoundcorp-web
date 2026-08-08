@@ -697,3 +697,127 @@ html[lang="fa"] * {
   .logo-sweep { animation: none !important; opacity: 0 !important; }
   html { scroll-behavior: auto !important; }
 }
+
+/* ============================================================
+   About — "Some things are better heard than explained."
+   The approved dark editorial concept (components/about/AboutConcept.tsx).
+   Everything is scoped under .about-page and every SVG id is ab-prefixed,
+   so nothing here touches the header, footer, fonts or other pages.
+   Single visual world by intent (architectural darkness) — no light theme.
+   Motion is transform/opacity only and disabled under reduced-motion.
+   ============================================================ */
+.about-page {
+  --ab-champ: #cdbfa1;
+  --ab-hair: rgba(205, 191, 161, 0.5);
+  --ab-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  background: #050506;
+  color: #e9ebee;
+  font-family: var(--font-satoshi), "Satoshi", -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.ab-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* soft scroll reveals (only once JS marks the page ready) */
+.about-page.motion [data-r] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition: opacity 1.4s var(--ab-ease), transform 1.4s var(--ab-ease);
+}
+.about-page.motion [data-r].in { opacity: 1; transform: none; }
+.about-page.motion [data-r][data-d="1"] { transition-delay: 0.14s; }
+.about-page.motion [data-r][data-d="2"] { transition-delay: 0.28s; }
+
+/* hero */
+.ab-hero {
+  position: relative;
+  min-height: calc(100svh - var(--header-height, 110px));
+  overflow: hidden;
+  background: radial-gradient(130% 130% at 74% 34%, #0c0d11, #050506 60%);
+}
+.ab-hero .ab-stage { position: absolute; inset: 0; z-index: 0; will-change: transform; }
+.ab-art { display: block; }
+.ab-hero .ab-art { position: absolute; top: 34%; left: 78%; width: 112vh; height: 112vh; transform: translate(-50%, -50%); }
+.ab-hero .ab-glow {
+  position: absolute; z-index: 1; top: -16%; left: 40%; width: 66vw; height: 80vh; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(205, 191, 161, 0.09), transparent 70%); will-change: transform;
+}
+.ab-hero .ab-fade {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(90deg, #050506 6%, rgba(5, 5, 6, 0.5) 40%, transparent 68%), linear-gradient(0deg, #050506 3%, transparent 26%);
+}
+.ab-hero .ab-inner {
+  position: relative; z-index: 3; height: 100%; min-height: inherit; max-width: 1360px; margin: 0 auto;
+  padding: 0 6.4vw; display: flex; flex-direction: column; justify-content: center;
+}
+.ab-kicker { font-size: 11px; letter-spacing: 0.42em; text-transform: uppercase; color: #565b63; font-weight: 400; margin-bottom: 34px; }
+.ab-headline { font-weight: 230; letter-spacing: -0.018em; line-height: 1.09; color: #eef0f2; font-size: clamp(2.1rem, 5.2vw, 4.55rem); max-width: 15ch; text-wrap: balance; }
+.ab-hair { height: 1px; width: 0; background: linear-gradient(90deg, var(--ab-champ), transparent); margin-top: 42px; transition: width 1.8s var(--ab-ease) 0.5s; }
+.ab-hair.in { width: min(46%, 330px); }
+.ab-cue { position: absolute; left: 6.4vw; bottom: 38px; z-index: 3; display: flex; align-items: center; gap: 12px; font-size: 10.5px; letter-spacing: 0.34em; text-transform: uppercase; color: #565b63; }
+.ab-cue .ab-ln { display: block; width: 44px; height: 1px; background: linear-gradient(90deg, #565b63, transparent); animation: abCue 3.8s var(--ab-ease) infinite; }
+@keyframes abCue { 0%, 100% { opacity: 0.35; transform: translateX(0); } 50% { opacity: 0.85; transform: translateX(8px); } }
+
+/* statement */
+.ab-statement { max-width: 1120px; margin: 0 auto; padding: 21vh 6.4vw 17vh; }
+.ab-lead { font-weight: 250; font-size: clamp(1.5rem, 2.5vw, 2.1rem); line-height: 1.5; letter-spacing: -0.01em; color: #dcdfe4; max-width: 24ch; }
+.ab-body { margin-top: min(12vh, 128px); max-width: 38ch; margin-left: auto; font-weight: 300; font-size: clamp(1.06rem, 1.3vw, 1.25rem); line-height: 1.85; color: #9297a0; }
+.ab-body p + p { margin-top: 1.7em; }
+
+/* detail (heat-sink) */
+.ab-detail { position: relative; min-height: calc(100svh - var(--header-height, 110px)); overflow: hidden; background: #050506; }
+.ab-detail .ab-stage { position: absolute; inset: -4%; will-change: transform; }
+.ab-detail .ab-art { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ab-detail .ab-cover {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(120% 100% at 50% 46%, transparent 34%, #050506 88%), linear-gradient(0deg, #050506, transparent 22%), linear-gradient(180deg, #050506, transparent 20%);
+}
+.ab-detail .ab-veil { position: absolute; inset: 0; background: #050506; opacity: 0.72; transition: opacity 2s var(--ab-ease); }
+.ab-detail.in .ab-veil { opacity: 0; }
+
+/* signature */
+.ab-sign { padding: 27vh 6.4vw; text-align: center; background: linear-gradient(180deg, #050506, #0a0b0e 55%, #050506); }
+.ab-div { width: 1px; height: 64px; margin: 0 auto 46px; background: linear-gradient(180deg, transparent, var(--ab-hair), transparent); }
+.ab-mark { font-weight: 400; letter-spacing: 0.48em; font-size: clamp(1rem, 1.7vw, 1.32rem); color: #eef0f2; padding-left: 0.48em; }
+.ab-sub { margin-top: 22px; font-weight: 300; letter-spacing: 0.22em; font-size: clamp(0.66rem, 0.9vw, 0.76rem); color: #565b63; }
+
+/* coda */
+.ab-coda { min-height: 64vh; display: flex; align-items: center; justify-content: center; background: #050506; }
+.ab-coda span { font-weight: 300; font-size: clamp(0.82rem, 1vw, 0.94rem); letter-spacing: 0.16em; color: #565b63; }
+
+/* dedicated mobile composition */
+@media (max-width: 520px) {
+  .ab-hero .ab-art { left: 56%; top: 30%; width: 150vh; height: 150vh; }
+  .ab-hero .ab-glow { left: 8%; width: 100vw; height: 52vh; }
+  .ab-hero .ab-fade { background: linear-gradient(0deg, #050506 18%, rgba(5, 5, 6, 0.4) 52%, transparent 82%), radial-gradient(120% 68% at 52% 24%, transparent, rgba(5, 5, 6, 0.5)); }
+  .ab-hero .ab-inner { justify-content: flex-end; padding: 0 26px 15vh; }
+  .ab-kicker { margin-bottom: 22px; letter-spacing: 0.36em; }
+  .ab-headline { font-size: clamp(2rem, 8.4vw, 2.7rem); max-width: 13ch; }
+  .ab-hair.in { width: 56%; }
+  .ab-cue { left: 26px; bottom: 26px; }
+  .ab-statement { padding: 16vh 26px 12vh; }
+  .ab-lead { font-size: 1.42rem; max-width: none; }
+  .ab-body { margin-top: 9vh; max-width: none; margin-left: 0; font-size: 1.06rem; }
+  .ab-sign { padding: 20vh 26px; }
+  .ab-mark { letter-spacing: 0.34em; }
+  .ab-coda { min-height: 50vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-page.motion [data-r] { opacity: 1 !important; transform: none !important; transition: none; }
+  .ab-hair { transition: none; }
+  .ab-hair.in { width: min(46%, 330px); }
+  .ab-cue .ab-ln { animation: none; }
+  .ab-hero .ab-stage, .ab-hero .ab-glow, .ab-detail .ab-stage { transform: none !important; }
+  .ab-detail .ab-veil { opacity: 0 !important; }
+}

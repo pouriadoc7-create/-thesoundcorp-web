@@ -1,11 +1,22 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { AboutConcept } from "@/components/about/AboutConcept";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { Button } from "@/components/ui/Button";
-import { PlaceholderSection } from "@/components/ui/PlaceholderSection";
 import { SITE_NAME, SITE_URL } from "@/lib/constants/site";
 import { buildPageMetadata } from "@/lib/utils/metadata";
+
+// Satoshi for the About statement — loaded here so the English editorial typography is
+// authentic even in the Farsi locale (which otherwise ships Vazirmatn on the body). Same
+// self-hosted file the layout uses; preload:false since it isn't above the fold on load.
+const satoshi = localFont({
+  src: "../../fonts/Satoshi-Variable.woff2",
+  variable: "--font-satoshi",
+  weight: "200 900",
+  display: "swap",
+  preload: false,
+});
 
 interface AboutPageProps {
   params: Promise<{ locale: string }>;
@@ -40,15 +51,9 @@ export default async function AboutPage({ params }: AboutPageProps) {
   return (
     <>
       <JsonLd data={aboutPageJsonLd} />
-      <PlaceholderSection
-        eyebrow={t("eyebrow")}
-        title={t("title", { siteName: SITE_NAME })}
-        description={t("description")}
-      >
-        <Button href="/brands" size="lg">
-          {t("cta")}
-        </Button>
-      </PlaceholderSection>
+      <div className={satoshi.variable}>
+        <AboutConcept />
+      </div>
     </>
   );
 }

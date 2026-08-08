@@ -15,13 +15,21 @@ import { findDocument, isUrlOnBrandDomains } from "@/lib/utils/downloads";
  *  - The client sends only ids (brand/product/doc); the URL is resolved from our
  *    vetted dataset, so there is NO caller-controlled URL to fetch (SSRF-safe).
  *  - https-only + official-domain allowlist, re-checked on the final URL.
- *  - Request timeout, maximum size cap, and upstream content-type validation.
+ *  - Connect timeout + per-chunk inactivity (stall) timeout, size cap, and
+ *    upstream content-type validation.
  */
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const TIMEOUT_MS = 60_000;
+// Time budget for establishing the connection and receiving the response
+// HEADERS. NOT the total download time — a large file over a slow client
+// connection can legitimately take much longer to stream.
+const CONNECT_TIMEOUT_MS = 30_000;
+// Inactivity guard DURING streaming: abort only if no bytes flow for this long
+// (resets on every chunk). This lets a slow-but-steady large download finish
+// while still killing a genuinely stalled upstream.
+const STALL_TIMEOUT_MS = 45_000;
 const MAX_BYTES = 150 * 1024 * 1024; // 150 MB hard cap
 const UPSTREAM_UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36";
@@ -79,7 +87,25 @@ export async function GET(req: NextRequest): Promise<Response> {
   }
 
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  let connectTimer: ReturnType<typeof setTimeout> | null = setTimeout(
+    () => controller.abort(),
+    CONNECT_TIMEOUT_MS
+  );
+  let stallTimer: ReturnType<typeof setTimeout> | null = null;
+  const clearTimers = () => {
+    if (connectTimer) {
+      clearTimeout(connectTimer);
+      connectTimer = null;
+    }
+    if (stallTimer) {
+      clearTimeout(stallTimer);
+      stallTimer = null;
+    }
+  };
+  const armStall = () => {
+    if (stallTimer) clearTimeout(stallTimer);
+    stallTimer = setTimeout(() => controller.abort(), STALL_TIMEOUT_MS);
+  };
 
   try {
     // Let fetch follow redirects, then re-validate the FINAL url against the
@@ -98,26 +124,31 @@ export async function GET(req: NextRequest): Promise<Response> {
         referer: `https://${brand.officialDomain}/`,
       },
     });
+    // Headers received — the connect budget no longer applies.
+    if (connectTimer) {
+      clearTimeout(connectTimer);
+      connectTimer = null;
+    }
 
     if (upstream.url && !isUrlOnBrandDomains(upstream.url, brand)) {
-      clearTimeout(timer);
+      clearTimers();
       return fail(502, "Upstream redirect left the official domain.");
     }
 
     if (!upstream.ok || !upstream.body) {
-      clearTimeout(timer);
+      clearTimers();
       return fail(502, "Could not reach the official file.");
     }
 
     const contentType = upstream.headers.get("content-type") ?? "application/octet-stream";
     if (!ALLOWED_CONTENT_TYPE.some((re) => re.test(contentType))) {
-      clearTimeout(timer);
+      clearTimers();
       return fail(415, "Unexpected file type from the official source.");
     }
 
     const contentLength = upstream.headers.get("content-length");
     if (contentLength && Number(contentLength) > MAX_BYTES) {
-      clearTimeout(timer);
+      clearTimers();
       return fail(413, "File exceeds the maximum allowed size.");
     }
 
@@ -132,35 +163,38 @@ export async function GET(req: NextRequest): Promise<Response> {
     // ASCII fallback for the quoted form; full unicode via RFC 5987 filename*.
     const asciiName = filename.replace(/[^\x20-\x7e]/g, "_").replace(/"/g, "") || "download";
 
-    // Pass the upstream body through, enforcing the size cap as bytes flow.
+    // Pass the upstream body through, enforcing the size cap as bytes flow and a
+    // per-chunk inactivity timeout (reset on progress) instead of a total cap.
     const reader = upstream.body.getReader();
     let transferred = 0;
+    armStall();
     const stream = new ReadableStream<Uint8Array>({
       async pull(ctrl) {
         try {
           const { done, value } = await reader.read();
           if (done) {
+            clearTimers();
             ctrl.close();
-            clearTimeout(timer);
             return;
           }
           if (!value) return;
+          armStall(); // progress → reset the inactivity timer
           transferred += value.byteLength;
           if (transferred > MAX_BYTES) {
+            clearTimers();
             void reader.cancel();
-            clearTimeout(timer);
             ctrl.error(new Error("File exceeds the maximum allowed size."));
             return;
           }
           ctrl.enqueue(value);
         } catch (err) {
-          clearTimeout(timer);
+          clearTimers();
           ctrl.error(err);
         }
       },
       cancel() {
+        clearTimers();
         void reader.cancel();
-        clearTimeout(timer);
       },
     });
 
@@ -177,7 +211,7 @@ export async function GET(req: NextRequest): Promise<Response> {
 
     return new Response(stream, { status: 200, headers });
   } catch (err) {
-    clearTimeout(timer);
+    clearTimers();
     const aborted = err instanceof Error && err.name === "AbortError";
     return fail(aborted ? 504 : 502, aborted ? "The official source timed out." : "Download failed.");
   }

@@ -207,6 +207,10 @@ export function ContactHero() {
     const subject = encodeURIComponent(`New enquiry from ${name.trim()}`);
     const body = encodeURIComponent(`Name: ${name.trim()}\nEmail: ${email.trim()}\n\n${message.trim()}\n`);
     // Opens the visitor's mail client, pre-addressed to the official inbox.
+    // CONTACT.email.href is a `mailto:` (an external protocol, not an internal
+    // Next route), so location.href is correct here — router.push cannot trigger a
+    // mailto. The lint rule can't see through the constant, so suppress the false positive.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
     window.location.href = `${CONTACT.email.href}?subject=${subject}&body=${body}`;
   }
 

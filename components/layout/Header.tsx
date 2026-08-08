@@ -11,8 +11,6 @@ import { useHoverDropdown } from "@/lib/hooks/useHoverDropdown";
 import { useMobileMenu } from "@/lib/hooks/useMobileMenu";
 import { cn } from "@/lib/utils/cn";
 
-import { BrandLogo } from "@/components/ui/BrandLogo";
-
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { Logo } from "./Logo";
 import { MobileNav } from "./MobileNav";
@@ -136,11 +134,14 @@ export function Header() {
               if (link.key === "brands") {
                 return (
                   <div key={link.key} className="relative" {...containerProps}>
-                    <button
-                      type="button"
+                    {/* A real link to the /brands overview (fixes the dead-end where
+                        the primary "Brands" item only opened a menu). The mega menu
+                        is a progressive hover/focus enhancement on top — focusing the
+                        link opens it (useHoverDropdown.onFocus), tabbing out closes it. */}
+                    <Link
+                      href="/brands"
                       className={cn(NAV_ITEM, "flex items-center gap-1.5", brandsActive ? "text-white" : "text-zinc-400 hover:text-white")}
                       aria-expanded={brandsOpen}
-                      aria-haspopup="true"
                       aria-controls={BRANDS_MENU_ID}
                       aria-current={brandsActive ? "page" : undefined}
                     >
@@ -154,7 +155,7 @@ export function Header() {
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
-                    </button>
+                    </Link>
 
                     {/* Mega menu. `inert` while closed removes its ~50 links and
                         column labels from the tab order and accessibility tree
@@ -197,16 +198,7 @@ export function Header() {
                                         href={`/brands/${brand.slug}`}
                                         className="block rounded-md px-2 py-2.5 text-sm tracking-wide text-[color:var(--color-gold-soft)]/90 transition-all duration-300 ease-out hover:text-[color:var(--color-gold-soft)] hover:[text-shadow:0_0_16px_rgba(255,255,255,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ltr:hover:-translate-x-1 rtl:hover:translate-x-1"
                                       >
-                                        {brand.logoUrl ? (
-                                          <BrandLogo
-                                            name={brand.name}
-                                            logoUrl={brand.logoUrl}
-                                            className="h-5 w-24 ltr:justify-start rtl:justify-end"
-                                            imgClassName="ltr:object-left rtl:object-right"
-                                          />
-                                        ) : (
-                                          brand.name
-                                        )}
+                                        {brand.name}
                                       </Link>
                                     </li>
                                   ))}

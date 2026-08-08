@@ -1,10 +1,9 @@
 /**
- * Official brand logos for the homepage "Our Brands" grid ONLY.
- *
- * Kept deliberately separate from lib/data/brands.ts (which only holds name +
- * slug) so the header mega-menu, mobile navigation and any other consumer of
- * `brand.logoUrl` are completely unaffected — they intentionally keep showing
- * the champagne-gold wordmarks. Only <BrandsGrid> reads this map.
+ * Official brand logos, keyed by BRANDS[].slug. This is the single source of
+ * truth for a brand's mark — read by the homepage "Our Brands" grid, the
+ * /brands index and detail pages, product detail pages, and the Download
+ * Center brand tiles (via <BrandLogo>). The header mega-menu deliberately
+ * stays typographic (champagne-gold wordmarks) rather than pulling logos here.
  *
  * Every file lives in /public/brand-logos/ and is a white / light / official-
  * colour version prepared for the site's dark background (SVG where a vector

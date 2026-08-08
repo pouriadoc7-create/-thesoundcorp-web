@@ -9,13 +9,14 @@ import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
+import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { SITE_NAME, SITE_URL } from "@/lib/constants/site";
+import { BRAND_LOGOS } from "@/lib/data/brand-logos";
 import { BRANDS, getAllBrandSlugs, getBrandBySlug } from "@/lib/data/brands";
 import { getProductsByBrand } from "@/lib/data/products";
 import { buildPageMetadata } from "@/lib/utils/metadata";
-
-const SAMPLE_CATALOGUE = "/downloads/sample-brochure.pdf";
+import { countBrandDocuments, getDownloadBrand } from "@/lib/utils/downloads";
 
 interface BrandPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -60,6 +61,9 @@ export default async function BrandPage({ params }: BrandPageProps) {
   const tProducts = await getTranslations("products");
 
   const products = getProductsByBrand(brand.slug);
+  const brandLogo = BRAND_LOGOS[brand.slug];
+  const downloadBrand = getDownloadBrand(brand.slug);
+  const downloadDocs = downloadBrand ? countBrandDocuments(downloadBrand) : 0;
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -98,10 +102,10 @@ export default async function BrandPage({ params }: BrandPageProps) {
         />
 
         <div className="mt-8 max-w-3xl">
-          {brand.logoUrl ? (
+          {brandLogo ? (
             <BrandLogo
               name={brand.name}
-              logoUrl={brand.logoUrl}
+              logoUrl={brandLogo}
               priority
               className="mb-6 h-16 w-52 ltr:justify-start rtl:justify-end"
               imgClassName="ltr:object-left rtl:object-right"
@@ -120,17 +124,18 @@ export default async function BrandPage({ params }: BrandPageProps) {
               message={t("whatsappText", { brand: brand.name })}
               label={t("inquire", { brand: brand.name })}
             />
-            <a
-              href={SAMPLE_CATALOGUE}
-              download={`${brand.slug}-catalogue.pdf`}
-              className="btn-lux btn-lux--ghost inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3.5 font-medium text-white transition-colors hover:border-[color:var(--color-gold)]/70 hover:text-[color:var(--color-gold-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-            >
-              <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 3v12m0 0 4-4m-4 4-4-4" />
-                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
-              </svg>
-              {t("catalogue")}
-            </a>
+            {downloadBrand ? (
+              <Link
+                href={{ pathname: "/downloads", query: { brand: brand.slug } }}
+                className="btn-lux btn-lux--ghost inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3.5 font-medium text-white transition-colors hover:border-[color:var(--color-gold)]/70 hover:text-[color:var(--color-gold-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              >
+                <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 3v12m0 0 4-4m-4 4-4-4" />
+                  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+                </svg>
+                {t("officialDocuments", { count: downloadDocs })}
+              </Link>
+            ) : null}
           </div>
         </div>
 

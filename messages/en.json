@@ -37,6 +37,7 @@
     "featured": "Featured products",
     "noProducts": "Selected {brand} products are being catalogued. Contact us for current availability and pricing.",
     "catalogue": "Download catalogue",
+    "officialDocuments": "{count, plural, one {# official document} other {# official documents}}",
     "inquire": "Inquire about {brand}",
     "storyTitle": "Brand story",
     "storyComingSoon": "A full profile of {brand} — history, engineering philosophy and honours — is being prepared.",
@@ -134,6 +135,7 @@
       "back": "All products",
       "specifications": "Technical specifications",
       "downloadBrochure": "Download brochure (PDF)",
+      "officialDocuments": "Official documents",
       "inquire": "Inquire on WhatsApp",
       "related": "Related products",
       "inquiryMessage": "Hello, I'm interested in the {brand} {product}. Could you share pricing and availability?"

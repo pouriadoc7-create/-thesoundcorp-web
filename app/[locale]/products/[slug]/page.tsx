@@ -13,9 +13,10 @@ import { Section } from "@/components/ui/Section";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { SITE_NAME, SITE_URL } from "@/lib/constants/site";
-import { getBrandBySlug } from "@/lib/data/brands";
+import { BRAND_LOGOS } from "@/lib/data/brand-logos";
 import { getAllProductSlugs, getProductBySlug, getRelatedProducts } from "@/lib/data/products";
 import { buildPageMetadata } from "@/lib/utils/metadata";
+import { getDownloadBrand } from "@/lib/utils/downloads";
 
 interface ProductPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -67,7 +68,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const tNav = await getTranslations("nav");
 
   const related = getRelatedProducts(product);
-  const brandInfo = getBrandBySlug(product.brandSlug);
+  const brandLogo = BRAND_LOGOS[product.brandSlug];
+  const downloadBrand = getDownloadBrand(product.brandSlug);
   const categoryLabel = t(`categories.${product.category}`);
   const inquiryMessage = t("detail.inquiryMessage", {
     brand: product.brand,
@@ -117,11 +119,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <ProductGallery brand={product.brand} name={product.name} views={product.gallery} />
 
           <div className="flex flex-col">
-            {brandInfo?.logoUrl ? (
+            {brandLogo ? (
               <Link href={`/brands/${product.brandSlug}`} className="mb-4 w-fit">
                 <BrandLogo
                   name={product.brand}
-                  logoUrl={brandInfo.logoUrl}
+                  logoUrl={brandLogo}
                   className="h-10 w-40 ltr:justify-start rtl:justify-end"
                   imgClassName="ltr:object-left rtl:object-right"
                 />
@@ -141,26 +143,27 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <WhatsAppInquiry message={inquiryMessage} label={t("detail.inquire")} />
-              <a
-                href={product.brochureUrl}
-                download={`${product.brandSlug}-${product.slug}-brochure.pdf`}
-                className="btn-lux btn-lux--ghost inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3.5 font-medium text-white hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-              >
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  className="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+              {downloadBrand ? (
+                <Link
+                  href={{ pathname: "/downloads", query: { brand: product.brandSlug } }}
+                  className="btn-lux btn-lux--ghost inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3.5 font-medium text-white hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 >
-                  <path d="M12 3v12m0 0 4-4m-4 4-4-4" />
-                  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
-                </svg>
-                {t("detail.downloadBrochure")}
-              </a>
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    className="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 3v12m0 0 4-4m-4 4-4-4" />
+                    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+                  </svg>
+                  {t("detail.officialDocuments")}
+                </Link>
+              ) : null}
             </div>
 
             <p className="mt-6 text-[13.5px] leading-7 text-zinc-300 xl:text-base">{product.description}</p>

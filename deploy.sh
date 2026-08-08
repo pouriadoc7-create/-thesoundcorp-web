@@ -123,8 +123,17 @@ if [ "$SETUP_NGINX" = "yes" ]; then
     apt-get install -y nginx >/dev/null
   fi
   conf="/etc/nginx/sites-available/${DOMAIN}"
-  sed -e "s/__DOMAIN__/${DOMAIN}/g" -e "s/__PORT__/${PORT}/g" \
-    "$PROJECT_DIR/deploy/nginx/thesoundcorp.conf.template" > "$conf"
+  # IDEMPOTENCY: certbot edits this same file in place to add the HTTPS (443) block.
+  # Only (re)generate it from the template if it doesn't exist yet or certbot hasn't
+  # touched it — otherwise a plain re-run would silently overwrite HTTPS back to HTTP.
+  if [ ! -f "$conf" ] || ! grep -q "managed by Certbot" "$conf"; then
+    sed -e "s/__DOMAIN__/${DOMAIN}/g" -e "s/__PORT__/${PORT}/g" \
+      "$PROJECT_DIR/deploy/nginx/thesoundcorp.conf.template" > "$conf"
+    ok "wrote nginx config from template"
+  else
+    ok "existing nginx config is certbot-managed — left untouched (HTTPS preserved)"
+    warn "to change DOMAIN/PORT on an HTTPS box: edit $conf by hand, then re-run certbot"
+  fi
   ln -sf "$conf" "/etc/nginx/sites-enabled/${DOMAIN}"
   # Drop the stock default site if it grabs port 80 as default_server.
   [ -e /etc/nginx/sites-enabled/default ] && rm -f /etc/nginx/sites-enabled/default || true

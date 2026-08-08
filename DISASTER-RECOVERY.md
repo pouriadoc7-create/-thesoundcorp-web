@@ -48,7 +48,8 @@ On **this computer** (Git Bash), make a fresh archive and copy it up. Replace
 ```bash
 cd /c/Projects/thesoundcorp-web
 bash backup-site.sh
-scp ../thesoundcorp-backups/thesoundcorp-web_*.tar.gz root@NEW_SERVER_IP:/tmp/site.tar.gz
+# copy the NEWEST archive (works even when you have several dated backups):
+scp "$(ls -t ../thesoundcorp-backups/*.tar.gz | head -1)" root@NEW_SERVER_IP:/tmp/site.tar.gz
 ```
 
 Then on the **new server**:
@@ -61,9 +62,11 @@ cd /var/www/thesoundcorp
 
 ### Option B — copy the whole folder directly
 
-From **this computer**:
+From **this computer** (make the parent folder first, and make sure the target
+doesn't already exist so the copy doesn't nest inside itself):
 
 ```bash
+ssh root@NEW_SERVER_IP "sudo mkdir -p /var/www && sudo rm -rf /var/www/thesoundcorp"
 scp -r /c/Projects/thesoundcorp-web root@NEW_SERVER_IP:/var/www/thesoundcorp
 ```
 
@@ -163,10 +166,20 @@ sudo certbot --nginx -d thesoundcorp.ir -d www.thesoundcorp.ir
 
 certbot edits the nginx config for you and auto-renews. Done.
 
-> The **original** server used a different setup (a Cloudflare origin certificate
-> behind an SNI router) — that exact config is saved for reference in
-> `deploy/nginx/thesoundcorp.current-vps.conf`. You do **not** need to reproduce it;
-> Let's Encrypt above is the portable choice for any new server.
+> **⚠️ If your domain is on Cloudflare** (the original one was): with Cloudflare's
+> proxy ON (orange cloud), the Let's Encrypt check above can fail or cause a
+> redirect loop. Do ONE of these:
+> - **Easiest:** in Cloudflare's DNS, click the orange cloud on the `A` records to
+>   make it grey ("DNS only"), run the `certbot` command, then turn the orange cloud
+>   back on. Set Cloudflare **SSL/TLS → Overview → Full (strict)**.
+> - **Or** skip certbot and keep using a **Cloudflare Origin Certificate** like the
+>   original server did — that exact nginx setup is saved for you in
+>   `deploy/nginx/thesoundcorp.current-vps.conf` (put the cert at
+>   `/etc/ssl/thesoundcorp/origin.crt` + `origin.key`, then run this deploy with
+>   `SETUP_NGINX=no` and wire nginx to that file). Cloudflare SSL/TLS mode: **Full (strict)**.
+>
+> If the domain is **not** on Cloudflare (e.g. a plain Iran-IP server), just run the
+> `certbot` command above — nothing extra needed.
 
 ---
 

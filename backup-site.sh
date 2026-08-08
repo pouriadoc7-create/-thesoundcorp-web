@@ -29,6 +29,7 @@ tar --force-local -czf "$OUT" \
   --exclude='./node_modules' \
   --exclude='./.next' \
   --exclude='./.git' \
+  --exclude='./.claude' \
   --exclude='./out' \
   --exclude='./build' \
   --exclude='./coverage' \

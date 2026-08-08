@@ -79,7 +79,7 @@ export function ProductCatalog() {
           <svg
             aria-hidden="true"
             viewBox="0 0 24 24"
-            className="pointer-events-none absolute top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-500 ltr:left-4 rtl:right-4"
+            className="pointer-events-none absolute top-1/2 h-5 w-5 -translate-y-1/2 text-muted ltr:left-4 rtl:right-4"
             fill="none"
             stroke="currentColor"
             strokeWidth="1.75"
@@ -97,7 +97,7 @@ export function ProductCatalog() {
             }}
             aria-label={t("searchLabel")}
             placeholder={t("searchPlaceholder")}
-            className="w-full rounded-full border border-white/[0.10] bg-white/[0.03] py-3.5 text-white placeholder:text-zinc-500 transition-colors focus:border-white/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ltr:pl-12 ltr:pr-4 rtl:pr-12 rtl:pl-4"
+            className="w-full rounded-full border border-white/[0.10] bg-white/[0.03] py-3.5 text-white placeholder:text-muted transition-colors focus:border-white/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ltr:pl-12 ltr:pr-4 rtl:pr-12 rtl:pl-4"
           />
         </div>
 
@@ -151,7 +151,7 @@ export function ProductCatalog() {
       </div>
 
       {/* Result meta */}
-      <div className="mt-6 flex items-center justify-between border-t border-white/[0.08] pt-5 text-sm text-zinc-500">
+      <div className="mt-6 flex items-center justify-between border-t border-white/[0.08] pt-5 text-sm text-muted">
         <span aria-live="polite">{t("resultsCount", { count: results.length })}</span>
         {hasFilters ? (
           <button
@@ -181,7 +181,7 @@ export function ProductCatalog() {
           ))}
         </div>
       ) : (
-        <p className="mt-16 text-center text-zinc-500">{t("noResults")}</p>
+        <p className="mt-16 text-center text-muted">{t("noResults")}</p>
       )}
     </div>
   );

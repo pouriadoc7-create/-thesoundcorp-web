@@ -150,7 +150,7 @@ export function CommandPalette() {
         className="glass w-full max-w-xl overflow-hidden rounded-[var(--radius-panel)] shadow-[var(--shadow-luxe)]"
       >
         <div className="flex items-center gap-3 border-b border-white/10 px-4">
-          <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-zinc-500" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" aria-hidden="true">
+          <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-muted" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" aria-hidden="true">
             <circle cx="11" cy="11" r="7" />
             <path d="m20 20-3.2-3.2" />
           </svg>
@@ -166,7 +166,7 @@ export function CommandPalette() {
             aria-controls="command-results"
             aria-activedescendant={results[active] ? `cmd-${results[active].id}` : undefined}
             placeholder={t("placeholder")}
-            className="w-full bg-transparent py-4 text-white placeholder:text-zinc-500 focus:outline-none"
+            className="w-full bg-transparent py-4 text-white placeholder:text-muted focus:outline-none"
           />
         </div>
 
@@ -190,7 +190,7 @@ export function CommandPalette() {
               </button>
             ))
           ) : (
-            <p className="px-3 py-8 text-center text-sm text-zinc-500">{t("empty")}</p>
+            <p className="px-3 py-8 text-center text-sm text-muted">{t("empty")}</p>
           )}
         </div>
       </div>

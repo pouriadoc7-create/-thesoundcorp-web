@@ -254,7 +254,7 @@ export function Header() {
             </svg>
             {/* Make the ⌘K command palette discoverable (desktop only; mobile keeps
                 the bare icon as a 44px tap target). */}
-            <kbd className="hidden font-sans text-[10.5px] font-medium tracking-[0.04em] text-zinc-500 transition-colors group-hover:text-zinc-300 lg:inline-block">
+            <kbd className="hidden font-sans text-[10.5px] font-medium tracking-[0.04em] text-muted transition-colors group-hover:text-zinc-300 lg:inline-block">
               ⌘K
             </kbd>
           </button>

@@ -26,7 +26,7 @@ export async function BrandsGrid() {
           <Reveal as="h2" delayMs={80} className="mt-4 text-holo text-balance display-2 font-medium">
             {t("heading")}
           </Reveal>
-          <Reveal as="p" delayMs={140} className="mt-3 text-[13px] tracking-wide text-zinc-500">
+          <Reveal as="p" delayMs={140} className="mt-3 text-[13px] tracking-wide text-muted">
             {t("count", { count: BRANDS.length })}
           </Reveal>
         </div>

@@ -135,13 +135,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
             ) : null}
             <Link
               href={`/brands/${product.brandSlug}`}
-              className="w-fit text-xs font-medium uppercase tracking-[0.24em] text-zinc-500 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+              className="w-fit text-xs font-medium uppercase tracking-[0.24em] text-muted transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
               {product.brand} · {categoryLabel}
             </Link>
             <h1 className="mt-3 text-holo display-2 font-medium">{product.name}</h1>
             <p className="mt-3 text-[14px] font-light text-zinc-400 xl:text-lg">{product.tagline}</p>
-            <p className="mt-4 text-[12px] uppercase tracking-wider text-zinc-500">
+            <p className="mt-4 text-[12px] uppercase tracking-wider text-muted">
               {product.priceNote}
             </p>
 
@@ -177,14 +177,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {/* Technical specifications */}
         <div className="mt-16">
           <h2 className="text-[16px] font-medium xl:text-xl">{t("detail.specifications")}</h2>
-          <p className="mt-2 max-w-2xl text-[12px] leading-relaxed text-zinc-500">{t("detail.specsNote")}</p>
+          <p className="mt-2 max-w-2xl text-[12px] leading-relaxed text-muted">{t("detail.specsNote")}</p>
           <dl className="mt-6 grid grid-cols-1 gap-x-12 sm:grid-cols-2">
             {product.specs.map((spec) => (
               <div
                 key={spec.label}
                 className="flex justify-between gap-6 border-b border-white/[0.08] py-3.5"
               >
-                <dt className="text-sm text-zinc-500">{spec.label}</dt>
+                <dt className="text-sm text-muted">{spec.label}</dt>
                 <dd className="text-sm font-medium text-zinc-200 ltr:text-right rtl:text-left">
                   {spec.value}
                 </dd>

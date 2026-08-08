@@ -21,7 +21,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
     <html lang="en" dir="ltr">
       <body className="flex min-h-screen flex-col items-center justify-center bg-black px-6 text-center text-white">
         <h1 className="text-3xl font-bold">Something went wrong</h1>
-        <p className="mt-4 max-w-md text-gray-500">
+        <p className="mt-4 max-w-md text-muted">
           An unexpected error occurred. Please try again.
         </p>
         <button

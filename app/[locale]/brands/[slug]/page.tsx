@@ -183,7 +183,7 @@ export default async function BrandPage({ params }: BrandPageProps) {
               ))}
             </div>
           ) : (
-            <p className="mt-4 max-w-2xl text-[13.5px] leading-7 text-gray-500 xl:text-base">
+            <p className="mt-4 max-w-2xl text-[13.5px] leading-7 text-muted xl:text-base">
               {t("noProducts", { brand: brand.name })}
             </p>
           )}
@@ -192,7 +192,7 @@ export default async function BrandPage({ params }: BrandPageProps) {
         {/* Brand story — clearly marked as forthcoming rather than invented. */}
         <div className="mt-16 max-w-2xl border-t border-white/[0.08] pt-8">
           <h2 className="text-[16px] font-medium xl:text-xl">{t("storyTitle")}</h2>
-          <p className="mt-4 text-[13.5px] leading-7 text-gray-500 xl:text-base">{t("storyComingSoon", { brand: brand.name })}</p>
+          <p className="mt-4 text-[13.5px] leading-7 text-muted xl:text-base">{t("storyComingSoon", { brand: brand.name })}</p>
         </div>
       </Container>
     </Section>

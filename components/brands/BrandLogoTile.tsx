@@ -44,7 +44,7 @@ export function BrandLogoTile({ brand, docsLabel, className }: BrandLogoTileProp
       </div>
 
       {docsLabel ? (
-        <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.14em] text-zinc-500 transition-colors duration-300 group-hover:text-[color:var(--color-gold-soft)]/85">
+        <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.14em] text-muted transition-colors duration-300 group-hover:text-[color:var(--color-gold-soft)]/85">
           <svg
             viewBox="0 0 24 24"
             className="h-3 w-3"

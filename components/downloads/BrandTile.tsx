@@ -64,7 +64,7 @@ export function BrandTile({ brand, productCount, docCount, onOpen }: BrandTilePr
       <span aria-hidden="true" className="dl-spotlight" />
 
       <div className="dl-brand-inner relative flex h-full flex-1 flex-col">
-        <div className="text-[10px] font-medium uppercase tracking-[0.24em] text-zinc-500">
+        <div className="text-[10px] font-medium uppercase tracking-[0.24em] text-muted">
           {t("brandEyebrow")}
         </div>
 
@@ -79,7 +79,7 @@ export function BrandTile({ brand, productCount, docCount, onOpen }: BrandTilePr
         </div>
 
         <div className="flex items-end justify-between">
-          <div className="text-[11px] uppercase tracking-[0.16em] text-zinc-500">
+          <div className="text-[11px] uppercase tracking-[0.16em] text-muted">
             {t("brandMeta", { products: productCount, documents: docCount })}
           </div>
           <span className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-400 transition-colors duration-500 group-hover:text-[color:var(--color-gold-soft)]">

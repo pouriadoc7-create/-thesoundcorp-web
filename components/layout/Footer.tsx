@@ -31,7 +31,7 @@ export async function Footer() {
               </Link>
             ))}
           </nav>
-          <p className="text-[11px] tracking-[0.01em] text-zinc-500">{t("rights", { year, siteName: SITE_NAME })}</p>
+          <p className="text-[11px] tracking-[0.01em] text-muted">{t("rights", { year, siteName: SITE_NAME })}</p>
         </div>
 
         <SocialLinks className="lg:justify-end" />

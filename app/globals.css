@@ -10,6 +10,12 @@
 @theme {
   --color-background: #000000;
   --color-foreground: #ffffff;
+  /* Secondary / de-emphasised text. Tuned to clear WCAG AA (~5.6:1 on the
+     near-black background, ~5:1 on the elevated surface) while staying dimmer
+     than zinc-400, so the white→muted hierarchy is preserved. Use `text-muted`
+     for secondary copy in place of the old text-zinc-500 (which was 4.35:1 and
+     failed AA) and the stray text-gray-500. */
+  --color-muted: #83838d;
   /* Matte, faintly-warm surfaces (was slate-blue #111827) — reads as
      brushed graphite rather than "UI grey". */
   --color-surface: #121317;

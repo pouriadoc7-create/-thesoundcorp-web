@@ -49,7 +49,7 @@ export function GalleryClient() {
         })}
       </div>
 
-      <p className="mt-5 text-center text-sm text-zinc-500" aria-live="polite">
+      <p className="mt-5 text-center text-sm text-muted" aria-live="polite">
         {t("photoCount", { count: images.length })}
       </p>
 
@@ -86,7 +86,7 @@ export function GalleryClient() {
           ))}
         </div>
       ) : (
-        <p className="mt-16 text-center text-zinc-500">{t("empty")}</p>
+        <p className="mt-16 text-center text-muted">{t("empty")}</p>
       )}
 
       {lightboxIndex !== null ? (

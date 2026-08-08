@@ -191,8 +191,8 @@ const ContactWaveMobile = memo(function ContactWaveMobile() {
 });
 
 const fieldClass =
-  "mt-2 w-full rounded-xl border border-white/10 bg-white/[0.035] px-4 py-3 text-sm text-white placeholder:text-zinc-500 outline-none transition-colors focus:border-[color:var(--color-gold)]/50 focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/30";
-const labelClass = "block text-[10.5px] font-medium uppercase tracking-[0.16em] text-zinc-500";
+  "mt-2 w-full rounded-xl border border-white/10 bg-white/[0.035] px-4 py-3 text-sm text-white placeholder:text-muted outline-none transition-colors focus:border-[color:var(--color-gold)]/50 focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/30";
+const labelClass = "block text-[10.5px] font-medium uppercase tracking-[0.16em] text-muted";
 
 type SubmitStatus = "idle" | "sending" | "sent" | "sentMail" | "error";
 

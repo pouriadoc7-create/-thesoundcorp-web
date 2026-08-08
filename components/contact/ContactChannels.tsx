@@ -65,7 +65,7 @@ export async function ContactChannels() {
 
         const textBlock = (
           <span className="min-w-0">
-            <span className="block text-[11px] font-medium uppercase tracking-[0.18em] text-zinc-500">
+            <span className="block text-[11px] font-medium uppercase tracking-[0.18em] text-muted">
               {label}
             </span>
             <span

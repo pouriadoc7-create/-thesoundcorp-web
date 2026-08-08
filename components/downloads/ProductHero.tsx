@@ -56,7 +56,7 @@ export function ProductHero({ brandName, product, docCount }: ProductHeroProps) 
             <Badge tone="gold">{t("modelCode", { code: product.modelCode })}</Badge>
           ) : null}
           {product.status ? <Badge>{t(`status.${product.status}`)}</Badge> : null}
-          <span className="text-[11px] uppercase tracking-[0.16em] text-zinc-500">
+          <span className="text-[11px] uppercase tracking-[0.16em] text-muted">
             {t("documentCount", { count: docCount })}
           </span>
         </Reveal>
@@ -72,7 +72,7 @@ export function ProductHero({ brandName, product, docCount }: ProductHeroProps) 
             <dl className="divide-y divide-white/[0.06] border-y border-white/[0.06]">
               {product.specs.map((spec) => (
                 <div key={spec.label} className="grid grid-cols-[minmax(88px,0.34fr)_1fr] gap-4 py-2.5">
-                  <dt className="text-[10.5px] font-medium uppercase tracking-[0.16em] text-zinc-500">
+                  <dt className="text-[10.5px] font-medium uppercase tracking-[0.16em] text-muted">
                     {spec.label}
                   </dt>
                   <dd className="text-[13px] leading-relaxed text-zinc-200">{spec.value}</dd>

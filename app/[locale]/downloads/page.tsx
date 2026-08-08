@@ -84,7 +84,7 @@ export default async function DownloadsPage({ params }: DownloadsPageProps) {
           <Reveal
             as="p"
             delayMs={280}
-            className="mt-5 text-[11px] uppercase tracking-[0.2em] text-zinc-500"
+            className="mt-5 text-[11px] uppercase tracking-[0.2em] text-muted"
           >
             {t("brandCount", { count: brandCount })}
             <span aria-hidden="true" className="mx-2 text-zinc-700">

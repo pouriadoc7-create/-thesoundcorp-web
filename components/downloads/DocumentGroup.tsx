@@ -22,7 +22,7 @@ export function DocumentGroup({ groupKey, docs, brandSlug, productSlug }: Docume
         <h3 className="text-[11px] font-medium uppercase tracking-[0.24em] text-zinc-400">
           {t(`groups.${groupKey}`)}
         </h3>
-        <span className="text-[11px] tabular-nums text-zinc-500">
+        <span className="text-[11px] tabular-nums text-muted">
           {String(docs.length).padStart(2, "0")}
         </span>
         <span aria-hidden="true" className="hr-premium flex-1" />

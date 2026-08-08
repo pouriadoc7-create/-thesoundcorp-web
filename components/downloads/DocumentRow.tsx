@@ -77,12 +77,12 @@ export function DocumentRow({ brandSlug, productSlug, doc, context }: DocumentRo
 
       <div className="min-w-0 flex-1">
         {context ? (
-          <div className="mb-0.5 text-[10px] uppercase tracking-[0.16em] text-zinc-500">{context}</div>
+          <div className="mb-0.5 text-[10px] uppercase tracking-[0.16em] text-muted">{context}</div>
         ) : null}
         <div className="line-clamp-2 text-[13.5px] font-medium text-zinc-100 transition-colors duration-500 group-hover/row:text-white sm:text-sm">
           {doc.title}
         </div>
-        <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-zinc-500">
+        <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-muted">
           <span className="font-medium tracking-wide text-zinc-400">{typeLabel}</span>
           {meta.map((m, i) => (
             <span key={`${m}-${i}`} className="flex items-center gap-2">
@@ -96,7 +96,7 @@ export function DocumentRow({ brandSlug, productSlug, doc, context }: DocumentRo
       </div>
 
       {/* Official-source marker — quiet shield, hidden on the smallest screens. */}
-      <span className="hidden shrink-0 items-center gap-1.5 rounded-full border border-white/[0.06] px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] text-zinc-500 sm:inline-flex">
+      <span className="hidden shrink-0 items-center gap-1.5 rounded-full border border-white/[0.06] px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] text-muted sm:inline-flex">
         <svg viewBox="0 0 24 24" fill="none" className="h-3 w-3 text-[color:var(--color-gold-soft)]/80" aria-hidden="true">
           <path
             d="M12 3 5 6v5.2c0 4.2 2.9 7.4 7 9.3 4.1-1.9 7-5.1 7-9.3V6l-7-3Z"

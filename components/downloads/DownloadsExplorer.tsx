@@ -177,7 +177,7 @@ export function DownloadsExplorer({ brands }: { brands: DownloadBrand[] }) {
 
       {/* ---- Breadcrumb ---- */}
       {!searching && activeBrand ? (
-        <nav aria-label={t("breadcrumbLabel")} className="mt-9 flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.16em] text-zinc-500">
+        <nav aria-label={t("breadcrumbLabel")} className="mt-9 flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.16em] text-muted">
           <button type="button" onClick={goBrands} className="transition-colors duration-300 hover:text-zinc-200">
             {t("crumbBrands")}
           </button>
@@ -325,7 +325,7 @@ function DocumentsView({
     <div>
       <ProductHero brandName={brandName} product={product} docCount={product.documents.length} />
       {product.documents.length === 0 ? (
-        <p className="mx-auto mt-10 max-w-md text-center text-[13px] text-zinc-500">{noDocuments}</p>
+        <p className="mx-auto mt-10 max-w-md text-center text-[13px] text-muted">{noDocuments}</p>
       ) : (
         <>
           <hr className="hr-premium my-10 sm:my-12" />
@@ -372,14 +372,14 @@ function SearchResults({
 
   return (
     <div className="mx-auto max-w-3xl">
-      <p aria-live="polite" className="text-center text-[11px] uppercase tracking-[0.18em] text-zinc-500">
+      <p aria-live="polite" className="text-center text-[11px] uppercase tracking-[0.18em] text-muted">
         {resultsLabel}
       </p>
 
       {rows.length === 0 ? (
         <div className="mt-10 text-center">
           <p className="text-holo text-lg font-medium">{noResults}</p>
-          <p className="mx-auto mt-2 max-w-sm text-[13px] text-zinc-500">{noResultsHint}</p>
+          <p className="mx-auto mt-2 max-w-sm text-[13px] text-muted">{noResultsHint}</p>
         </div>
       ) : (
         <div className="mt-8 space-y-8">
@@ -473,7 +473,7 @@ function SearchField({
     <div className="relative">
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 -translate-y-1/2 text-zinc-500 ltr:left-5 rtl:right-5"
+        className="pointer-events-none absolute top-1/2 -translate-y-1/2 text-muted ltr:left-5 rtl:right-5"
       >
         <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
           <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.6" />
@@ -486,14 +486,14 @@ function SearchField({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         aria-label={label}
-        className="dl-search h-[52px] w-full rounded-full border border-white/[0.08] bg-white/[0.03] px-12 py-3.5 text-[14px] text-white placeholder:text-zinc-500 outline-none transition-colors duration-300 focus:border-[color:var(--color-gold)]/45 focus:bg-white/[0.05]"
+        className="dl-search h-[52px] w-full rounded-full border border-white/[0.08] bg-white/[0.03] px-12 py-3.5 text-[14px] text-white placeholder:text-muted outline-none transition-colors duration-300 focus:border-[color:var(--color-gold)]/45 focus:bg-white/[0.05]"
       />
       {value ? (
         <button
           type="button"
           onClick={onClear}
           aria-label={clearLabel}
-          className="absolute top-1/2 -translate-y-1/2 text-zinc-500 transition-colors duration-300 hover:text-white ltr:right-4 rtl:left-4"
+          className="absolute top-1/2 -translate-y-1/2 text-muted transition-colors duration-300 hover:text-white ltr:right-4 rtl:left-4"
         >
           <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />

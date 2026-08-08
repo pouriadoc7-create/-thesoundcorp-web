@@ -20,7 +20,7 @@ export default function Error({ error, reset }: ErrorPageProps) {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-6 text-center">
       <h1 className="text-holo text-[22px] font-medium xl:text-3xl">{t("title")}</h1>
-      <p className="mt-3 max-w-md text-[13.5px] text-gray-500 xl:text-base">{t("description")}</p>
+      <p className="mt-3 max-w-md text-[13.5px] text-muted xl:text-base">{t("description")}</p>
       <div className="mt-8 flex flex-wrap justify-center gap-4">
         <button
           type="button"

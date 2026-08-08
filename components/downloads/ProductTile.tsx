@@ -34,7 +34,7 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
       />
 
       <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-zinc-500">
+        <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-muted">
           <span>{product.category}</span>
           {product.status ? (
             <>
@@ -53,7 +53,7 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
         </div>
 
         <div className="mt-5 flex items-center justify-between border-t border-white/[0.06] pt-4">
-          <span className="text-[11px] uppercase tracking-[0.16em] text-zinc-500">
+          <span className="text-[11px] uppercase tracking-[0.16em] text-muted">
             {t("documentCount", { count: docCount })}
           </span>
           <span className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-400 transition-colors duration-500 group-hover:text-[color:var(--color-gold-soft)]">

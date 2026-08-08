@@ -818,6 +818,6 @@ html[lang="fa"] * {
   .ab-hair { transition: none; }
   .ab-hair.in { width: min(46%, 330px); }
   .ab-cue .ab-ln { animation: none; }
-  .ab-hero .ab-stage, .ab-hero .ab-glow, .ab-detail .ab-stage { transform: none !important; }
+  .ab-hero .ab-stage, .ab-hero .ab-glow, .ab-detail .ab-stage { transform: none !important; will-change: auto; }
   .ab-detail .ab-veil { opacity: 0 !important; }
 }

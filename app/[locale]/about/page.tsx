@@ -13,7 +13,7 @@ import { buildPageMetadata } from "@/lib/utils/metadata";
 const satoshi = localFont({
   src: "../../fonts/Satoshi-Variable.woff2",
   variable: "--font-satoshi",
-  weight: "200 900",
+  weight: "300 900", // Satoshi's real variable axis; sub-300 CSS weights clamp to 300
   display: "swap",
   preload: false,
 });

@@ -81,6 +81,14 @@ function PinGlyph() {
     </svg>
   );
 }
+function EmailGlyph() {
+  return (
+    <svg className={goldIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3 7 9 6 9-6" />
+    </svg>
+  );
+}
 
 /**
  * Desktop waveform (>= md). The exact approved rendering: one SVG covering the hero,
@@ -295,6 +303,10 @@ export function ContactHero() {
             <a className="inline-flex w-fit items-center gap-3 transition-colors hover:text-white" href={CONTACT.instagram.href} target="_blank" rel="noopener noreferrer">
               <InstagramGlyph />
               <span dir="ltr">{CONTACT.instagram.display}</span>
+            </a>
+            <a className="inline-flex w-fit items-center gap-3 transition-colors hover:text-white" href={CONTACT.email.href}>
+              <EmailGlyph />
+              <span dir="ltr">{CONTACT.email.display}</span>
             </a>
             <div className="inline-flex w-fit items-center gap-3">
               <PinGlyph />

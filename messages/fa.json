@@ -7,7 +7,8 @@
     "downloads": "دانلودها",
     "about": "درباره ما",
     "contact": "تماس با ما",
-    "primary": "ناوبری اصلی"
+    "primary": "ناوبری اصلی",
+    "footer": "ناوبری پاورقی"
   },
   "header": {
     "toggleNavigation": "باز و بسته کردن منو",

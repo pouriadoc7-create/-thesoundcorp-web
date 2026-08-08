@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useCallback, useEffect, useRef } from "react";
 
+import { useFocusTrap } from "@/lib/hooks/useFocusTrap";
 import type { GalleryImage } from "@/lib/types/gallery";
 
 interface LightboxProps {
@@ -25,7 +26,12 @@ export function Lightbox({ images, index, onIndexChange, onClose }: LightboxProp
   const image = images[index];
 
   const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
+
+  // Trap Tab within the viewer — it's aria-modal, so the gallery behind must
+  // leave the tab order. Mounted only while open, so it's always active here.
+  useFocusTrap(true, dialogRef);
 
   const go = useCallback(
     (delta: number) => onIndexChange((index + delta + total) % total),
@@ -72,6 +78,7 @@ export function Lightbox({ images, index, onIndexChange, onClose }: LightboxProp
 
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label={image.caption[locale] || t("title")}

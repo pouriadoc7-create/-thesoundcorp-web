@@ -8,6 +8,7 @@ import { useRouter } from "@/i18n/navigation";
 import { NAV_LINKS } from "@/lib/constants/site";
 import { BRANDS } from "@/lib/data/brands";
 import { PRODUCTS } from "@/lib/data/products";
+import { useFocusTrap } from "@/lib/hooks/useFocusTrap";
 import { cn } from "@/lib/utils/cn";
 
 /** Anyone can open the palette by dispatching this event (e.g. a header button). */
@@ -32,7 +33,12 @@ export function CommandPalette() {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const restoreFocus = useRef<HTMLElement | null>(null);
+
+  // Keep Tab within the dialog (it's aria-modal, so the page behind must be
+  // unreachable). Open/close, initial focus and restore are handled below.
+  useFocusTrap(open, dialogRef);
 
   const groupLabel: Record<Group, string> = {
     pages: t("groupPages"),
@@ -136,6 +142,7 @@ export function CommandPalette() {
       onClick={close}
     >
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-label={t("label")}

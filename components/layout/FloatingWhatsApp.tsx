@@ -26,7 +26,7 @@ export async function FloatingWhatsApp() {
         insetInlineEnd: "max(1rem, env(safe-area-inset-right))",
         bottom: "max(1rem, env(safe-area-inset-bottom))",
       }}
-      className="group fixed z-[var(--z-toast)] inline-flex h-[36.4px] w-[36.4px] items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_10px_30px_-5px_rgba(37,211,102,0.55),0_4px_12px_rgba(0,0,0,0.4)] ring-1 ring-black/10 transition-all duration-300 ease-[var(--ease-premium)] hover:scale-105 hover:shadow-[0_14px_38px_-4px_rgba(37,211,102,0.7),0_6px_16px_rgba(0,0,0,0.45)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:h-[41.6px] sm:w-[41.6px]"
+      className="group fixed z-[var(--z-toast)] inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_10px_30px_-5px_rgba(37,211,102,0.55),0_4px_12px_rgba(0,0,0,0.4)] ring-1 ring-black/10 transition-all duration-300 ease-[var(--ease-premium)] hover:scale-105 hover:shadow-[0_14px_38px_-4px_rgba(37,211,102,0.7),0_6px_16px_rgba(0,0,0,0.45)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:h-12 sm:w-12"
     >
       {/* Gentle resting halo — decorative, and only animates when the user
           hasn't asked for reduced motion (keyframe defined in globals.css). */}
@@ -34,7 +34,7 @@ export async function FloatingWhatsApp() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 rounded-full bg-[#25D366]/40 motion-safe:animate-[waPulse_2.4s_var(--ease-premium)_infinite]"
       />
-      <WhatsAppIcon className="relative h-[18.2px] w-[18.2px] transition-transform duration-300 ease-[var(--ease-premium)] group-hover:scale-110 sm:h-[20.8px] sm:w-[20.8px]" />
+      <WhatsAppIcon className="relative h-5 w-5 transition-transform duration-300 ease-[var(--ease-premium)] group-hover:scale-110 sm:h-[22px] sm:w-[22px]" />
     </a>
   );
 }

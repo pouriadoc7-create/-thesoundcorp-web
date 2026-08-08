@@ -18,7 +18,7 @@ export async function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-10 px-4 pt-12 pb-24 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
         <div className="flex flex-col items-center gap-5 lg:items-start">
           <nav
-            aria-label="Footer"
+            aria-label={tNav("footer")}
             className="flex flex-wrap items-center justify-center gap-x-7 gap-y-2 lg:justify-start"
           >
             {NAV_LINKS.map((link) => (

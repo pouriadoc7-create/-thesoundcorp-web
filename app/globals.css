@@ -806,7 +806,7 @@ html[lang="fa"] * {
 /* statement */
 .ab-statement { max-width: 1120px; margin: 0 auto; padding: 21vh 6.4vw 17vh; }
 .ab-lead { font-weight: 250; font-size: clamp(1.5rem, 2.5vw, 2.1rem); line-height: 1.5; letter-spacing: -0.01em; color: #dcdfe4; max-width: 24ch; }
-.ab-body { margin-top: min(12vh, 128px); max-width: 38ch; margin-left: auto; font-weight: 300; font-size: clamp(1.06rem, 1.3vw, 1.25rem); line-height: 1.85; color: #9297a0; }
+.ab-body { margin-top: min(12vh, 128px); max-width: 38ch; margin-inline-start: auto; font-weight: 300; font-size: clamp(1.06rem, 1.3vw, 1.25rem); line-height: 1.85; color: #9297a0; }
 .ab-body p + p { margin-top: 1.7em; }
 
 /* detail (heat-sink) */
@@ -854,6 +854,29 @@ html[lang="fa"] * {
   .ab-cue .ab-ln { animation: none; }
   .ab-hero .ab-stage, .ab-hero .ab-glow, .ab-detail .ab-stage { transform: none !important; will-change: auto; }
   .ab-detail .ab-veil { opacity: 0 !important; }
+}
+
+/* Persian / RTL variant (fa locale). Mirrors the directional composition —
+   art position, the light-fade, the hairline, the scroll cue — and swaps to the
+   Persian webface (Vazirmatn). Text alignment flips automatically from dir="rtl"
+   + start-based blocks, and the body offset already uses margin-inline-start.
+   The English/LTR rendering is completely untouched. */
+.about-page[dir="rtl"] {
+  font-family: var(--font-vazirmatn), "Vazirmatn", system-ui, sans-serif;
+}
+.about-page[dir="rtl"] .ab-hero .ab-art { left: 22%; }
+.about-page[dir="rtl"] .ab-hero .ab-fade {
+  background: linear-gradient(270deg, #050506 6%, rgba(5, 5, 6, 0.5) 40%, transparent 68%), linear-gradient(0deg, #050506 3%, transparent 26%);
+}
+.about-page[dir="rtl"] .ab-hair { background: linear-gradient(270deg, var(--ab-champ), transparent); }
+.about-page[dir="rtl"] .ab-cue { left: auto; right: 6.4vw; }
+.about-page[dir="rtl"] .ab-cue .ab-ln { background: linear-gradient(270deg, #565b63, transparent); }
+/* Keep the Latin THE SOUND wordmark spaced even in fa (the global fa
+   letter-spacing:normal rule would otherwise cramp it). */
+.about-page[dir="rtl"] .ab-mark { letter-spacing: 0.3em !important; padding-left: 0; padding-right: 0.3em; }
+@media (max-width: 520px) {
+  .about-page[dir="rtl"] .ab-hero .ab-art { left: 44%; }
+  .about-page[dir="rtl"] .ab-hero .ab-glow { left: auto; right: 8%; }
 }
 
 /* ============================================================

@@ -82,7 +82,19 @@
     "eyebrow": "About Us",
     "title": "The {siteName} Story",
     "description": "Our full company story is on its way. Check back soon to learn more about who we are and what drives our commitment to Hi-Fi / Hi-End audio.",
-    "cta": "Browse Our Brands"
+    "cta": "Browse Our Brands",
+    "content": {
+      "kicker": "The Sound — Tehran",
+      "headline1": "Some things are better",
+      "headline2": "heard than explained.",
+      "lead": "The Sound is an independent high-end audio destination in Tehran, bringing together a carefully selected collection of exceptional audio brands.",
+      "body1": "Our approach is simple. We choose products for their sound, design and quality — and recommend systems that make sense for the person, the music and the space.",
+      "body2": "From a single component to a complete system, every selection is considered individually, with the attention and time it deserves.",
+      "mark": "THE SOUND",
+      "sub": "Hi-End Audio · Tehran, Iran",
+      "coda": "Listen first.",
+      "cue": "Scroll"
+    }
   },
   "contact": {
     "eyebrow": "Contact",

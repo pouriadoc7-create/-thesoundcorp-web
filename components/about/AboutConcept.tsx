@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
 /**
@@ -15,7 +16,8 @@ import { useEffect, useRef } from "react";
  * (GPU): slow parallax, soft scroll reveals, and one hairline that draws itself in — all
  * disabled under prefers-reduced-motion. All styles are scoped under `.about-page`
  * (globals.css) and every SVG id is `ab-`-prefixed, so nothing here touches the rest of
- * the site. English by design — this is the brand's statement piece.
+ * the site. Bilingual: English/LTR for `en`, Persian/RTL for `fa` (content from the
+ * `about.content` messages; the RTL variant mirrors the composition in globals.css).
  */
 
 /* Hero — a loudspeaker driver, precise, emerging from darkness (single light, upper-left). */
@@ -93,6 +95,8 @@ const FINS = finsSVG();
 
 export function AboutConcept() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("about.content");
+  const locale = useLocale();
 
   useEffect(() => {
     const root = rootRef.current;
@@ -168,9 +172,9 @@ export function AboutConcept() {
   }, []);
 
   return (
-    // Forced LTR: this is an English editorial statement piece, so it keeps its
-    // left-aligned composition even in the RTL (fa) locale.
-    <div className="about-page" dir="ltr" ref={rootRef}>
+    // Locale-aware direction: English keeps its left-aligned composition; Persian
+    // mirrors to a right-aligned RTL composition (see .about-page[dir="rtl"]).
+    <div className="about-page" dir={locale === "fa" ? "rtl" : "ltr"} ref={rootRef}>
       <noscript>
         {/* Without JS the reveal transitions never run — show everything. */}
         <style>{`.about-page [data-r]{opacity:1 !important;transform:none !important}`}</style>
@@ -182,31 +186,22 @@ export function AboutConcept() {
         <div className="ab-glow" data-par="0.1" aria-hidden="true" />
         <div className="ab-fade" aria-hidden="true" />
         <div className="ab-inner">
-          <p className="ab-kicker" data-r>The Sound — Tehran</p>
+          <p className="ab-kicker" data-r>{t("kicker")}</p>
           <h1 className="ab-headline" data-r data-d="1">
-            Some things are better
+            {t("headline1")}
             <br />
-            heard than explained.
+            {t("headline2")}
           </h1>
           <div className="ab-hair" id="ab-hair" />
         </div>
-        <div className="ab-cue" aria-hidden="true"><span className="ab-ln" />Scroll</div>
+        <div className="ab-cue" aria-hidden="true"><span className="ab-ln" />{t("cue")}</div>
       </section>
 
       <section className="ab-statement">
-        <p className="ab-lead" data-r>
-          The Sound is an independent high-end audio destination in Tehran, bringing
-          together a carefully selected collection of exceptional audio brands.
-        </p>
+        <p className="ab-lead" data-r>{t("lead")}</p>
         <div className="ab-body">
-          <p data-r>
-            Our approach is simple. We choose products for their sound, design and quality
-            — and recommend systems that make sense for the person, the music and the space.
-          </p>
-          <p data-r data-d="1">
-            From a single component to a complete system, every selection is considered
-            individually, with the attention and time it deserves.
-          </p>
+          <p data-r>{t("body1")}</p>
+          <p data-r data-d="1">{t("body2")}</p>
         </div>
       </section>
 
@@ -218,8 +213,8 @@ export function AboutConcept() {
 
       <section className="ab-sign">
         <div className="ab-div" data-r aria-hidden="true" />
-        <div className="ab-mark" data-r data-d="1">THE SOUND</div>
-        <div className="ab-sub" data-r data-d="2">Hi-End Audio · Tehran, Iran</div>
+        <div className="ab-mark" data-r data-d="1">{t("mark")}</div>
+        <div className="ab-sub" data-r data-d="2">{t("sub")}</div>
       </section>
 
       <section className="ab-coda">

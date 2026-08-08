@@ -28,7 +28,8 @@
   "brandsPage": {
     "eyebrow": "برندها",
     "heading": "شرکای برند ما",
-    "description": "{siteName} واردکننده و توزیع‌کننده رسمی {count} برند از برترین برندهای صوتی های‌فای / های‌اند دنیا است."
+    "description": "{siteName} واردکننده و توزیع‌کننده رسمی {count} برند از برترین برندهای صوتی های‌فای / های‌اند دنیا است.",
+    "documentsCount": "{count, plural, =0 {بدون سند} other {# سند}}"
   },
   "brandDetail": {
     "backToAll": "همه برندها",

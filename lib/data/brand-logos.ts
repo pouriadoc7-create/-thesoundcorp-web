@@ -38,3 +38,28 @@ export const BRAND_LOGOS: Record<string, string> = {
   "van-den-hul": "/brand-logos/van-den-hul.svg",
   "vienna-acoustics": "/brand-logos/vienna-acoustics.svg",
 };
+
+/**
+ * Per-logo visual size tuning so every mark reads at a balanced weight in a
+ * logo grid. Pure `transform: scale` (aspect ratio preserved — no distortion,
+ * no layout shift). Slugs not listed render at their natural size (scale 1).
+ * Shared by the homepage "Our Brands" grid and the /brands directory.
+ */
+export const LOGO_SCALE: Record<string, number> = {
+  // compact marks — enlarged
+  aavik: 1.464,
+  "acoustic-arts": 1.464,
+  borresen: 1.464,
+  marten: 1.464,
+  audiovector: 1.2,
+  davis: 1.2,
+  graham: 1.22,
+  primare: 1.22,
+  soulnote: 1.22,
+  jadis: 1.22,
+  // wide wordmarks — reduced to balance their visual weight
+  jorma: 0.68,
+  teac: 0.68,
+  roksan: 0.68,
+  audes: 0.68,
+};

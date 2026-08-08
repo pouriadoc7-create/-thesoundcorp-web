@@ -28,7 +28,8 @@
   "brandsPage": {
     "eyebrow": "Brands",
     "heading": "Our Brand Partners",
-    "description": "{siteName} is the official importer and distributor of {count} of the world's finest Hi-Fi / Hi-End audio brands."
+    "description": "{siteName} is the official importer and distributor of {count} of the world's finest Hi-Fi / Hi-End audio brands.",
+    "documentsCount": "{count, plural, one {# document} other {# documents}}"
   },
   "brandDetail": {
     "backToAll": "All Brands",

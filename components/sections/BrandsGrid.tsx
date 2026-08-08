@@ -3,30 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Reveal } from "@/components/motion/Reveal";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { BRANDS } from "@/lib/data/brands";
-import { BRAND_LOGOS } from "@/lib/data/brand-logos";
-
-/** Per-logo visual size tuning for the Our Brands grid so every mark reads at a
- *  balanced visual weight. Pure `transform: scale` (aspect ratio preserved — no
- *  stretch/distort); the card size, grid and layout stay unchanged and it causes
- *  no layout shift. Slugs not listed render at their natural size (scale 1). */
-const LOGO_SCALE: Record<string, number> = {
-  // compact marks — enlarged
-  aavik: 1.464,
-  "acoustic-arts": 1.464,
-  borresen: 1.464,
-  marten: 1.464,
-  audiovector: 1.2,
-  davis: 1.2,
-  graham: 1.22,
-  primare: 1.22,
-  soulnote: 1.22,
-  jadis: 1.22,
-  // wide wordmarks — reduced to balance their visual weight
-  jorma: 0.68,
-  teac: 0.68,
-  roksan: 0.68,
-  audes: 0.68,
-};
+import { BRAND_LOGOS, LOGO_SCALE } from "@/lib/data/brand-logos";
 
 export async function BrandsGrid() {
   const t = await getTranslations("brandsGrid");

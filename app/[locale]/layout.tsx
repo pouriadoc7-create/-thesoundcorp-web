@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Vazirmatn } from "next/font/google";
-import localFont from "next/font/local";
 import { hasLocale } from "next-intl";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { preload } from "react-dom";
 
 import "../globals.css";
 
@@ -20,28 +20,14 @@ import { DEFAULT_METADATA } from "@/lib/constants/seo";
 import { CONTACT, SITE_NAME, SITE_URL } from "@/lib/constants/site";
 import { buildLanguageAlternates } from "@/lib/utils/alternates";
 
-// Only one of these two families is ever applied per request (based on
-// locale — see bodyFontClassName below), but next/font's loader calls must
-// stay at module scope. `preload: false` on both stops Next from emitting
-// a <link rel="preload"> for the family that ends up unused, which browsers
-// otherwise flag as "preloaded but not used within a few seconds."
-// Satoshi (Indian Type Foundry, via Fontshare — free for commercial use),
-// self-hosted through next/font/local so it ships from our own origin — no
-// external CDN and no runtime font request. A refined contemporary grotesk
-// with a full variable weight axis (300–900); its light/regular weights give
-// navigation and display type a thin, compact, Swiss-editorial / Bang &
-// Olufsen / Porsche Design character rather than a generic corporate sans.
-// (PP Neue Montreal was requested first but is a commercial font with no
-// licence present in this project, so it is deliberately NOT used — no fake
-// substitution. Satoshi is the licensed self-hosted fallback.)
-const satoshi = localFont({
-  src: "../fonts/Satoshi-Variable.woff2",
-  variable: "--font-sans-latin",
-  weight: "300 900",
-  display: "swap",
-  preload: false,
-});
-
+// Only one family is applied per request (by locale — see bodyFontClassName).
+// Satoshi (Indian Type Foundry, via Fontshare — a refined variable grotesk,
+// 300–900, Swiss-editorial / B&O character) is the Latin/en display+body face;
+// it's self-hosted in globals.css (app-origin, no CDN) so its <link rel=preload>
+// can be emitted per-locale below. Vazirmatn (Persian/fa) stays on next/font.
+// This split exists because next/font preloads a font on EVERY route its loader
+// file wraps — in the shared [locale] layout that would preload the unused face
+// on the other locale, so it can't target only the active one.
 const vazirmatn = Vazirmatn({
   variable: "--font-vazirmatn",
   subsets: ["arabic", "latin"],
@@ -111,9 +97,20 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   setRequestLocale(locale);
 
   const direction = getLocaleDirection(locale);
-  const fontVariables = (locale as AppLocale) === "fa" ? vazirmatn.variable : satoshi.variable;
-  const bodyFontClassName =
-    (locale as AppLocale) === "fa" ? "font-[family-name:var(--font-vazirmatn)]" : "font-sans";
+  const isFa = (locale as AppLocale) === "fa";
+
+  // Preload the ACTIVE Latin display face (Satoshi) for en — it's the hero's LCP
+  // font. Emitted only for en, so fa never fetches an unused Latin face. Vazirmatn
+  // (fa) stays on next/font. crossOrigin is required so the preload matches the
+  // font's CORS fetch and the file isn't downloaded twice.
+  if (!isFa) {
+    preload("/fonts/Satoshi-Variable.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+  }
+
+  // --font-sans-latin is now defined globally in globals.css (Satoshi self-hosted),
+  // so en needs no per-request font variable; fa still gets Vazirmatn's.
+  const fontVariables = isFa ? vazirmatn.variable : "";
+  const bodyFontClassName = isFa ? "font-[family-name:var(--font-vazirmatn)]" : "font-sans";
 
   // Real company data only — no invented prices, ratings, hours or claims.
   // E.164 phone for schema (the display string keeps its spaces for humans).

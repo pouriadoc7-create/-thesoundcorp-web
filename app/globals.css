@@ -1,6 +1,31 @@
 @import "tailwindcss";
 
 /*
+ * Satoshi (Latin display/body face, `en`) — self-hosted so the ACTIVE font can
+ * be <link rel=preload>-ed per locale (see app/[locale]/layout.tsx). It was
+ * previously loaded via next/font, but next/font preloads a font on every route
+ * its loader's file wraps — which, in the shared [locale] layout, meant the fa
+ * pages preloaded Satoshi and the en pages preloaded Vazirmatn (the wrong,
+ * unused face). The "Satoshi Fallback" face carries the EXACT size/metric
+ * overrides next/font computed, so there is zero CLS change from the swap.
+ */
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/Satoshi-Variable.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi Fallback";
+  src: local("Arial");
+  ascent-override: 92.36%;
+  descent-override: 21.95%;
+  line-gap-override: 9.14%;
+  size-adjust: 109.35%;
+}
+
+/*
  * Design tokens. This site ships a single fixed dark theme (no light-mode
  * variant exists anywhere in the UI), so tokens are fixed values rather
  * than the create-next-app default of swapping CSS vars per color scheme.
@@ -44,6 +69,10 @@
 
 :root {
   color-scheme: dark;
+
+  /* Latin font stack (was injected by next/font on <html>; now global since
+     Satoshi is self-hosted above). The "Satoshi Fallback" face keeps CLS ~0. */
+  --font-sans-latin: "Satoshi", "Satoshi Fallback", -apple-system, "Segoe UI", sans-serif;
 
   /*
    * Z-index scale. Not all values are consumed yet (modal/toast have no
@@ -751,7 +780,7 @@ html[lang="fa"] * {
   position: relative;
   background: #050506;
   color: #e9ebee;
-  font-family: var(--font-satoshi), "Satoshi", -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font-sans-latin);
   line-height: 1.5;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;

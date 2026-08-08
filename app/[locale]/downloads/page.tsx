@@ -99,7 +99,9 @@ export default async function DownloadsPage({ params }: DownloadsPageProps) {
         </div>
 
         <div className="mt-14 sm:mt-16">
-          <DownloadsExplorer />
+          {/* Pass the catalogue as a prop so it serializes into the RSC payload
+              instead of being bundled into the client component's JS. */}
+          <DownloadsExplorer brands={brands} />
         </div>
       </Container>
     </Section>

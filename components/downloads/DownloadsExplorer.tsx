@@ -11,25 +11,26 @@ import { ProductTile } from "@/components/downloads/ProductTile";
 import { Reveal } from "@/components/motion/Reveal";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { BRAND_LOGOS } from "@/lib/data/brand-logos";
-import type { DownloadSearchRow } from "@/lib/utils/downloads";
+import type { DownloadBrand, DownloadProduct } from "@/lib/types/download";
+import { cn } from "@/lib/utils/cn";
+// Pure, data-free helpers only — the ~157 KB catalogue arrives via the `brands`
+// prop (server-passed), so it never lands in this client component's JS bundle.
 import {
   DOC_GROUPS,
-  buildSearchIndex,
+  buildSearchIndexFor,
   countBrandDocuments,
-  getDownloadBrand,
-  getDownloadBrands,
-  getDownloadProduct,
+  findBrand,
+  findProduct,
   groupDocuments,
   groupKeyForType,
-} from "@/lib/utils/downloads";
-import { cn } from "@/lib/utils/cn";
+  type DownloadSearchRow,
+} from "@/lib/utils/downloads-view";
 
 /** The interactive Download Center: Brands → Brand → Products → Product → Documents,
  *  with a cross-cutting search and a minimal document-type filter. */
-export function DownloadsExplorer() {
+export function DownloadsExplorer({ brands }: { brands: DownloadBrand[] }) {
   const t = useTranslations("downloads");
-  const brands = useMemo(() => getDownloadBrands(), []);
-  const searchIndex = useMemo(() => buildSearchIndex(), []);
+  const searchIndex = useMemo(() => buildSearchIndexFor(brands), [brands]);
 
   const [brandSlug, setBrandSlug] = useState<string | null>(null);
   const [productSlug, setProductSlug] = useState<string | null>(null);
@@ -45,14 +46,14 @@ export function DownloadsExplorer() {
     const sp = new URLSearchParams(window.location.search);
     const b = sp.get("brand");
     const p = sp.get("product");
-    if (!b || !getDownloadBrand(b)) return;
-    const validProduct = p && getDownloadProduct(b, p) ? p : null;
+    if (!b || !findBrand(brands, b)) return;
+    const validProduct = p && findProduct(brands, b, p) ? p : null;
     const raf = requestAnimationFrame(() => {
       setBrandSlug(b);
       if (validProduct) setProductSlug(validProduct);
     });
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [brands]);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -102,9 +103,9 @@ export function DownloadsExplorer() {
     scrollToTop();
   }, [scrollToTop]);
 
-  const activeBrand = brandSlug ? getDownloadBrand(brandSlug) : undefined;
+  const activeBrand = brandSlug ? findBrand(brands, brandSlug) : undefined;
   const activeProduct =
-    brandSlug && productSlug ? getDownloadProduct(brandSlug, productSlug) : undefined;
+    brandSlug && productSlug ? findProduct(brands, brandSlug, productSlug) : undefined;
   const searching = query.trim().length > 0;
 
   const queryMatches = useMemo<DownloadSearchRow[]>(() => {
@@ -237,7 +238,7 @@ function BrandsView({
   onOpenBrand,
   moreLabel,
 }: {
-  brands: ReturnType<typeof getDownloadBrands>;
+  brands: DownloadBrand[];
   onOpenBrand: (slug: string) => void;
   moreLabel: string;
 }) {
@@ -266,7 +267,7 @@ function ProductsView({
   eyebrow,
   blurbFallback,
 }: {
-  brand: NonNullable<ReturnType<typeof getDownloadBrand>>;
+  brand: DownloadBrand;
   onOpenProduct: (slug: string) => void;
   eyebrow: string;
   blurbFallback?: string;
@@ -313,7 +314,7 @@ function DocumentsView({
   brandName: string;
   brandSlug: string;
   productSlug: string;
-  product: NonNullable<ReturnType<typeof getDownloadProduct>>;
+  product: DownloadProduct;
   typeFilter: string;
   noDocuments: string;
 }) {

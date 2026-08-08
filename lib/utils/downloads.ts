@@ -1,58 +1,44 @@
 import { DOWNLOAD_BRANDS } from "@/lib/data/downloads";
-import type {
-  DownloadBrand,
-  DownloadDocType,
-  DownloadDocument,
-  DownloadProduct,
-} from "@/lib/types/download";
+import type { DownloadBrand, DownloadDocument, DownloadProduct } from "@/lib/types/download";
+
+import {
+  buildSearchIndexFor,
+  countBrandDocuments,
+  DOC_GROUPS,
+  findBrand,
+  findProduct,
+  groupDocuments,
+  groupKeyForType,
+} from "./downloads-view";
+import type { DocGroupDef, DocumentGroup, DownloadSearchRow } from "./downloads-view";
 
 /**
- * Ordered document groups shown in the UI. Each group collects one or more
- * `DownloadDocType`s; the label is localised in the components via
- * `downloads.groups.<key>`. Only non-empty groups are rendered.
+ * Data-bound Download Center helpers — these reach into the full DOWNLOAD_BRANDS
+ * catalogue, so this module (unlike ./downloads-view) is server/proxy-only; a
+ * client component importing from here would bundle the whole dataset. The pure
+ * helpers are re-exported below so existing imports of "@/lib/utils/downloads"
+ * (server pages, the proxy, tests) keep resolving unchanged.
  */
-export interface DocGroupDef {
-  key: string;
-  types: DownloadDocType[];
-}
 
-export const DOC_GROUPS: DocGroupDef[] = [
-  { key: "manuals", types: ["user-manual"] },
-  { key: "quickStart", types: ["quick-start"] },
-  { key: "datasheets", types: ["datasheet"] },
-  { key: "technical", types: ["technical"] },
-  { key: "brochures", types: ["brochure"] },
-  { key: "firmware", types: ["firmware", "software"] },
-  { key: "other", types: ["other"] },
-];
+// Re-export the pure, data-free helpers (defined in ./downloads-view).
+export { DOC_GROUPS, countBrandDocuments, findBrand, findProduct, groupDocuments, groupKeyForType, buildSearchIndexFor };
+export type { DocGroupDef, DocumentGroup, DownloadSearchRow };
 
-const TYPE_TO_GROUP: Record<DownloadDocType, string> = DOC_GROUPS.reduce(
-  (acc, g) => {
-    for (const t of g.types) acc[t] = g.key;
-    return acc;
-  },
-  {} as Record<DownloadDocType, string>
-);
-
-export function groupKeyForType(type: DownloadDocType): string {
-  return TYPE_TO_GROUP[type] ?? "other";
-}
-
-// ---- Lookups ---------------------------------------------------------------
+// ---- Lookups over the whole catalogue --------------------------------------
 
 export function getDownloadBrands(): DownloadBrand[] {
   return DOWNLOAD_BRANDS;
 }
 
 export function getDownloadBrand(slug: string): DownloadBrand | undefined {
-  return DOWNLOAD_BRANDS.find((b) => b.slug === slug);
+  return findBrand(DOWNLOAD_BRANDS, slug);
 }
 
 export function getDownloadProduct(
   brandSlug: string,
   productSlug: string
 ): DownloadProduct | undefined {
-  return getDownloadBrand(brandSlug)?.products.find((p) => p.slug === productSlug);
+  return findProduct(DOWNLOAD_BRANDS, brandSlug, productSlug);
 }
 
 export interface FoundDocument {
@@ -75,27 +61,10 @@ export function findDocument(
   return { brand, product, doc };
 }
 
-// ---- Counts & grouping -----------------------------------------------------
-
-export function countBrandDocuments(brand: DownloadBrand): number {
-  return brand.products.reduce((n, p) => n + p.documents.length, 0);
-}
+// ---- Counts over the whole catalogue ---------------------------------------
 
 export function countAllDocuments(): number {
   return DOWNLOAD_BRANDS.reduce((n, b) => n + countBrandDocuments(b), 0);
-}
-
-export interface DocumentGroup {
-  key: string;
-  docs: DownloadDocument[];
-}
-
-/** Bucket a product's documents into the ordered, non-empty UI groups. */
-export function groupDocuments(docs: DownloadDocument[]): DocumentGroup[] {
-  return DOC_GROUPS.map((g) => ({
-    key: g.key,
-    docs: docs.filter((d) => g.types.includes(d.type)),
-  })).filter((g) => g.docs.length > 0);
 }
 
 // ---- Official-domain allowlist (proxy hardening) --------------------------
@@ -132,46 +101,9 @@ export function isUrlOnBrandDomains(rawUrl: string, brand: DownloadBrand): boole
   return brandDomains(brand).some((dom) => isAllowedOfficialUrl(rawUrl, dom));
 }
 
-// ---- Search index ----------------------------------------------------------
+// ---- Search index over the whole catalogue ---------------------------------
 
-export interface DownloadSearchRow {
-  brandSlug: string;
-  brandName: string;
-  productSlug: string;
-  productName: string;
-  modelCode?: string;
-  category: string;
-  doc: DownloadDocument;
-  /** Precomputed lowercase haystack for cheap substring search. */
-  haystack: string;
-}
-
-/** Flatten every document into a searchable row (brand · product · model · title · type). */
+/** Flatten every document in the catalogue into a searchable row. */
 export function buildSearchIndex(): DownloadSearchRow[] {
-  const rows: DownloadSearchRow[] = [];
-  for (const brand of DOWNLOAD_BRANDS) {
-    for (const product of brand.products) {
-      for (const doc of product.documents) {
-        const parts = [
-          brand.name,
-          product.name,
-          product.modelCode ?? "",
-          product.category,
-          doc.title,
-          doc.type,
-        ];
-        rows.push({
-          brandSlug: brand.slug,
-          brandName: brand.name,
-          productSlug: product.slug,
-          productName: product.name,
-          modelCode: product.modelCode,
-          category: product.category,
-          doc,
-          haystack: parts.join(" ").toLowerCase(),
-        });
-      }
-    }
-  }
-  return rows;
+  return buildSearchIndexFor(DOWNLOAD_BRANDS);
 }

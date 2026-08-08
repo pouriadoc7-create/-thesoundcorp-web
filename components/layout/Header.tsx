@@ -4,7 +4,6 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
 import { OPEN_COMMAND_PALETTE } from "@/components/features/CommandPalette";
-import { MagneticButton } from "@/components/motion/MagneticButton";
 import { Link, usePathname } from "@/i18n/navigation";
 import { NAV_LINKS } from "@/lib/constants/site";
 import { getBrandColumns } from "@/lib/data/brands";
@@ -131,7 +130,9 @@ export function Header() {
               scrolled ? "lg:gap-5 xl:gap-10" : "lg:gap-6 xl:gap-12"
             )}
           >
-            {NAV_LINKS.map((link) => {
+            {/* The logo is the home affordance, so no redundant "Home" text item
+                in the primary nav — a quieter, more editorial bar. */}
+            {NAV_LINKS.filter((link) => link.key !== "home").map((link) => {
               if (link.key === "brands") {
                 return (
                   <div key={link.key} className="relative" {...containerProps}>
@@ -222,15 +223,14 @@ export function Header() {
 
               const active = isActive(link.href);
               return (
-                <MagneticButton key={link.key} strength={0.18} className="align-middle">
-                  <Link
-                    href={link.href}
-                    aria-current={active ? "page" : undefined}
-                    className={cn(NAV_ITEM, active ? "text-white" : "text-zinc-400 hover:text-white")}
-                  >
-                    {t(link.key)}
-                  </Link>
-                </MagneticButton>
+                <Link
+                  key={link.key}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(NAV_ITEM, active ? "text-white" : "text-zinc-400 hover:text-white")}
+                >
+                  {t(link.key)}
+                </Link>
               );
             })}
           </nav>
@@ -246,10 +246,10 @@ export function Header() {
             onClick={() => window.dispatchEvent(new Event(OPEN_COMMAND_PALETTE))}
             aria-label={tSearch("open")}
             title={tSearch("open")}
-            className="group inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-zinc-300 transition-colors duration-300 hover:text-[color:var(--color-gold-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/60"
+            className="group inline-flex h-11 min-h-[44px] w-11 min-w-[44px] items-center justify-center gap-2 rounded-full text-zinc-300 transition-colors duration-300 hover:text-[color:var(--color-gold-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/60 lg:w-auto lg:min-w-0 lg:border lg:border-white/10 lg:bg-white/[0.03] lg:px-3.5 lg:hover:border-white/20"
           >
             <svg
-              className="h-[24px] w-[24px] transition-transform duration-300 ease-[var(--ease-premium)] group-hover:scale-110 group-hover:rotate-[10deg] group-hover:drop-shadow-[0_0_9px_rgba(212,175,55,0.55)]"
+              className="h-[22px] w-[22px] transition-transform duration-300 ease-[var(--ease-premium)] group-hover:scale-110 group-hover:rotate-[8deg] group-hover:drop-shadow-[0_0_9px_rgba(212,175,55,0.55)] lg:h-[18px] lg:w-[18px]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -260,6 +260,11 @@ export function Header() {
               <circle cx="11" cy="11" r="7" />
               <path d="m20 20-3.4-3.4" />
             </svg>
+            {/* Make the ⌘K command palette discoverable (desktop only; mobile keeps
+                the bare icon as a 44px tap target). */}
+            <kbd className="hidden font-sans text-[10.5px] font-medium tracking-[0.04em] text-zinc-500 transition-colors group-hover:text-zinc-300 lg:inline-block">
+              ⌘K
+            </kbd>
           </button>
 
           {/* Mobile toggle */}

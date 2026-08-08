@@ -89,8 +89,11 @@ body {
 html {
   /* Slightly smaller root scale for a cleaner, more refined density (a premium
      trait). Everything rem-based scales down a touch; the generous section
-     rhythm keeps whitespace expensive. */
-  font-size: 15px;
+     rhythm keeps whitespace expensive. Expressed as a percentage (not a fixed
+     15px) so it stays relative to the user's own browser font-size preference
+     — 93.75% of a default 16px is 15px, but a user who raises their base size
+     still scales up proportionally (accessibility). */
+  font-size: 93.75%;
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-height) + 1rem);

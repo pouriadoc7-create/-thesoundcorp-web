@@ -83,6 +83,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
     brand: { "@type": "Brand", name: product.brand },
     category: categoryLabel,
     description: product.description,
+    url: `${SITE_URL}/${locale}/products/${product.slug}`,
+    // Absolute image when real photography exists (Google needs an absolute URL;
+    // omitted rather than faked for products still awaiting photos).
+    ...(product.imageUrl ? { image: `${SITE_URL}${product.imageUrl}` } : {}),
   };
 
   const breadcrumbJsonLd = {

@@ -41,6 +41,10 @@ const nextConfig: NextConfig = {
   images: {
     // Serve modern formats (AVIF first, WebP fallback) for real photography.
     formats: ["image/avif", "image/webp"],
+    // Next 16 defaults images.qualities to [75] and coerces any other quality
+    // prop to the nearest allowed value — so ProductImage's quality={90} silently
+    // dropped to 75. Allow both so premium photography renders at 90.
+    qualities: [75, 90],
   },
   // Lets phones/other devices on the LAN load dev-mode HMR assets when
   // testing via the machine's local network IP (e.g. http://192.168.1.6:3000).

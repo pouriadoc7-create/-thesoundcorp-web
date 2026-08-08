@@ -40,7 +40,7 @@ export default async function GalleryPage({ params }: GalleryPageProps) {
           <GalleryClient />
         </Reveal>
 
-        <p className="mt-12 text-center text-xs text-zinc-600">{t("sampleNote")}</p>
+        <p className="mt-12 text-center text-xs text-zinc-400">{t("sampleNote")}</p>
       </Container>
     </Section>
   );

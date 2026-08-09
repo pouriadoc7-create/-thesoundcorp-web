@@ -10,6 +10,9 @@ interface DownloadIconProps {
   product: string;
   doc: string;
   filename: string;
+  /** Same-origin URL for a locally-hosted file; when set, it's fetched directly
+   *  instead of via the proxy. */
+  href?: string;
   /** Accessible label, e.g. "Download NP5 User Guide". */
   ariaLabel: string;
   /** Tooltip copy, e.g. "Download · official source". */
@@ -30,6 +33,7 @@ export function DownloadIcon({
   product,
   doc,
   filename,
+  href,
   ariaLabel,
   tooltip,
 }: DownloadIconProps) {
@@ -53,7 +57,7 @@ export function DownloadIcon({
         aria-label={ariaLabel}
         aria-busy={busy}
         disabled={busy}
-        onClick={() => download({ brand, product, doc, filename })}
+        onClick={() => download({ brand, product, doc, filename, href })}
         className={cn(
           "relative inline-flex h-11 w-11 items-center justify-center rounded-full border transition-[color,background-color,border-color,transform] duration-500 ease-[var(--ease-premium)]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black",

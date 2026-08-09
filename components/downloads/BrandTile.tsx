@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { BRAND_LOGOS } from "@/lib/data/brand-logos";
+import { DOWNLOAD_LOGO_SCALE } from "@/lib/data/download-logo-scale";
 import type { DownloadBrand } from "@/lib/types/download";
 
 interface BrandTileProps {
@@ -50,6 +51,7 @@ export function BrandTile({ brand, productCount, docCount, onOpen }: BrandTilePr
   }
 
   const logoUrl = BRAND_LOGOS[brand.slug];
+  const logoScale = DOWNLOAD_LOGO_SCALE[brand.slug] ?? 1;
 
   return (
     <button
@@ -68,14 +70,22 @@ export function BrandTile({ brand, productCount, docCount, onOpen }: BrandTilePr
           {t("brandEyebrow")}
         </div>
 
-        <div className="flex flex-1 items-center justify-start py-8">
-          <BrandLogo
-            name={brand.name}
-            logoUrl={logoUrl}
-            className="h-12 w-[172px] sm:h-14 sm:w-[196px]"
-            imgClassName="opacity-90 transition-opacity duration-500 group-hover:opacity-100 ltr:object-left rtl:object-right"
-            wordmarkClassName="text-holo text-2xl font-medium tracking-[0.14em]"
-          />
+        <div className="flex flex-1 items-center justify-center py-8">
+          {/* Fixed object-contain envelope box + per-logo scale (DOWNLOAD_LOGO_SCALE)
+              so every mark reads at ~AUDES's visual weight, aspect-ratio preserved,
+              centered. Downloads-only — see lib/data/download-logo-scale.ts. */}
+          <div
+            className="inline-flex"
+            style={logoScale !== 1 ? { transform: `scale(${logoScale})` } : undefined}
+          >
+            <BrandLogo
+              name={brand.name}
+              logoUrl={logoUrl}
+              className="h-[62px] w-[156px] sm:h-[76px] sm:w-[190px]"
+              imgClassName="opacity-90 transition-opacity duration-500 group-hover:opacity-100"
+              wordmarkClassName="text-holo text-2xl font-medium tracking-[0.14em]"
+            />
+          </div>
         </div>
 
         <div className="flex items-end justify-between">

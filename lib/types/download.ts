@@ -42,10 +42,16 @@ export interface DownloadDocument {
   /** Publication / revision date (ISO `YYYY-MM-DD` or as-published), if known. */
   date?: string;
   format: DownloadFormat;
-  /** Size in bytes, only when the official server reports Content-Length. */
+  /** Size in bytes. */
   fileSize?: number;
-  /** Direct URL to the file on the manufacturer's OWN official domain. */
-  officialUrl: string;
+  /** Direct URL to the file on the manufacturer's OWN official domain (remote —
+   *  streamed via the same-origin proxy in app/api/download). Provide EITHER this
+   *  OR `localPath`. */
+  officialUrl?: string;
+  /** Same-origin path, under /public, to a file imported into the project, e.g.
+   *  "/downloads/audiovector/qr-series/brochure.pdf". Served directly as a static
+   *  asset (no proxy). Provide EITHER this OR `officialUrl`. */
+  localPath?: string;
 }
 
 export interface DownloadProduct {
@@ -76,8 +82,10 @@ export interface DownloadBrand {
   /** Matches `Brand.slug` so the shared brand logo can be reused. */
   slug: string;
   name: string;
-  /** The brand's primary official domain (shown in the UI). */
-  officialDomain: string;
+  /** The brand's primary official domain — forms the download-proxy allowlist
+   *  (with `altDomains`). Optional: a brand with no documents yet and no
+   *  confirmed official domain may omit it until its files/links are provided. */
+  officialDomain?: string;
   /** Additional official domains this brand publishes files on (e.g. a regional
    *  or international site). Together with `officialDomain` these form the proxy
    *  allowlist for the brand — anything else is refused. */

@@ -7,6 +7,7 @@ import { ProductImage } from "@/components/products/ProductImage";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import type { DownloadProduct } from "@/lib/types/download";
+import { cardAspectClass } from "@/lib/utils/downloads-view";
 
 interface ProductHeroProps {
   brandName: string;
@@ -29,18 +30,19 @@ export function ProductHero({ brandName, product, docCount }: ProductHeroProps) 
             src={product.imageUrl}
             blurDataURL={product.imageBlurDataURL}
             variant="full"
-            fit="contain"
+            fit="cover"
             priority
-            sizes="(max-width: 1024px) 100vw, 480px"
-            className="aspect-[4/3] w-full"
+            sizes="(max-width: 1024px) 100vw, 520px"
+            className={`${cardAspectClass(product.category)} w-full`}
           />
         </Card>
       </Reveal>
 
-      <div className="order-2">
+      {/* Centered while stacked (mobile/tablet); original left-aligned column at lg+. */}
+      <div className="order-2 text-center lg:text-start">
         <Reveal
           as="p"
-          className="flex items-center gap-2.5 text-[10px] font-medium uppercase tracking-[0.24em] text-[color:var(--color-gold-soft)]/90 sm:text-[11px]"
+          className="flex items-center justify-center gap-2.5 text-[10px] font-medium uppercase tracking-[0.24em] text-[color:var(--color-gold-soft)]/90 sm:text-[11px] lg:justify-start"
         >
           <span>{brandName}</span>
           <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[color:var(--color-gold)]/60" />
@@ -51,7 +53,7 @@ export function ProductHero({ brandName, product, docCount }: ProductHeroProps) 
           {product.name}
         </Reveal>
 
-        <Reveal delayMs={130} className="mt-4 flex flex-wrap items-center gap-2.5">
+        <Reveal delayMs={130} className="mt-4 flex flex-wrap items-center justify-center gap-2.5 lg:justify-start">
           {product.modelCode ? (
             <Badge tone="gold">{t("modelCode", { code: product.modelCode })}</Badge>
           ) : null}
@@ -62,7 +64,7 @@ export function ProductHero({ brandName, product, docCount }: ProductHeroProps) 
         </Reveal>
 
         {product.tagline ? (
-          <Reveal as="p" delayMs={180} className="mt-5 max-w-xl text-[14px] leading-relaxed text-zinc-400 sm:text-[15px]">
+          <Reveal as="p" delayMs={180} className="mx-auto mt-5 max-w-xl text-[14px] leading-relaxed text-zinc-400 sm:text-[15px] lg:mx-0">
             {product.tagline}
           </Reveal>
         ) : null}
@@ -71,7 +73,7 @@ export function ProductHero({ brandName, product, docCount }: ProductHeroProps) 
           <Reveal delayMs={230} className="mt-7">
             <dl className="divide-y divide-white/[0.06] border-y border-white/[0.06]">
               {product.specs.map((spec) => (
-                <div key={spec.label} className="grid grid-cols-[minmax(88px,0.34fr)_1fr] gap-4 py-2.5">
+                <div key={spec.label} className="grid grid-cols-1 gap-1 py-2.5 lg:grid-cols-[minmax(88px,0.34fr)_1fr] lg:gap-4">
                   <dt className="text-[10.5px] font-medium uppercase tracking-[0.16em] text-muted">
                     {spec.label}
                   </dt>

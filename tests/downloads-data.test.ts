@@ -1,5 +1,8 @@
+import { existsSync } from "node:fs";
+
 import { describe, expect, it } from "vitest";
 
+import { BRANDS } from "@/lib/data/brands";
 import { DOWNLOAD_BRANDS } from "@/lib/data/downloads";
 import type { DownloadFormat } from "@/lib/types/download";
 import { isUrlOnBrandDomains } from "@/lib/utils/downloads";
@@ -23,37 +26,72 @@ describe("Download Center data integrity", () => {
     }
   });
 
-  it("every document is https, on the brand's official domain(s), with a valid format and unique id", () => {
+  it("every document has exactly one valid source, a valid format, and a unique id", () => {
     for (const brand of DOWNLOAD_BRANDS) {
       for (const product of brand.products) {
         const ids = product.documents.map((d) => d.id);
         expect(new Set(ids).size, `dup doc id in ${brand.slug}/${product.slug}`).toBe(ids.length);
         for (const doc of product.documents) {
-          expect(doc.officialUrl.startsWith("https://"), `${doc.id} not https`).toBe(true);
-          expect(isUrlOnBrandDomains(doc.officialUrl, brand), `${doc.id} off-domain`).toBe(true);
+          // Exactly one of officialUrl (remote, proxied) / localPath (imported).
+          const hasRemote = typeof doc.officialUrl === "string";
+          const hasLocal = typeof doc.localPath === "string";
+          expect(hasRemote !== hasLocal, `${doc.id} must set exactly one of officialUrl/localPath`).toBe(true);
+          if (doc.officialUrl) {
+            expect(doc.officialUrl.startsWith("https://"), `${doc.id} not https`).toBe(true);
+            expect(isUrlOnBrandDomains(doc.officialUrl, brand), `${doc.id} off-domain`).toBe(true);
+          }
+          if (doc.localPath) {
+            expect(doc.localPath.startsWith("/downloads/"), `${doc.id} localPath not under /downloads/`).toBe(true);
+            expect(doc.localPath.includes(".."), `${doc.id} localPath contains ..`).toBe(false);
+          }
           expect(VALID_FORMATS, `${doc.id} bad format`).toContain(doc.format);
         }
       }
     }
   });
 
-  it("has no duplicate official URLs within a brand", () => {
+  it("has no duplicate document sources within a brand", () => {
     for (const brand of DOWNLOAD_BRANDS) {
-      const urls = brand.products.flatMap((p) => p.documents.map((d) => d.officialUrl));
-      expect(new Set(urls).size, `dup url in ${brand.slug}`).toBe(urls.length);
+      const srcs = brand.products.flatMap((p) => p.documents.map((d) => d.officialUrl ?? d.localPath));
+      expect(new Set(srcs).size, `dup source in ${brand.slug}`).toBe(srcs.length);
     }
   });
 
-  it("enforces the Primare = NP5-only business rule", () => {
-    const primare = DOWNLOAD_BRANDS.find((b) => b.slug === "primare");
-    expect(primare).toBeDefined();
-    expect(primare!.products.map((p) => p.slug)).toEqual(["np5"]);
-    expect(primare!.products[0].documents.length).toBe(7);
+  it("every imported local file + product image resolves to a real file in /public", () => {
+    for (const brand of DOWNLOAD_BRANDS) {
+      for (const product of brand.products) {
+        if (product.imageUrl?.startsWith("/")) {
+          expect(existsSync(`public${product.imageUrl}`), `missing image ${product.imageUrl}`).toBe(true);
+        }
+        for (const doc of product.documents) {
+          if (doc.localPath) {
+            expect(existsSync(`public${doc.localPath}`), `missing file ${doc.localPath}`).toBe(true);
+          }
+        }
+      }
+    }
   });
 
-  it("does not include excluded brands (TEAC / Marten)", () => {
-    const slugs = new Set(DOWNLOAD_BRANDS.map((b) => b.slug));
-    expect(slugs.has("teac")).toBe(false);
-    expect(slugs.has("marten")).toBe(false);
+  it("only AudioVector retains download content; every other brand is cleared", () => {
+    // Business rule (owner decision, 2026-08): download files/products were
+    // cleared for every brand EXCEPT AudioVector, which keeps its content exactly.
+    // Brand entries + metadata are retained so links can be re-added later.
+    for (const brand of DOWNLOAD_BRANDS) {
+      if (brand.slug === "audiovector") {
+        expect(brand.products.length, "audiovector should keep its products").toBeGreaterThan(0);
+      } else {
+        expect(brand.products.length, `${brand.slug} should be cleared`).toBe(0);
+      }
+    }
+  });
+
+  it("covers all 26 marketing brands (Downloads brand list == Our Brands)", () => {
+    // Owner decision (2026-08): the Download Center lists every brand the site
+    // carries (26), so a brand tile exists for each — even before its files land.
+    expect(DOWNLOAD_BRANDS.length).toBe(26);
+    const dlSlugs = new Set(DOWNLOAD_BRANDS.map((b) => b.slug));
+    for (const b of BRANDS) {
+      expect(dlSlugs.has(b.slug), `download brand missing for '${b.slug}'`).toBe(true);
+    }
   });
 });

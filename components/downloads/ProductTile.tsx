@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { ProductImage } from "@/components/products/ProductImage";
 import { Badge } from "@/components/ui/Badge";
 import type { DownloadProduct } from "@/lib/types/download";
+import { cardAspectClass } from "@/lib/utils/downloads-view";
 
 interface ProductTileProps {
   brandName: string;
@@ -20,21 +21,31 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
     <button
       type="button"
       onClick={onOpen}
-      className="card-lux group flex flex-col overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.08] bg-white/[0.02] text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+      // w-full is load-bearing: a <button> is shrink-to-fit, so without it the card
+      // collapses to its intrinsic content width and sits at the start (left) of its
+      // grid cell — percentage-width children (the image stage) add nothing to that
+      // intrinsic width. w-full makes every card fill its cell, so all cards share
+      // one width and one centered X position.
+      className="card-lux group flex w-full flex-col overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.08] bg-white/[0.02] text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:text-start"
     >
-      <ProductImage
-        brand={brandName}
-        name={product.name}
-        src={product.imageUrl}
-        blurDataURL={product.imageBlurDataURL}
-        variant="full"
-        fit="contain"
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 420px"
-        className="aspect-[16/10] w-full border-b border-white/[0.06]"
-      />
+      {/* Premium image stage: one consistent aspect per product type (portrait for
+          speakers, square for electronics); the image FILLS the area (object-cover,
+          aspect ratio preserved — never stretched), intelligently centered. */}
+      <div className={`relative w-full overflow-hidden border-b border-white/[0.06] ${cardAspectClass(product.category)}`}>
+        <ProductImage
+          brand={brandName}
+          name={product.name}
+          src={product.imageUrl}
+          blurDataURL={product.imageBlurDataURL}
+          variant="full"
+          fit="cover"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
+          className="absolute inset-0 h-full w-full"
+        />
+      </div>
 
-      <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-muted">
+      <div className="flex flex-1 flex-col items-center p-5 sm:items-start">
+        <div className="flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.18em] text-muted sm:justify-start">
           <span>{product.category}</span>
           {product.status ? (
             <>
@@ -44,15 +55,17 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
           ) : null}
         </div>
 
-        <h2 className="mt-2 break-words text-lg font-medium text-zinc-100 transition-colors duration-500 group-hover:text-white">
+        <h2 className="mt-2 break-words text-xl font-medium text-zinc-100 transition-colors duration-500 group-hover:text-white">
           {product.name}
         </h2>
 
-        <div className="mt-3 flex items-center gap-2.5">
-          {product.modelCode ? <Badge tone="gold">{t("modelCode", { code: product.modelCode })}</Badge> : null}
-        </div>
+        {product.modelCode ? (
+          <div className="mt-3 flex items-center justify-center gap-2.5 sm:justify-start">
+            <Badge tone="gold">{t("modelCode", { code: product.modelCode })}</Badge>
+          </div>
+        ) : null}
 
-        <div className="mt-5 flex items-center justify-between border-t border-white/[0.06] pt-4">
+        <div className="mt-5 flex w-full flex-col items-center gap-2.5 border-t border-white/[0.06] pt-4 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
           <span className="text-[11px] uppercase tracking-[0.16em] text-muted">
             {t("documentCount", { count: docCount })}
           </span>

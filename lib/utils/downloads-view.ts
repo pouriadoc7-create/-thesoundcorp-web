@@ -56,6 +56,24 @@ export function groupDocuments(docs: DownloadDocument[]): DocumentGroup[] {
   })).filter((g) => g.docs.length > 0);
 }
 
+// ---- Card image aspect by product type (permanent Downloads standard) -------
+
+/**
+ * The card/hero image aspect for a product, chosen by type so every product of
+ * the same type gets identical card dimensions (permanent Downloads standard):
+ *   • SPEAKERS / subwoofers / default → portrait vertical rectangle (aspect-[4/5])
+ *   • AMPLIFIERS / ELECTRONICS         → square (aspect-square)
+ * Images FILL this area (object-cover, aspect ratio preserved, centered) — never
+ * letterboxed or stretched. See ProductTile / ProductHero.
+ */
+export function cardAspectClass(category: string): string {
+  const c = category.toLowerCase();
+  const electronics =
+    /(amp|amplifier|pre-?amp|integrated|electronic|dac|streamer|network|\bplayer\b|\bcd\b|transport|processor|phono|server|clock|preamplifier|receiver)/;
+  if (electronics.test(c)) return "aspect-square";
+  return "aspect-[4/5]";
+}
+
 // ---- Counts (operate on a passed brand) ------------------------------------
 
 export function countBrandDocuments(brand: DownloadBrand): number {

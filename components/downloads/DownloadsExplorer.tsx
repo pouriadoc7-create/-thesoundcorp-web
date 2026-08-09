@@ -11,6 +11,7 @@ import { ProductTile } from "@/components/downloads/ProductTile";
 import { Reveal } from "@/components/motion/Reveal";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { BRAND_LOGOS } from "@/lib/data/brand-logos";
+import { DOWNLOAD_LOGO_SCALE } from "@/lib/data/download-logo-scale";
 import type { DownloadBrand, DownloadProduct } from "@/lib/types/download";
 import { cn } from "@/lib/utils/cn";
 // Pure, data-free helpers only — the ~157 KB catalogue arrives via the `brands`
@@ -273,16 +274,23 @@ function ProductsView({
   blurbFallback?: string;
 }) {
   const logoUrl = BRAND_LOGOS[brand.slug];
+  const logoScale = DOWNLOAD_LOGO_SCALE[brand.slug] ?? 1;
   return (
     <div>
       <Reveal className="mx-auto max-w-3xl text-center">
-        <BrandLogo
-          name={brand.name}
-          logoUrl={logoUrl}
-          className="mx-auto h-12 w-[180px] sm:h-14"
-          imgClassName="opacity-95"
-          wordmarkClassName="text-holo text-2xl font-medium tracking-[0.14em]"
-        />
+        {/* Same Downloads-only normalization as the brand grid (BrandTile). */}
+        <div
+          className="inline-flex"
+          style={logoScale !== 1 ? { transform: `scale(${logoScale})` } : undefined}
+        >
+          <BrandLogo
+            name={brand.name}
+            logoUrl={logoUrl}
+            className="h-[62px] w-[156px] sm:h-[76px] sm:w-[190px]"
+            imgClassName="opacity-95"
+            wordmarkClassName="text-holo text-2xl font-medium tracking-[0.14em]"
+          />
+        </div>
         {blurbFallback ? (
           <p className="mx-auto mt-6 max-w-xl text-[13.5px] leading-relaxed text-zinc-400 sm:text-sm">{blurbFallback}</p>
         ) : null}
@@ -292,9 +300,16 @@ function ProductsView({
         <span className="text-[10px] uppercase tracking-[0.24em] text-muted">{eyebrow}</span>
       </div>
 
-      <div className="mx-auto mt-6 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {/* justify-items-center centers each card in its track on single-column
+          mobile; from sm: upward tracks stretch exactly as before. */}
+      <div className="mx-auto mt-6 grid w-full max-w-5xl grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 sm:justify-items-stretch lg:grid-cols-3">
         {brand.products.map((product, i) => (
-          <Reveal key={product.slug} delayMs={i * 70}>
+          <Reveal
+            key={product.slug}
+            delayMs={i * 70}
+            // Mobile: a comfortable, centered card width instead of edge-to-edge.
+            className="mx-auto w-full max-w-[400px] sm:max-w-none"
+          >
             <ProductTile brandName={brand.name} product={product} onOpen={() => onOpenProduct(product.slug)} />
           </Reveal>
         ))}

@@ -4,10 +4,8 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
 import { OPEN_COMMAND_PALETTE } from "@/components/features/CommandPalette";
-import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Link, usePathname } from "@/i18n/navigation";
 import { NAV_LINKS } from "@/lib/constants/site";
-import { BRAND_LOGOS, LOGO_SCALE } from "@/lib/data/brand-logos";
 import { getBrandColumns } from "@/lib/data/brands";
 import { useHoverDropdown } from "@/lib/hooks/useHoverDropdown";
 import { useMobileMenu } from "@/lib/hooks/useMobileMenu";
@@ -198,28 +196,9 @@ export function Header() {
                                     <li key={brand.slug}>
                                       <Link
                                         href={`/brands/${brand.slug}`}
-                                        aria-label={brand.name}
-                                        className="group flex items-center justify-center rounded-md px-3 py-2.5 transition-colors duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                                        className="block rounded-md px-2 py-2.5 text-sm tracking-wide text-[color:var(--color-gold-soft)]/90 transition-all duration-300 ease-out hover:text-[color:var(--color-gold-soft)] hover:[text-shadow:0_0_16px_rgba(255,255,255,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ltr:hover:-translate-x-1 rtl:hover:translate-x-1"
                                       >
-                                        {/* Official brand logo, CENTERED in a consistent-height box.
-                                            object-contain preserves each logo's aspect ratio; LOGO_SCALE
-                                            normalises visual weight (compact marks up, wide wordmarks
-                                            down) so every mark reads balanced, straight and centred.
-                                            Wordmark fallback only if an asset is ever missing — all 26
-                                            brands currently have one. */}
-                                        <span
-                                          className="flex w-full items-center justify-center"
-                                          style={LOGO_SCALE[brand.slug] ? { transform: `scale(${LOGO_SCALE[brand.slug]})` } : undefined}
-                                        >
-                                          <BrandLogo
-                                            name={brand.name}
-                                            logoUrl={BRAND_LOGOS[brand.slug]}
-                                            sizes="180px"
-                                            className="h-7 w-full"
-                                            imgClassName="opacity-80 transition-opacity duration-300 group-hover:opacity-100"
-                                            wordmarkClassName="text-sm tracking-wide text-[color:var(--color-gold-soft)]/90"
-                                          />
-                                        </span>
+                                        {brand.name}
                                       </Link>
                                     </li>
                                   ))}

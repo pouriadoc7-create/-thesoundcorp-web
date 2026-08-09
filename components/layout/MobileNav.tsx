@@ -4,10 +4,8 @@ import { useTranslations } from "next-intl";
 import type { RefObject } from "react";
 import { createPortal } from "react-dom";
 
-import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Link } from "@/i18n/navigation";
 import { NAV_LINKS } from "@/lib/constants/site";
-import { BRAND_LOGOS, LOGO_SCALE } from "@/lib/data/brand-logos";
 import { BRANDS } from "@/lib/data/brands";
 import { cn } from "@/lib/utils/cn";
 import { useIsMounted } from "@/lib/hooks/useIsMounted";
@@ -75,30 +73,15 @@ export function MobileNav({ isOpen, onNavigate, panelRef }: MobileNavProps) {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
                     </svg>
                   </summary>
-                  <div className="mb-5 grid grid-cols-2 gap-x-5 gap-y-1 pb-1">
+                  <div className="mb-5 grid grid-cols-2 gap-x-4 gap-y-0.5 pb-1">
                     {BRANDS.map((brand) => (
                       <Link
                         key={brand.slug}
                         href={`/brands/${brand.slug}`}
                         onClick={onNavigate}
-                        aria-label={brand.name}
-                        className="group flex min-h-[44px] items-center justify-center rounded-md px-2 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                        className="flex min-h-[40px] items-center rounded-md text-[12px] font-light tracking-[0.01em] text-[color:var(--color-gold-soft)]/90 transition-colors duration-300 hover:text-[color:var(--color-gold-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                       >
-                        {/* Official brand logo — CENTERED, aspect-preserved (object-contain),
-                            size normalised via LOGO_SCALE; wordmark fallback only if missing. */}
-                        <span
-                          className="flex w-full items-center justify-center"
-                          style={LOGO_SCALE[brand.slug] ? { transform: `scale(${LOGO_SCALE[brand.slug]})` } : undefined}
-                        >
-                          <BrandLogo
-                            name={brand.name}
-                            logoUrl={BRAND_LOGOS[brand.slug]}
-                            sizes="150px"
-                            className="h-7 w-full"
-                            imgClassName="opacity-85 transition-opacity duration-300 group-hover:opacity-100"
-                            wordmarkClassName="text-[12px] font-light tracking-[0.01em] text-[color:var(--color-gold-soft)]/90"
-                          />
-                        </span>
+                        {brand.name}
                       </Link>
                     ))}
                   </div>

@@ -61,8 +61,8 @@ describe("document grouping", () => {
   });
 
   it("groupDocuments returns only non-empty groups in canonical order", () => {
-    const np5 = getDownloadProduct("primare", "np5")!;
-    const groups = groupDocuments(np5.documents);
+    const product = getDownloadProduct("audiovector", "r-series-general")!;
+    const groups = groupDocuments(product.documents);
     expect(groups.length).toBeGreaterThan(0);
     for (const g of groups) expect(g.docs.length).toBeGreaterThan(0);
     const order = DOC_GROUPS.map((g) => g.key);
@@ -73,11 +73,11 @@ describe("document grouping", () => {
 
 describe("lookups & counts", () => {
   it("findDocument resolves valid ids and rejects invalid ones", () => {
-    const found = findDocument("primare", "np5", "user-guide");
-    expect(found?.brand.slug).toBe("primare");
-    expect(found?.doc.officialUrl).toMatch(/^https:\/\/primare\.net\//);
-    expect(findDocument("primare", "np5", "nope")).toBeUndefined();
-    expect(findDocument("nope", "np5", "user-guide")).toBeUndefined();
+    const found = findDocument("audiovector", "r-series-general", "audiovector-r-series-brochure-pdf");
+    expect(found?.brand.slug).toBe("audiovector");
+    expect(found?.doc.officialUrl).toMatch(/^https:\/\/audiovector\.com\//);
+    expect(findDocument("audiovector", "r-series-general", "nope")).toBeUndefined();
+    expect(findDocument("nope", "r-series-general", "audiovector-r-series-brochure-pdf")).toBeUndefined();
   });
 
   it("countAllDocuments equals the sum of per-brand counts", () => {
@@ -96,9 +96,9 @@ describe("buildSearchIndex", () => {
     }
   });
 
-  it("finds NP5 by model code", () => {
-    const rows = buildSearchIndex().filter((r) => r.haystack.includes("np5"));
+  it("finds AudioVector documents by brand term", () => {
+    const rows = buildSearchIndex().filter((r) => r.haystack.includes("audiovector"));
     expect(rows.length).toBeGreaterThan(0);
-    expect(rows.every((r) => r.brandSlug === "primare")).toBe(true);
+    expect(rows.every((r) => r.brandSlug === "audiovector")).toBe(true);
   });
 });

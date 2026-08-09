@@ -45,27 +45,31 @@ function stubFetch(mock: ReturnType<typeof mockUpstream>) {
   );
 }
 
-const NP5 = "?brand=primare&product=np5&doc=user-guide";
+// AudioVector is the only brand that retains download content, so it is the
+// live fixture the proxy resolves against. Its official URL is a PHP download
+// handler (no file extension), which exercises the title+format filename path.
+const AV = "?brand=audiovector&product=r-series-general&doc=audiovector-r-series-brochure-pdf";
 
 describe("GET /api/download (secure proxy)", () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it("returns 400 when params are missing", async () => {
-    expect((await GET(makeReq("?brand=primare"))).status).toBe(400);
+    expect((await GET(makeReq("?brand=audiovector"))).status).toBe(400);
   });
 
   it("returns 404 for an unknown document or brand", async () => {
-    expect((await GET(makeReq("?brand=primare&product=np5&doc=nope"))).status).toBe(404);
-    expect((await GET(makeReq("?brand=nope&product=np5&doc=user-guide"))).status).toBe(404);
+    expect((await GET(makeReq("?brand=audiovector&product=r-series-general&doc=nope"))).status).toBe(404);
+    expect((await GET(makeReq("?brand=nope&product=r-series-general&doc=audiovector-r-series-brochure-pdf"))).status).toBe(404);
   });
 
   it("streams a valid PDF as an attachment with security headers", async () => {
     stubFetch(mockUpstream({ contentType: "application/pdf", contentLength: 4 }));
-    const res = await GET(makeReq(NP5));
+    const res = await GET(makeReq(AV));
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toBe("application/pdf");
+    // URL has no extension → filename is built from the doc title + format.
     expect(res.headers.get("content-disposition")).toMatch(
-      /^attachment; filename="NP5-Prisma-User-Guide\.pdf"/,
+      /^attachment; filename="audiovector_r_series_brochure\.pdf"/,
     );
     expect(res.headers.get("cache-control")).toBe("no-store");
     expect(res.headers.get("x-content-type-options")).toBe("nosniff");
@@ -75,23 +79,21 @@ describe("GET /api/download (secure proxy)", () => {
 
   it("returns 415 for a non-file (html) content-type", async () => {
     stubFetch(mockUpstream({ contentType: "text/html; charset=utf-8" }));
-    expect((await GET(makeReq(NP5))).status).toBe(415);
+    expect((await GET(makeReq(AV))).status).toBe(415);
   });
 
   it("returns 502 when a redirect leaves the official domain", async () => {
     stubFetch(mockUpstream({ url: "https://evil.example/x.pdf" }));
-    expect((await GET(makeReq(NP5))).status).toBe(502);
+    expect((await GET(makeReq(AV))).status).toBe(502);
   });
 
   it("returns 502 when the upstream response is not ok", async () => {
     stubFetch(mockUpstream({ ok: false, status: 503 }));
-    expect((await GET(makeReq(NP5))).status).toBe(502);
+    expect((await GET(makeReq(AV))).status).toBe(502);
   });
 
-  it("accepts an application/zip firmware and names it .zip", async () => {
+  it("accepts an application/zip content-type (firmware archives)", async () => {
     stubFetch(mockUpstream({ contentType: "application/zip" }));
-    const res = await GET(makeReq("?brand=primare&product=np5&doc=firmware-update-tool"));
-    expect(res.status).toBe(200);
-    expect(res.headers.get("content-disposition")).toMatch(/\.zip"/);
+    expect((await GET(makeReq(AV))).status).toBe(200);
   });
 });

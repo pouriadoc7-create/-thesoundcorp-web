@@ -44,11 +44,17 @@ describe("Download Center data integrity", () => {
     }
   });
 
-  it("enforces the Primare = NP5-only business rule", () => {
-    const primare = DOWNLOAD_BRANDS.find((b) => b.slug === "primare");
-    expect(primare).toBeDefined();
-    expect(primare!.products.map((p) => p.slug)).toEqual(["np5"]);
-    expect(primare!.products[0].documents.length).toBe(7);
+  it("only AudioVector retains download content; every other brand is cleared", () => {
+    // Business rule (owner decision, 2026-08): download files/products were
+    // cleared for every brand EXCEPT AudioVector, which keeps its content exactly.
+    // Brand entries + metadata are retained so links can be re-added later.
+    for (const brand of DOWNLOAD_BRANDS) {
+      if (brand.slug === "audiovector") {
+        expect(brand.products.length, "audiovector should keep its products").toBeGreaterThan(0);
+      } else {
+        expect(brand.products.length, `${brand.slug} should be cleared`).toBe(0);
+      }
+    }
   });
 
   it("does not include excluded brands (TEAC / Marten)", () => {

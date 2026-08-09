@@ -1,0 +1,1068 @@
+/* ==========================================================================
+   CONCEPT 03 — CINEMATIC EDITORIAL
+   Oversized editorial type on a rotating cylinder, framed by letterbox bars.
+
+   Every selector is prefixed .ced- and anchored on .ced-root: nothing here can
+   reach the lab shell or the production site. Direction-dependent layout uses
+   logical properties (inset-inline, margin-inline, text-align: start/end);
+   safe-area insets stay physical, because the notch is physical.
+   ========================================================================== */
+
+.ced-root {
+  position: absolute;
+  inset: 0;
+  /* Fallback first, then the dynamic units iOS/Android actually need. */
+  block-size: 100vh;
+  block-size: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(125% 72% at 50% 50%, #0a0b0d 0%, #000 74%),
+    #000;
+  color: #fff;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+
+  /* --- system ---------------------------------------------------------- */
+  --ced-gold: #f0b000;
+  --ced-e: cubic-bezier(0.16, 1, 0.3, 1);
+  --ced-shutter: cubic-bezier(0.62, 0.02, 0.18, 1);
+
+  --ced-latin: "Satoshi", "Satoshi Fallback", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --ced-fa: var(--font-vazirmatn, "Vazirmatn"), "Vazirmatn", "SF Arabic", "Geeza Pro",
+    "Noto Naskh Arabic", "Segoe UI", Tahoma, sans-serif;
+
+  /* Display ramp — swapped wholesale for Persian further down. */
+  --ced-face: var(--ced-latin);
+  --ced-size: clamp(2.4rem, 12.4vw, 4rem);
+  --ced-lh: 1.14;
+  --ced-track: -0.028em;
+  --ced-weight: 500;
+
+  --ced-pad: clamp(20px, 5.6vw, 34px);
+  --ced-rail: clamp(30px, 8.4vw, 42px);
+  --ced-bt: calc(env(safe-area-inset-top, 0px) + 62px);
+  --ced-bb: calc(env(safe-area-inset-bottom, 0px) + 78px);
+
+  --ced-wipe: linear-gradient(90deg, rgba(0, 0, 0, 1) 38%, rgba(0, 0, 0, 0) 66%);
+  --ced-in: cedWipeIn;
+  --ced-out: cedWipeOut;
+
+  font-family: var(--ced-face);
+}
+
+/* Persian is not a translation of the Latin ramp — it is its own setting:
+   larger leading for the descenders and dots, no tracking (the script is
+   cursive and tracking breaks the joins), a heavier optical weight. */
+.ced-root[dir="rtl"] {
+  --ced-face: var(--ced-fa);
+  --ced-size: clamp(2rem, 10.4vw, 3.35rem);
+  --ced-lh: 1.5;
+  --ced-track: normal;
+  --ced-weight: 600;
+  --ced-wipe: linear-gradient(270deg, rgba(0, 0, 0, 1) 38%, rgba(0, 0, 0, 0) 66%);
+  --ced-in: cedWipeInRtl;
+  --ced-out: cedWipeOutRtl;
+}
+
+.ced-frame {
+  position: absolute;
+  inset: 0;
+}
+
+/* ==========================================================================
+   Letterbox shutter
+   ========================================================================== */
+
+.ced-bar {
+  position: absolute;
+  inset-inline: 0;
+  block-size: 56%;
+  z-index: 30;
+  background: #000;
+  pointer-events: none;
+  transition: transform 640ms var(--ced-shutter);
+}
+/* Compositor hint only while the shutter can actually move. */
+.ced-root:not([data-phase="closed"]) .ced-bar {
+  will-change: transform;
+}
+.ced-bar-top {
+  inset-block-start: 0;
+  transform: translate3d(0, -100%, 0);
+}
+.ced-bar-bot {
+  inset-block-end: 0;
+  transform: translate3d(0, 100%, 0);
+}
+
+/* The blade edge — a hairline that only reads when the light is on it. */
+.ced-bar-top::after,
+.ced-bar-bot::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  block-size: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.13) 22%,
+    rgba(255, 255, 255, 0.13) 78%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+.ced-bar-top::after { inset-block-end: 0; }
+.ced-bar-bot::after { inset-block-start: 0; }
+
+.ced-root[data-bars="rest"] .ced-bar-top {
+  transform: translate3d(0, calc(-100% + var(--ced-bt)), 0);
+}
+.ced-root[data-bars="rest"] .ced-bar-bot {
+  transform: translate3d(0, calc(100% - var(--ced-bb)), 0);
+}
+.ced-root[data-bars="shut"] .ced-bar-top,
+.ced-root[data-bars="shut"] .ced-bar-bot {
+  transform: translate3d(0, 0, 0);
+}
+
+/* ==========================================================================
+   The cylinder
+   ========================================================================== */
+
+.ced-viewport {
+  position: absolute;
+  inset-inline: 0;
+  inset-block: var(--ced-bt) var(--ced-bb);
+  z-index: 10;
+  perspective: clamp(680px, 175vw, 1080px);
+  perspective-origin: 50% 50%;
+  /* The ONLY surface that takes the gesture away from the browser. */
+  touch-action: none;
+  visibility: hidden;
+}
+.ced-root[data-phase="opening"] .ced-viewport,
+.ced-root[data-phase="open"] .ced-viewport,
+.ced-root[data-phase="closing"] .ced-viewport,
+.ced-root[data-phase="confirm"] .ced-viewport {
+  visibility: visible;
+}
+/* In the brands state the strip owns the gesture; the drum is scenery. */
+.ced-root[data-view="brands"] .ced-viewport {
+  pointer-events: none;
+}
+
+.ced-deck {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 780ms var(--ced-e);
+}
+/* Brands: the drum tilts aside and back, clearing the lower half for the strip. */
+.ced-root[data-view="brands"] .ced-deck {
+  transform: translate3d(0, -19%, 0) scale(0.72) rotateY(-12deg);
+}
+.ced-root[dir="rtl"][data-view="brands"] .ced-deck {
+  transform: translate3d(0, -19%, 0) scale(0.72) rotateY(12deg);
+}
+
+.ced-cyl {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.ced-line {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 50%;
+  display: flex;
+  align-items: baseline;
+  block-size: calc(var(--ced-size) * var(--ced-lh));
+  padding-inline: var(--ced-pad);
+  font-family: var(--ced-face);
+  font-size: var(--ced-size);
+  line-height: var(--ced-lh);
+  font-weight: var(--ced-weight);
+  letter-spacing: var(--ced-track);
+  text-decoration: none;
+  color: inherit;
+  transform-origin: 50% 50%;
+  -webkit-tap-highlight-color: transparent;
+}
+.ced-line:focus-visible {
+  outline: none;
+}
+
+/* Numeric index — the only place gold ever appears. */
+.ced-idx {
+  flex: 0 0 var(--ced-rail);
+  align-self: baseline;
+  font-family: var(--ced-latin);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.24em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.32);
+  transition: color 480ms var(--ced-e);
+}
+.ced-root[dir="rtl"] .ced-idx {
+  font-family: var(--ced-fa);
+  font-size: 12.5px;
+  letter-spacing: normal;
+}
+.ced-line.is-focus .ced-idx {
+  color: var(--ced-gold);
+}
+
+.ced-txt {
+  display: inline-block;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.94);
+  transform-origin: 0% 50%;
+  transition:
+    transform 520ms var(--ced-e),
+    color 480ms var(--ced-e);
+}
+.ced-root[dir="rtl"] .ced-txt {
+  transform-origin: 100% 50%;
+}
+.ced-line.is-focus .ced-txt {
+  color: #fff;
+}
+
+/* The hairline that draws across on selection. */
+.ced-rule {
+  position: absolute;
+  inset-inline: var(--ced-pad);
+  inset-block-end: 0.1em;
+  block-size: 1px;
+  background: rgba(255, 255, 255, 0.42);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 620ms var(--ced-e);
+}
+.ced-root[dir="rtl"] .ced-rule {
+  transform-origin: right center;
+}
+.ced-line.is-chosen .ced-rule {
+  transform: scaleX(1);
+}
+.ced-line.is-chosen .ced-txt {
+  transform: scale(1.035);
+  color: #fff;
+}
+
+/* Selection: everything but the chosen line clears out of frame. */
+.ced-root[data-phase="confirm"] .ced-line {
+  filter: none !important;
+}
+.ced-root[data-phase="confirm"] .ced-line:not(.is-chosen) {
+  opacity: 0 !important;
+  transition: opacity 380ms var(--ced-e);
+}
+
+/* Focus reticle — two 14px marks, like the index bezel of a wheel. */
+.ced-band {
+  position: absolute;
+  inset-inline: calc(var(--ced-pad) - 13px);
+  inset-block-start: 50%;
+  block-size: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 600ms var(--ced-e) 400ms;
+}
+.ced-band::before,
+.ced-band::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inline-size: 14px;
+  block-size: 1px;
+  background: rgba(255, 255, 255, 0.22);
+}
+.ced-band::before { inset-inline-start: 0; }
+.ced-band::after { inset-inline-end: 0; }
+.ced-root[data-phase="open"] .ced-band { opacity: 1; }
+
+/* Line-box probe: identical face/size/leading, never painted. */
+.ced-metric {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: pre;
+  font-family: var(--ced-face);
+  font-size: var(--ced-size);
+  line-height: var(--ced-lh);
+  font-weight: var(--ced-weight);
+}
+
+/* Depth veils. Opaque gradients rather than a mask on the perspective root:
+   cheaper on Android, and no risk of flattening the 3D context. */
+.ced-vig {
+  position: absolute;
+  inset-inline: 0;
+  z-index: 20;
+  block-size: clamp(58px, 13vh, 128px);
+  block-size: clamp(58px, 13svh, 128px);
+  pointer-events: none;
+}
+.ced-vig-top {
+  inset-block-start: var(--ced-bt);
+  background: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.7) 44%, rgba(0, 0, 0, 0) 100%);
+}
+.ced-vig-bot {
+  inset-block-end: var(--ced-bb);
+  background: linear-gradient(0deg, #000 0%, rgba(0, 0, 0, 0.7) 44%, rgba(0, 0, 0, 0) 100%);
+}
+
+.ced-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.66) 62%);
+  transition: opacity 600ms var(--ced-e);
+}
+.ced-root[data-view="brands"] .ced-scrim { opacity: 1; }
+
+/* ==========================================================================
+   Mask wipe — the reveal is a wipe, never a fade
+   ========================================================================== */
+
+@keyframes cedWipeIn {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+    transform: translateY(0.16em);
+  }
+  to {
+    -webkit-mask-position: 0% 0;
+    mask-position: 0% 0;
+    transform: translateY(0);
+  }
+}
+@keyframes cedWipeOut {
+  from {
+    -webkit-mask-position: 0% 0;
+    mask-position: 0% 0;
+    transform: translateY(0);
+  }
+  to {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+    transform: translateY(-0.1em);
+  }
+}
+@keyframes cedWipeInRtl {
+  from {
+    -webkit-mask-position: 0% 0;
+    mask-position: 0% 0;
+    transform: translateY(0.16em);
+  }
+  to {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+    transform: translateY(0);
+  }
+}
+@keyframes cedWipeOutRtl {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+    transform: translateY(0);
+  }
+  to {
+    -webkit-mask-position: 0% 0;
+    mask-position: 0% 0;
+    transform: translateY(-0.1em);
+  }
+}
+
+.ced-root[data-phase="opening"] .ced-txt,
+.ced-root[data-phase="closing"] .ced-txt {
+  -webkit-mask-image: var(--ced-wipe);
+  mask-image: var(--ced-wipe);
+  -webkit-mask-size: 260% 100%;
+  mask-size: 260% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  animation-fill-mode: both;
+}
+.ced-root[data-phase="opening"] .ced-txt {
+  animation-name: var(--ced-in);
+  animation-duration: 640ms;
+  animation-timing-function: var(--ced-e);
+}
+.ced-root[data-phase="closing"] .ced-txt {
+  animation-name: var(--ced-out);
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.7, 0.2);
+}
+
+/* Opening: top line first. Closing: last line first — a true reverse. */
+.ced-root[data-phase="opening"] .ced-line:nth-child(1) .ced-txt { animation-delay: 250ms; }
+.ced-root[data-phase="opening"] .ced-line:nth-child(2) .ced-txt { animation-delay: 302ms; }
+.ced-root[data-phase="opening"] .ced-line:nth-child(3) .ced-txt { animation-delay: 354ms; }
+.ced-root[data-phase="opening"] .ced-line:nth-child(4) .ced-txt { animation-delay: 406ms; }
+.ced-root[data-phase="opening"] .ced-line:nth-child(5) .ced-txt { animation-delay: 458ms; }
+.ced-root[data-phase="opening"] .ced-line:nth-child(6) .ced-txt { animation-delay: 510ms; }
+.ced-root[data-phase="opening"] .ced-line:nth-child(7) .ced-txt { animation-delay: 562ms; }
+
+.ced-root[data-phase="closing"] .ced-line:nth-child(7) .ced-txt { animation-delay: 0ms; }
+.ced-root[data-phase="closing"] .ced-line:nth-child(6) .ced-txt { animation-delay: 28ms; }
+.ced-root[data-phase="closing"] .ced-line:nth-child(5) .ced-txt { animation-delay: 56ms; }
+.ced-root[data-phase="closing"] .ced-line:nth-child(4) .ced-txt { animation-delay: 84ms; }
+.ced-root[data-phase="closing"] .ced-line:nth-child(3) .ced-txt { animation-delay: 112ms; }
+.ced-root[data-phase="closing"] .ced-line:nth-child(2) .ced-txt { animation-delay: 140ms; }
+.ced-root[data-phase="closing"] .ced-line:nth-child(1) .ced-txt { animation-delay: 168ms; }
+
+/* Compositor hints only while the drum is actually turning. */
+.ced-root[data-spin="1"] .ced-line {
+  will-change: transform, opacity, filter;
+}
+
+/* ==========================================================================
+   Letterbox chrome — rides the rest position of the bars, never the shutter
+   ========================================================================== */
+
+.ced-chrome {
+  position: absolute;
+  inset-inline: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  /* Physical padding for physical device insets. */
+  padding-left: calc(env(safe-area-inset-left, 0px) + var(--ced-pad));
+  padding-right: calc(env(safe-area-inset-right, 0px) + var(--ced-pad));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 500ms var(--ced-e),
+    transform 620ms var(--ced-e),
+    visibility 0s linear 620ms;
+}
+.ced-chrome-top {
+  inset-block-start: 0;
+  block-size: var(--ced-bt);
+  padding-top: env(safe-area-inset-top, 0px);
+  justify-content: flex-end;
+  transform: translate3d(0, -10px, 0);
+}
+.ced-chrome-bot {
+  inset-block-end: 0;
+  block-size: var(--ced-bb);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  justify-content: space-between;
+  gap: 12px;
+  transform: translate3d(0, 10px, 0);
+}
+.ced-root[data-bars="rest"] .ced-chrome {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 220ms, 220ms, 0s;
+}
+.ced-root[data-phase="confirm"] .ced-chrome {
+  opacity: 0;
+  transform: none;
+  transition-delay: 0s, 0s, 320ms;
+}
+
+.ced-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  min-block-size: 44px;
+  padding-inline: 6px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  font-family: var(--ced-latin);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.56);
+  -webkit-tap-highlight-color: transparent;
+  transition: color 380ms var(--ced-e), transform 380ms var(--ced-e);
+}
+.ced-close:active {
+  color: #fff;
+  transform: scale(0.95);
+}
+.ced-closemark {
+  position: relative;
+  inline-size: 11px;
+  block-size: 11px;
+  flex: 0 0 auto;
+}
+.ced-closemark::before,
+.ced-closemark::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 0;
+  inline-size: 11px;
+  block-size: 1px;
+  background: currentColor;
+}
+.ced-closemark::before { transform: rotate(45deg); }
+.ced-closemark::after { transform: rotate(-45deg); }
+
+.ced-root[dir="rtl"] .ced-close {
+  font-family: var(--ced-fa);
+  font-size: 12.5px;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.ced-mark {
+  min-inline-size: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--ced-latin);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* --- language ------------------------------------------------------------ */
+
+.ced-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85em;
+  pointer-events: auto;
+}
+.ced-langlabel {
+  font-family: var(--ced-latin);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+}
+.ced-root[dir="rtl"] .ced-langlabel {
+  font-family: var(--ced-fa);
+  font-size: 11.5px;
+  letter-spacing: normal;
+  text-transform: none;
+}
+.ced-langset {
+  display: inline-flex;
+  align-items: center;
+}
+.ced-langbtn {
+  min-block-size: 44px;
+  min-inline-size: 44px;
+  padding-inline: 4px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--ced-latin);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.34);
+  -webkit-tap-highlight-color: transparent;
+  transition: color 380ms var(--ced-e);
+}
+.ced-langbtn-fa {
+  font-family: var(--ced-fa);
+  font-size: 13px;
+  letter-spacing: normal;
+}
+.ced-langbtn[data-on="true"] {
+  color: #fff;
+}
+.ced-langbtn:active {
+  color: rgba(255, 255, 255, 0.85);
+}
+.ced-langsep {
+  inline-size: 1px;
+  block-size: 11px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* ==========================================================================
+   Trigger (closed state)
+   ========================================================================== */
+
+.ced-triggerwrap {
+  position: absolute;
+  inset: 0;
+  z-index: 26;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-block: calc(env(safe-area-inset-top, 0px) + 30px)
+    calc(env(safe-area-inset-bottom, 0px) + 26px);
+  padding-left: calc(env(safe-area-inset-left, 0px) + var(--ced-pad));
+  padding-right: calc(env(safe-area-inset-right, 0px) + var(--ced-pad));
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 8px, 0);
+  transition:
+    opacity 550ms var(--ced-e),
+    transform 700ms var(--ced-e),
+    visibility 0s linear 700ms;
+}
+.ced-root[data-phase="closed"] .ced-triggerwrap {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 180ms, 180ms, 0s;
+}
+
+.ced-kicker {
+  margin: 0 0 clamp(26px, 6.5vh, 52px);
+  font-family: var(--ced-latin);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  text-align: center;
+  /* Latin wordmark keeps its tracking in both locales. */
+  padding-inline-start: 0.36em;
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.ced-trigger {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(14px, 2.4vh, 20px);
+  min-block-size: 44px;
+  padding: 16px 28px 18px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 450ms var(--ced-e);
+}
+.ced-trigger:active {
+  transform: scale(0.972);
+}
+
+.ced-reel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.ced-reelbar {
+  display: block;
+  block-size: 1px;
+  background: rgba(255, 255, 255, 0.45);
+  transition: inline-size 520ms var(--ced-e), background-color 520ms var(--ced-e);
+}
+.ced-reelbar:nth-child(1) { inline-size: 34px; }
+.ced-reelbar:nth-child(2) { inline-size: 22px; }
+.ced-reelbar:nth-child(3) { inline-size: 12px; }
+.ced-trigger:active .ced-reelbar:nth-child(1) { inline-size: 12px; }
+.ced-trigger:active .ced-reelbar:nth-child(3) { inline-size: 34px; }
+.ced-trigger:active .ced-reelbar { background: rgba(255, 255, 255, 0.75); }
+
+.ced-triggerword {
+  font-family: var(--ced-latin);
+  font-size: clamp(1.5rem, 6.6vw, 2rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  /* Optical centring: cancel the trailing tracking of the last letter. */
+  padding-inline-start: 0.4em;
+  color: rgba(255, 255, 255, 0.96);
+}
+.ced-root[dir="rtl"] .ced-triggerword {
+  font-family: var(--ced-fa);
+  font-size: clamp(1.6rem, 7vw, 2.1rem);
+  letter-spacing: normal;
+  text-transform: none;
+  padding-inline-start: 0;
+  line-height: 1.4;
+}
+
+.ced-triggerrule {
+  inline-size: 44px;
+  block-size: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.ced-triggermeta {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--ced-latin);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.34);
+}
+.ced-root[dir="rtl"] .ced-triggermeta {
+  font-family: var(--ced-fa);
+  font-size: 12px;
+  letter-spacing: normal;
+}
+.ced-dash {
+  margin-inline: 0.55em;
+  color: rgba(255, 255, 255, 0.22);
+}
+
+.ced-triggerwrap .ced-lang {
+  margin-block-start: clamp(30px, 8vh, 62px);
+}
+
+/* ==========================================================================
+   Brands filmstrip
+   ========================================================================== */
+
+.ced-sub {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: calc(var(--ced-bb) + 8px);
+  z-index: 25;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 26px, 0);
+  transition:
+    opacity 500ms var(--ced-e),
+    transform 620ms var(--ced-e),
+    visibility 0s linear 620ms;
+}
+.ced-root[data-view="brands"] .ced-sub {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 140ms, 140ms, 0s;
+}
+
+.ced-subhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-left: calc(env(safe-area-inset-left, 0px) + var(--ced-pad));
+  margin-right: calc(env(safe-area-inset-right, 0px) + var(--ced-pad));
+}
+.ced-subtitle {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--ced-latin);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.58);
+}
+.ced-root[dir="rtl"] .ced-subtitle {
+  font-family: var(--ced-fa);
+  font-size: 12.5px;
+  letter-spacing: normal;
+  text-transform: none;
+}
+.ced-subcount {
+  margin-inline-start: 0.9em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.3);
+}
+.ced-subclose {
+  min-block-size: 44px;
+  padding-inline: 6px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--ced-latin);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+  -webkit-tap-highlight-color: transparent;
+  transition: color 380ms var(--ced-e);
+}
+.ced-subclose:active { color: #fff; }
+.ced-root[dir="rtl"] .ced-subclose {
+  font-family: var(--ced-fa);
+  font-size: 12.5px;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.ced-searchwrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-block-start: 12px;
+  margin-left: calc(env(safe-area-inset-left, 0px) + var(--ced-pad));
+  margin-right: calc(env(safe-area-inset-right, 0px) + var(--ced-pad));
+  border-block-end: 1px solid rgba(255, 255, 255, 0.13);
+  transition: border-color 400ms var(--ced-e);
+}
+.ced-searchwrap:focus-within {
+  border-block-end-color: rgba(255, 255, 255, 0.38);
+}
+.ced-searchicon {
+  flex: 0 0 auto;
+  inline-size: 15px;
+  block-size: 15px;
+  color: rgba(255, 255, 255, 0.32);
+}
+.ced-search {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  min-block-size: 46px;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: #fff;
+  font-family: inherit;
+  /* 16px keeps iOS Safari from zooming the viewport on focus. */
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  text-align: start;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.ced-search::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+.ced-search::-webkit-search-cancel-button,
+.ced-search::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ced-strip {
+  display: flex;
+  gap: 10px;
+  margin-block-start: 14px;
+  padding-block: 2px 4px;
+  padding-left: calc(env(safe-area-inset-left, 0px) + var(--ced-pad));
+  padding-right: calc(env(safe-area-inset-right, 0px) + var(--ced-pad));
+  /* Native momentum stays with the browser — this strip is NOT a custom drag. */
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--ced-pad);
+  scrollbar-width: none;
+}
+.ced-strip::-webkit-scrollbar {
+  inline-size: 0;
+  block-size: 0;
+  display: none;
+}
+
+.ced-cell {
+  position: relative;
+  flex: 0 0 auto;
+  inline-size: min(56vw, 208px);
+  min-block-size: 96px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 2px;
+  background: linear-gradient(
+    158deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.012) 62%
+  );
+  text-decoration: none;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 450ms var(--ced-e),
+    border-color 450ms var(--ced-e),
+    opacity 380ms var(--ced-e);
+}
+.ced-cell:active {
+  transform: scale(0.978);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.ced-cell:focus-visible {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.34);
+}
+.ced-cellnum {
+  font-family: var(--ced-latin);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.28);
+}
+.ced-root[dir="rtl"] .ced-cellnum {
+  font-family: var(--ced-fa);
+  font-size: 11.5px;
+  letter-spacing: normal;
+}
+.ced-cellname {
+  /* Brand names are Latin in every locale — they keep the Latin face. */
+  font-family: var(--ced-latin);
+  font-size: clamp(0.95rem, 4.4vw, 1.12rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.9);
+  overflow-wrap: break-word;
+}
+.ced-cellrule {
+  position: absolute;
+  inset-inline: 14px;
+  inset-block-end: 0;
+  block-size: 1px;
+  background: rgba(255, 255, 255, 0.45);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 520ms var(--ced-e);
+}
+.ced-root[dir="rtl"] .ced-cellrule {
+  transform-origin: right center;
+}
+.ced-cell:active .ced-cellrule,
+.ced-cell.is-chosen .ced-cellrule {
+  transform: scaleX(1);
+}
+.ced-cell.is-chosen {
+  transform: scale(1.02);
+  border-color: rgba(255, 255, 255, 0.34);
+}
+.ced-root[data-phase="confirm"] .ced-cell:not(.is-chosen) {
+  opacity: 0;
+}
+
+.ced-empty {
+  margin: 26px 0 10px;
+  text-align: center;
+  font-family: var(--ced-latin);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.36);
+}
+.ced-root[dir="rtl"] .ced-empty {
+  font-family: var(--ced-fa);
+  font-size: 14px;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* ==========================================================================
+   Short viewports — keep the huge type off the letterbox edges
+   ========================================================================== */
+
+/* 360px-class handsets: the letterbox band carries the wordmark + the language
+   set, so the decorative "Language" label steps out (the group keeps its
+   aria-label). Nothing wraps, nothing overflows. */
+@media (max-width: 420px) {
+  .ced-chrome-bot .ced-langlabel {
+    display: none;
+  }
+}
+
+@media (max-height: 700px) {
+  .ced-root {
+    --ced-size: clamp(2.1rem, 9.6vw, 3.1rem);
+    --ced-bt: calc(env(safe-area-inset-top, 0px) + 56px);
+    --ced-bb: calc(env(safe-area-inset-bottom, 0px) + 70px);
+  }
+  .ced-root[dir="rtl"] {
+    --ced-size: clamp(1.85rem, 8.6vw, 2.7rem);
+  }
+  .ced-cell { min-block-size: 86px; }
+}
+
+/* ==========================================================================
+   Reduced motion — a clean, sharp, static editorial list
+   ========================================================================== */
+
+.ced-root[data-static="true"] .ced-viewport {
+  perspective: none;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: auto;
+}
+.ced-root[data-static="true"] .ced-deck {
+  position: static;
+  transform: none !important;
+  transition: none;
+  transform-style: flat;
+}
+.ced-root[data-static="true"] .ced-cyl {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-block-size: 100%;
+  padding-block: 16px;
+  transform-style: flat;
+}
+.ced-root[data-static="true"] .ced-line {
+  position: static;
+  --ced-size: clamp(1.7rem, 7.4vw, 2.3rem);
+  block-size: auto;
+  padding-block: 9px;
+  transform: none;
+  opacity: 1;
+  filter: none;
+}
+.ced-root[data-static="true"] .ced-txt {
+  white-space: normal;
+}
+.ced-root[data-static="true"] .ced-band,
+.ced-root[data-static="true"] .ced-vig {
+  display: none;
+}
+.ced-root[data-static="true"] .ced-bar,
+.ced-root[data-static="true"] .ced-chrome,
+.ced-root[data-static="true"] .ced-sub,
+.ced-root[data-static="true"] .ced-triggerwrap,
+.ced-root[data-static="true"] .ced-scrim {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ced-root .ced-bar,
+  .ced-root .ced-deck,
+  .ced-root .ced-scrim,
+  .ced-root .ced-chrome,
+  .ced-root .ced-sub,
+  .ced-root .ced-triggerwrap,
+  .ced-root .ced-line,
+  .ced-root .ced-txt,
+  .ced-root .ced-rule,
+  .ced-root .ced-cell,
+  .ced-root .ced-cellrule,
+  .ced-root .ced-reelbar,
+  .ced-root .ced-trigger,
+  .ced-root .ced-band {
+    animation: none !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0s !important;
+  }
+  .ced-root .ced-txt {
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+}

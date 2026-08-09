@@ -206,10 +206,24 @@ export function ContactHero() {
   const [message, setMessage] = useState("");
   const [company, setCompany] = useState(""); // honeypot — must stay empty
   const [status, setStatus] = useState<SubmitStatus>("idle");
+  // Tracks which required fields the visitor has left (blurred), so we don't flag an
+  // untouched field red before they've had a chance to fill it in.
+  const [touched, setTouched] = useState({ name: false, email: false, message: false });
+  // Set once the visitor tries to submit an incomplete form — surfaces the shared
+  // validation message and, from then on, live-updates per-field state as they type.
+  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
 
-  const valid = name.trim().length > 0 && email.includes("@") && message.trim().length > 0;
+  const nameValid = name.trim().length > 0;
+  const emailValid = email.includes("@");
+  const messageValid = message.trim().length > 0;
+  const valid = nameValid && emailValid && messageValid;
   const sending = status === "sending";
   const done = status === "sent" || status === "sentMail";
+
+  const nameInvalid = (touched.name || attemptedSubmit) && !nameValid;
+  const emailInvalid = (touched.email || attemptedSubmit) && !emailValid;
+  const messageInvalid = (touched.message || attemptedSubmit) && !messageValid;
+  const showValidationMessage = attemptedSubmit && !valid;
 
   function openMailFallback() {
     const subject = encodeURIComponent(`New enquiry from ${name.trim()}`);
@@ -224,7 +238,14 @@ export function ContactHero() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!valid || sending) return;
+    if (sending) return;
+    if (!valid) {
+      // Flag every required field and surface the shared validation message instead
+      // of silently doing nothing (WCAG 3.3.1 Error Identification).
+      setAttemptedSubmit(true);
+      setTouched({ name: true, email: true, message: true });
+      return;
+    }
     setStatus("sending");
     try {
       const res = await fetch("/api/contact", {
@@ -356,16 +377,58 @@ export function ContactHero() {
               />
               <div className="mb-[18px]">
                 <label className={labelClass} htmlFor="c-name">{t("form.name")}</label>
-                <input id="c-name" className={fieldClass} placeholder={t("form.namePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
+                <input
+                  id="c-name"
+                  className={fieldClass}
+                  placeholder={t("form.namePlaceholder")}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onBlur={() => setTouched((prev) => ({ ...prev, name: true }))}
+                  autoComplete="name"
+                  required
+                  aria-required="true"
+                  aria-invalid={nameInvalid}
+                  aria-describedby={showValidationMessage ? "c-form-validation" : undefined}
+                />
               </div>
               <div className="mb-[18px]">
                 <label className={labelClass} htmlFor="c-email">{t("form.email")}</label>
-                <input id="c-email" type="email" dir="ltr" className={fieldClass} placeholder={t("form.emailPlaceholder")} value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
+                <input
+                  id="c-email"
+                  type="email"
+                  dir="ltr"
+                  className={fieldClass}
+                  placeholder={t("form.emailPlaceholder")}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
+                  autoComplete="email"
+                  required
+                  aria-required="true"
+                  aria-invalid={emailInvalid}
+                  aria-describedby={showValidationMessage ? "c-form-validation" : undefined}
+                />
               </div>
               <div className="mb-[18px]">
                 <label className={labelClass} htmlFor="c-message">{t("form.message")}</label>
-                <textarea id="c-message" className={`${fieldClass} min-h-[92px] resize-none`} placeholder={t("form.messagePlaceholder")} value={message} onChange={(e) => setMessage(e.target.value)} />
+                <textarea
+                  id="c-message"
+                  className={`${fieldClass} min-h-[92px] resize-none`}
+                  placeholder={t("form.messagePlaceholder")}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  onBlur={() => setTouched((prev) => ({ ...prev, message: true }))}
+                  required
+                  aria-required="true"
+                  aria-invalid={messageInvalid}
+                  aria-describedby={showValidationMessage ? "c-form-validation" : undefined}
+                />
               </div>
+              {showValidationMessage ? (
+                <p id="c-form-validation" role="alert" className="mb-3 text-[13px] font-medium text-red-300/90">
+                  {t("form.validation")}
+                </p>
+              ) : null}
               {status === "error" ? (
                 <p role="alert" className="mb-3 text-[13px] font-medium text-red-300/90">
                   {t("form.errorBody")}
@@ -373,9 +436,10 @@ export function ContactHero() {
               ) : null}
               <button
                 type="submit"
-                disabled={!valid || sending}
+                disabled={sending}
+                aria-disabled={!valid || sending}
                 aria-busy={sending}
-                className="btn-lux mt-1 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(100deg,var(--color-gold),#ecd6a0)] px-6 py-4 text-sm font-semibold tracking-[0.02em] text-[#231a05] shadow-[0_14px_34px_-12px_rgba(212,175,55,0.5)] transition-opacity disabled:cursor-not-allowed disabled:opacity-45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                className="btn-lux mt-1 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(100deg,var(--color-gold),#ecd6a0)] px-6 py-4 text-sm font-semibold tracking-[0.02em] text-[#231a05] shadow-[0_14px_34px_-12px_rgba(212,175,55,0.5)] transition-opacity aria-disabled:cursor-not-allowed aria-disabled:opacity-45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold)]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               >
                 {sending ? (
                   <>

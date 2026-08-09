@@ -22,6 +22,14 @@ interface ProductPageProps {
   params: Promise<{ locale: string; slug: string }>;
 }
 
+// generateStaticParams enumerates every real product slug (× locale), so any
+// slug NOT in that list is genuinely invalid. dynamicParams=false makes such
+// slugs return a real HTTP 404 at the routing layer — before any shell streams —
+// instead of on-demand-prerendering a soft 200. Without this, the streamed
+// response commits a 200 before the component's notFound() runs, producing an
+// unlimited soft-404 surface.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) =>
     getAllProductSlugs().map((slug) => ({ locale, slug }))

@@ -41,6 +41,9 @@ export function MobileNav({ isOpen, onNavigate, panelRef }: MobileNavProps) {
     <div
       id="mobile-nav-panel"
       ref={panelRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label={t("primary")}
       inert={!isOpen}
       className={cn(
         "fixed inset-x-0 top-[var(--header-height)] bottom-0 z-[var(--z-overlay)] flex flex-col overflow-y-auto overscroll-contain bg-black/85 backdrop-blur-2xl backdrop-saturate-150 transition-[opacity,transform] duration-[400ms] ease-[var(--ease-premium)] motion-reduce:transition-none lg:hidden",
@@ -79,7 +82,7 @@ export function MobileNav({ isOpen, onNavigate, panelRef }: MobileNavProps) {
                         key={brand.slug}
                         href={`/brands/${brand.slug}`}
                         onClick={onNavigate}
-                        className="flex min-h-[40px] items-center rounded-md text-[12px] font-light tracking-[0.01em] text-[color:var(--color-gold-soft)]/90 transition-colors duration-300 hover:text-[color:var(--color-gold-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                        className="flex min-h-[44px] items-center rounded-md text-[12px] font-light tracking-[0.01em] text-[color:var(--color-gold-soft)]/90 transition-colors duration-300 hover:text-[color:var(--color-gold-soft)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                       >
                         {brand.name}
                       </Link>

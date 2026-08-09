@@ -256,7 +256,7 @@ function BrandsView({
           </Reveal>
         ))}
       </div>
-      <p className="mt-12 text-center text-[10.5px] uppercase tracking-[0.2em] text-zinc-600">{moreLabel}</p>
+      <p className="mt-12 text-center text-[10.5px] uppercase tracking-[0.2em] text-muted">{moreLabel}</p>
     </div>
   );
 }
@@ -289,7 +289,7 @@ function ProductsView({
       </Reveal>
 
       <div className="mt-4 flex items-center justify-center gap-3">
-        <span className="text-[10px] uppercase tracking-[0.24em] text-zinc-600">{eyebrow}</span>
+        <span className="text-[10px] uppercase tracking-[0.24em] text-muted">{eyebrow}</span>
       </div>
 
       <div className="mx-auto mt-6 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">

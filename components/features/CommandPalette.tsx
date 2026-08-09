@@ -106,14 +106,31 @@ export function CommandPalette() {
     };
   }, [openPalette]);
 
-  // Focus the input on open, lock scroll, restore focus on close.
+  // Focus the input on open, lock scroll (iOS-safe), restore focus + scroll on
+  // close. overflow:hidden alone lets iOS Safari rubber-band the background, so
+  // pin the body with position:fixed at the negative scroll offset and restore
+  // the exact position on unlock — visually identical, no jump for desktop users.
   useEffect(() => {
     if (!open) return;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const body = document.body;
+    const scrollY = window.scrollY;
+    const prev = {
+      overflow: body.style.overflow,
+      position: body.style.position,
+      top: body.style.top,
+      width: body.style.width,
+    };
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
     inputRef.current?.focus();
     return () => {
-      document.body.style.overflow = prevOverflow;
+      body.style.overflow = prev.overflow;
+      body.style.position = prev.position;
+      body.style.top = prev.top;
+      body.style.width = prev.width;
+      window.scrollTo(0, scrollY);
       restoreFocus.current?.focus?.();
     };
   }, [open]);

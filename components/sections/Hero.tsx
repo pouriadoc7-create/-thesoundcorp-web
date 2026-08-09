@@ -28,14 +28,16 @@ export async function Hero() {
         {SITE_NAME}
       </Reveal>
 
-      <Reveal
-        as="h1"
-        blur
-        delayMs={90}
-        className="mt-6 max-w-[17ch] text-balance text-holo display-1 font-light"
-      >
+      {/*
+        The headline is the LCP element, so it must be painted from the server
+        HTML — not gated behind hydration. It's fully visible by default and
+        plays a pure-CSS blur-to-sharp entrance on load (mirroring <Reveal blur>),
+        so it appears with JS disabled and paints for LCP immediately. Motion is
+        removed under prefers-reduced-motion. See .hero-headline in globals.css.
+      */}
+      <h1 className="hero-headline mt-6 max-w-[17ch] text-balance text-holo display-1 font-light">
         {t("headline")}
-      </Reveal>
+      </h1>
 
       <Reveal
         as="p"
@@ -49,7 +51,7 @@ export async function Hero() {
         delayMs={280}
         className="mt-9 flex flex-wrap items-center justify-center gap-4 sm:mt-11 sm:gap-5"
       >
-        <Button href="/brands" variant="primary" size="lg">
+        <Button href="/brands" variant="primary" size="lg" className="min-h-[44px]">
           {t("exploreBrands")}
         </Button>
         <Button href="/about" variant="ghost" size="lg">

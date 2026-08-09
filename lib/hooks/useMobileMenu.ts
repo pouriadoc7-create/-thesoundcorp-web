@@ -24,15 +24,41 @@ export function useMobileMenu() {
 
   const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
 
-  // Lock background scroll while the panel is open.
+  // Lock background scroll AND make the rest of the page inert while open.
+  // Plain overflow:hidden is ignored by iOS Safari (the background still
+  // rubber-band scrolls), so we also pin the body with position:fixed at the
+  // negative current scroll offset (width:100% to keep layout width), then
+  // restore the exact position on unlock — visually identical, no scroll jump
+  // for keyboard/desktop users. `inert` on <main>/<footer> takes the content
+  // hidden behind the opaque, aria-modal overlay out of the tab order and the
+  // accessibility tree (the panel is portaled to <body>, so its siblings stay
+  // reachable to browse-mode / screen readers otherwise).
   useEffect(() => {
     if (!isOpen) return;
 
-    const { overflow } = document.body.style;
-    document.body.style.overflow = "hidden";
+    const body = document.body;
+    const scrollY = window.scrollY;
+    const prev = {
+      overflow: body.style.overflow,
+      position: body.style.position,
+      top: body.style.top,
+      width: body.style.width,
+    };
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
+
+    const background = Array.from(document.querySelectorAll<HTMLElement>("main, footer"));
+    background.forEach((el) => el.setAttribute("inert", ""));
 
     return () => {
-      document.body.style.overflow = overflow;
+      body.style.overflow = prev.overflow;
+      body.style.position = prev.position;
+      body.style.top = prev.top;
+      body.style.width = prev.width;
+      window.scrollTo(0, scrollY);
+      background.forEach((el) => el.removeAttribute("inert"));
     };
   }, [isOpen]);
 

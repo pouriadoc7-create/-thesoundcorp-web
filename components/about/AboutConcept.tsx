@@ -218,7 +218,7 @@ export function AboutConcept() {
       </section>
 
       <section className="ab-coda">
-        <span data-r>Listen first.</span>
+        <span data-r>{t("coda")}</span>
       </section>
     </div>
   );

@@ -41,9 +41,30 @@ function isRateLimited(ip: string): boolean {
 }
 
 function clientIp(request: Request): string {
+  // When fronted by Cloudflare (the documented production topology), CF sets
+  // `CF-Connecting-IP` to the true visitor IP and overwrites any client-sent
+  // value at its edge, so it is trustworthy and per-visitor accurate. Prefer it.
+  const cf = request.headers.get("cf-connecting-ip")?.trim();
+  if (cf) return cf;
+  // Otherwise (direct nginx): nginx `$proxy_add_x_forwarded_for` APPENDS the real
+  // peer IP as the RIGHTMOST X-Forwarded-For hop. Any entries to the left are
+  // client-supplied and trivially spoofable — trusting the leftmost value lets
+  // an attacker rotate it to mint a fresh rate-limit bucket per request and
+  // bypass the limit entirely. So we key off the LAST (rightmost) hop only.
   const fwd = request.headers.get("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0]!.trim();
-  return request.headers.get("x-real-ip") ?? "unknown";
+  if (fwd) {
+    const parts = fwd
+      .split(",")
+      .map((p) => p.trim())
+      .filter(Boolean);
+    const rightmost = parts[parts.length - 1];
+    if (rightmost) return rightmost;
+  }
+  // No X-Forwarded-For (local dev / direct connection, i.e. no proxy in front):
+  // fall back to x-real-ip if present, else a fixed sentinel. The sentinel makes
+  // all un-proxied traffic share ONE bucket rather than getting an unlimited
+  // supply of per-request buckets — fail closed, never open.
+  return request.headers.get("x-real-ip")?.trim() || "unknown";
 }
 
 function isValidEmail(email: string): boolean {
@@ -57,6 +78,12 @@ function escapeHtml(s: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+// Strip control characters (incl. CR/LF) that could break out of an email
+// header line, so an untrusted display name can't inject headers.
+function stripControlChars(s: string): string {
+  return s.replace(/[\x00-\x1f\x7f]/g, " ").replace(/\s+/g, " ").trim();
 }
 
 export async function POST(request: Request) {
@@ -108,6 +135,10 @@ export async function POST(request: Request) {
     auth: { user, pass },
   });
 
+  // Defensive: strip control chars from the display name before it goes into the
+  // raw replyTo address string, removing any header-injection surface.
+  const replyToName = stripControlChars(name);
+
   const subject = `New enquiry from ${name} — TheSoundCorp`;
   const text = `New enquiry from the website contact form\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n`;
   const html = `
@@ -123,7 +154,7 @@ export async function POST(request: Request) {
     await transporter.sendMail({
       from: `"TheSoundCorp Website" <${from}>`,
       to,
-      replyTo: `"${name}" <${email}>`,
+      replyTo: `"${replyToName}" <${email}>`,
       subject,
       text,
       html,

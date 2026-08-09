@@ -108,7 +108,7 @@ export function ProductImage({
 
       {variant === "full" ? (
         <div className="relative z-10 px-6 text-center">
-          <div className="text-[11px] font-medium uppercase tracking-[0.28em] text-white/45">
+          <div className="text-[11px] font-medium uppercase tracking-[0.28em] text-white/50">
             {brand}
           </div>
           <div className="mt-2 text-sm font-semibold text-white/80 sm:text-base">{name}</div>

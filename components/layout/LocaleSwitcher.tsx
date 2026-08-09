@@ -54,7 +54,7 @@ export function LocaleSwitcher() {
             onClick={() => switchTo(loc)}
             aria-current={active ? "true" : undefined}
             className={cn(
-              "relative z-10 rounded-full px-4 py-[7px] text-[13px] font-medium tracking-[0.02em] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
+              "relative z-10 inline-flex min-h-[44px] items-center justify-center rounded-full px-4 text-[13px] font-medium tracking-[0.02em] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
               active ? "text-white" : "text-zinc-400 hover:text-zinc-200"
             )}
           >

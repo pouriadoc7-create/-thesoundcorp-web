@@ -154,7 +154,7 @@ export function Lightbox({ images, index, onIndexChange, onClose }: LightboxProp
 
       {/* Caption */}
       <div className="px-5 py-5 text-center sm:px-8" onClick={(e) => e.stopPropagation()}>
-        <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/40">
+        <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/50">
           {t(`categories.${image.category}`)}
         </p>
         <p className="mt-1.5 text-sm text-white/85">{image.caption[locale]}</p>

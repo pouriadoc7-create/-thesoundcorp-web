@@ -577,6 +577,25 @@ html[lang="fa"] * {
   will-change: opacity, transform, filter;
 }
 
+/* -- Hero headline: LCP-safe entrance ------------------------
+   The above-the-fold H1 is the LCP element, so it is server-
+   rendered and fully visible by default (no JS/hydration gate,
+   visible with JS disabled). This pure-CSS on-load animation
+   replays the <Reveal blur> blur-to-sharp look; because it auto-
+   plays at first paint, LCP is recorded ~immediately instead of
+   after hydration. Disabled under reduced motion (stays visible). */
+@keyframes heroHeadlineIn {
+  from { opacity: 0; transform: translateY(20px) scale(1.012); filter: blur(14px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+.hero-headline {
+  animation: heroHeadlineIn 0.85s var(--ease-premium) 90ms both;
+  will-change: opacity, transform, filter;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-headline { animation: none; }
+}
+
 /* -- Elegant loading ----------------------------------------
    A slow shimmer across the wordmark plus a thin sweeping line. */
 @keyframes shimmer {

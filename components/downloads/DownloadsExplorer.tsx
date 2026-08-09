@@ -300,7 +300,9 @@ function ProductsView({
         <span className="text-[10px] uppercase tracking-[0.24em] text-muted">{eyebrow}</span>
       </div>
 
-      <div className="mx-auto mt-6 grid w-full max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {/* justify-items-center centers each card in its track on single-column
+          mobile; from sm: upward tracks stretch exactly as before. */}
+      <div className="mx-auto mt-6 grid w-full max-w-5xl grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 sm:justify-items-stretch lg:grid-cols-3">
         {brand.products.map((product, i) => (
           <Reveal
             key={product.slug}

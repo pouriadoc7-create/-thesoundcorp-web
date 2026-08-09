@@ -21,7 +21,12 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
     <button
       type="button"
       onClick={onOpen}
-      className="card-lux group flex flex-col overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.08] bg-white/[0.02] text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:text-start"
+      // w-full is load-bearing: a <button> is shrink-to-fit, so without it the card
+      // collapses to its intrinsic content width and sits at the start (left) of its
+      // grid cell — percentage-width children (the image stage) add nothing to that
+      // intrinsic width. w-full makes every card fill its cell, so all cards share
+      // one width and one centered X position.
+      className="card-lux group flex w-full flex-col overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.08] bg-white/[0.02] text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:text-start"
     >
       {/* Premium image stage: one consistent aspect per product type (portrait for
           speakers, square for electronics); the image FILLS the area (object-cover,

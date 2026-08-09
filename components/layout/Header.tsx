@@ -4,8 +4,10 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
 import { OPEN_COMMAND_PALETTE } from "@/components/features/CommandPalette";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Link, usePathname } from "@/i18n/navigation";
 import { NAV_LINKS } from "@/lib/constants/site";
+import { BRAND_LOGOS, LOGO_SCALE } from "@/lib/data/brand-logos";
 import { getBrandColumns } from "@/lib/data/brands";
 import { useHoverDropdown } from "@/lib/hooks/useHoverDropdown";
 import { useMobileMenu } from "@/lib/hooks/useMobileMenu";
@@ -196,9 +198,26 @@ export function Header() {
                                     <li key={brand.slug}>
                                       <Link
                                         href={`/brands/${brand.slug}`}
-                                        className="block rounded-md px-2 py-2.5 text-sm tracking-wide text-[color:var(--color-gold-soft)]/90 transition-all duration-300 ease-out hover:text-[color:var(--color-gold-soft)] hover:[text-shadow:0_0_16px_rgba(255,255,255,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ltr:hover:-translate-x-1 rtl:hover:translate-x-1"
+                                        aria-label={brand.name}
+                                        className="group flex items-center rounded-md px-2 py-2.5 transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ltr:justify-start ltr:hover:-translate-x-1 rtl:justify-end rtl:hover:translate-x-1"
                                       >
-                                        {brand.name}
+                                        {/* Official brand logo (LOGO_SCALE normalises the visual size
+                                            across differently-proportioned marks; object-contain keeps
+                                            aspect ratio). Falls back to the wordmark only if an asset is
+                                            ever missing — all 26 brands currently have one. */}
+                                        <span
+                                          className="inline-flex"
+                                          style={LOGO_SCALE[brand.slug] ? { transform: `scale(${LOGO_SCALE[brand.slug]})` } : undefined}
+                                        >
+                                          <BrandLogo
+                                            name={brand.name}
+                                            logoUrl={BRAND_LOGOS[brand.slug]}
+                                            sizes="120px"
+                                            className="h-6 w-28 ltr:justify-start rtl:justify-end"
+                                            imgClassName="opacity-80 transition-opacity duration-300 group-hover:opacity-100 ltr:object-left rtl:object-right"
+                                            wordmarkClassName="text-sm tracking-wide text-[color:var(--color-gold-soft)]/90"
+                                          />
+                                        </span>
                                       </Link>
                                     </li>
                                   ))}

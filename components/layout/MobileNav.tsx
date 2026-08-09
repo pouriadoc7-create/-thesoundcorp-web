@@ -82,20 +82,20 @@ export function MobileNav({ isOpen, onNavigate, panelRef }: MobileNavProps) {
                         href={`/brands/${brand.slug}`}
                         onClick={onNavigate}
                         aria-label={brand.name}
-                        className="group flex min-h-[44px] items-center rounded-md transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ltr:justify-start rtl:justify-end"
+                        className="group flex min-h-[44px] items-center justify-center rounded-md px-2 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                       >
-                        {/* Official brand logo (aspect-preserved via object-contain, size
-                            normalised via LOGO_SCALE); wordmark fallback only if missing. */}
+                        {/* Official brand logo — CENTERED, aspect-preserved (object-contain),
+                            size normalised via LOGO_SCALE; wordmark fallback only if missing. */}
                         <span
-                          className="inline-flex"
+                          className="flex w-full items-center justify-center"
                           style={LOGO_SCALE[brand.slug] ? { transform: `scale(${LOGO_SCALE[brand.slug]})` } : undefined}
                         >
                           <BrandLogo
                             name={brand.name}
                             logoUrl={BRAND_LOGOS[brand.slug]}
-                            sizes="120px"
-                            className="h-6 w-24 ltr:justify-start rtl:justify-end"
-                            imgClassName="opacity-85 transition-opacity duration-300 group-hover:opacity-100 ltr:object-left rtl:object-right"
+                            sizes="150px"
+                            className="h-7 w-full"
+                            imgClassName="opacity-85 transition-opacity duration-300 group-hover:opacity-100"
                             wordmarkClassName="text-[12px] font-light tracking-[0.01em] text-[color:var(--color-gold-soft)]/90"
                           />
                         </span>

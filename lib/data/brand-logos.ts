@@ -1,9 +1,9 @@
 /**
  * Official brand logos, keyed by BRANDS[].slug. This is the single source of
  * truth for a brand's mark — read by the homepage "Our Brands" grid, the
- * /brands index and detail pages, product detail pages, and the Download
- * Center brand tiles (via <BrandLogo>). The header mega-menu deliberately
- * stays typographic (champagne-gold wordmarks) rather than pulling logos here.
+ * /brands index and detail pages, product detail pages, the Download Center
+ * brand tiles, and the header navigation (desktop mega-menu + mobile menu) —
+ * all via <BrandLogo>.
  *
  * Every file lives in /public/brand-logos/ and is a white / light / official-
  * colour version prepared for the site's dark background (SVG where a vector
@@ -42,7 +42,8 @@ export const BRAND_LOGOS: Record<string, string> = {
  * Per-logo visual size tuning so every mark reads at a balanced weight in a
  * logo grid. Pure `transform: scale` (aspect ratio preserved — no distortion,
  * no layout shift). Slugs not listed render at their natural size (scale 1).
- * Shared by the homepage "Our Brands" grid and the /brands directory.
+ * Shared by the homepage grid, the /brands directory, and the header nav — every
+ * place logos sit in a centered, consistent-height, object-contain box.
  */
 export const LOGO_SCALE: Record<string, number> = {
   // compact marks — enlarged

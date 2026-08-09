@@ -199,22 +199,24 @@ export function Header() {
                                       <Link
                                         href={`/brands/${brand.slug}`}
                                         aria-label={brand.name}
-                                        className="group flex items-center rounded-md px-2 py-2.5 transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ltr:justify-start ltr:hover:-translate-x-1 rtl:justify-end rtl:hover:translate-x-1"
+                                        className="group flex items-center justify-center rounded-md px-3 py-2.5 transition-colors duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                                       >
-                                        {/* Official brand logo (LOGO_SCALE normalises the visual size
-                                            across differently-proportioned marks; object-contain keeps
-                                            aspect ratio). Falls back to the wordmark only if an asset is
-                                            ever missing — all 26 brands currently have one. */}
+                                        {/* Official brand logo, CENTERED in a consistent-height box.
+                                            object-contain preserves each logo's aspect ratio; LOGO_SCALE
+                                            normalises visual weight (compact marks up, wide wordmarks
+                                            down) so every mark reads balanced, straight and centred.
+                                            Wordmark fallback only if an asset is ever missing — all 26
+                                            brands currently have one. */}
                                         <span
-                                          className="inline-flex"
+                                          className="flex w-full items-center justify-center"
                                           style={LOGO_SCALE[brand.slug] ? { transform: `scale(${LOGO_SCALE[brand.slug]})` } : undefined}
                                         >
                                           <BrandLogo
                                             name={brand.name}
                                             logoUrl={BRAND_LOGOS[brand.slug]}
-                                            sizes="120px"
-                                            className="h-6 w-28 ltr:justify-start rtl:justify-end"
-                                            imgClassName="opacity-80 transition-opacity duration-300 group-hover:opacity-100 ltr:object-left rtl:object-right"
+                                            sizes="180px"
+                                            className="h-7 w-full"
+                                            imgClassName="opacity-80 transition-opacity duration-300 group-hover:opacity-100"
                                             wordmarkClassName="text-sm tracking-wide text-[color:var(--color-gold-soft)]/90"
                                           />
                                         </span>

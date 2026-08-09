@@ -76,8 +76,10 @@ export interface DownloadBrand {
   /** Matches `Brand.slug` so the shared brand logo can be reused. */
   slug: string;
   name: string;
-  /** The brand's primary official domain (shown in the UI). */
-  officialDomain: string;
+  /** The brand's primary official domain — forms the download-proxy allowlist
+   *  (with `altDomains`). Optional: a brand with no documents yet and no
+   *  confirmed official domain may omit it until its files/links are provided. */
+  officialDomain?: string;
   /** Additional official domains this brand publishes files on (e.g. a regional
    *  or international site). Together with `officialDomain` these form the proxy
    *  allowlist for the brand — anything else is refused. */

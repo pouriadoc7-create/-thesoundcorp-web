@@ -71,7 +71,9 @@ export function countAllDocuments(): number {
 
 /** Every official domain a brand publishes files on (primary + alternates). */
 export function brandDomains(brand: DownloadBrand): string[] {
-  return [brand.officialDomain, ...(brand.altDomains ?? [])].map((d) => d.toLowerCase());
+  return [brand.officialDomain, ...(brand.altDomains ?? [])]
+    .filter((d): d is string => Boolean(d))
+    .map((d) => d.toLowerCase());
 }
 
 /** Every domain any brand's documents are allowed to live on. */

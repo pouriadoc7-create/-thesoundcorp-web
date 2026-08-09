@@ -156,5 +156,57 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
     "officialDomain": "vienna-acoustics.com",
     "blurb": "Austrian loudspeakers, handcrafted in Vienna.",
     "products": []
+  },
+  {
+    "slug": "aai",
+    "name": "AAI",
+    "officialDomain": "aai.sk",
+    "products": []
+  },
+  {
+    "slug": "audioflight",
+    "name": "AudioFlight",
+    "products": []
+  },
+  {
+    "slug": "graham",
+    "name": "Graham Audio",
+    "officialDomain": "grahamaudio.co.uk",
+    "products": []
+  },
+  {
+    "slug": "jadis",
+    "name": "Jadis",
+    "officialDomain": "jadis-electronics.com",
+    "products": []
+  },
+  {
+    "slug": "jorma",
+    "name": "Jorma Design",
+    "officialDomain": "jormaaudio.com",
+    "products": []
+  },
+  {
+    "slug": "marten",
+    "name": "Marten",
+    "officialDomain": "marten.se",
+    "products": []
+  },
+  {
+    "slug": "mastersound",
+    "name": "Mastersound",
+    "products": []
+  },
+  {
+    "slug": "roksan",
+    "name": "Roksan",
+    "officialDomain": "roksan.com",
+    "products": []
+  },
+  {
+    "slug": "teac",
+    "name": "TEAC",
+    "officialDomain": "eu.teac-audio.com",
+    "products": []
   }
 ];

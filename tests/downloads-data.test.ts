@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { BRANDS } from "@/lib/data/brands";
 import { DOWNLOAD_BRANDS } from "@/lib/data/downloads";
 import type { DownloadFormat } from "@/lib/types/download";
 import { isUrlOnBrandDomains } from "@/lib/utils/downloads";
@@ -57,9 +58,13 @@ describe("Download Center data integrity", () => {
     }
   });
 
-  it("does not include excluded brands (TEAC / Marten)", () => {
-    const slugs = new Set(DOWNLOAD_BRANDS.map((b) => b.slug));
-    expect(slugs.has("teac")).toBe(false);
-    expect(slugs.has("marten")).toBe(false);
+  it("covers all 26 marketing brands (Downloads brand list == Our Brands)", () => {
+    // Owner decision (2026-08): the Download Center lists every brand the site
+    // carries (26), so a brand tile exists for each — even before its files land.
+    expect(DOWNLOAD_BRANDS.length).toBe(26);
+    const dlSlugs = new Set(DOWNLOAD_BRANDS.map((b) => b.slug));
+    for (const b of BRANDS) {
+      expect(dlSlugs.has(b.slug), `download brand missing for '${b.slug}'`).toBe(true);
+    }
   });
 });

@@ -46,7 +46,7 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
         "name": "QR-Series",
         "category": "Speakers",
         "imageUrl": "/downloads/audiovector/qr-series/cover.jpg",
-        "imageBlurDataURL": "data:image/jpeg;base64,/9j/2wBDABIMDRANCxIQDhAUExIVGywdGxgYGzYnKSAsQDlEQz85Pj1HUGZXR0thTT0+WXlaYWltcnNyRVV9hnxvhWZwcm7/2wBDARMUFBsXGzQdHTRuST5Jbm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm7/wAARCAAVAA4DASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAUGBP/EACAQAAICAgMAAwEAAAAAAAAAAAECAwQAEQUhMRITQVH/xAAVAQEBAAAAAAAAAAAAAAAAAAAAAf/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AKaeeClD9tlxHHvXyIOaFVXUMpBBGwf7khzdtUs8mkjEBWi12T6p11lTx9mOSNYEbckcaFhrzYwFV2hXuQssydM6sSvRJHneMq8ccZLIgBIAJ/TrzDDIP//Z",
+        "imageBlurDataURL": "data:image/jpeg;base64,/9j/2wBDABIMDRANCxIQDhAUExIVGywdGxgYGzYnKSAsQDlEQz85Pj1HUGZXR0thTT0+WXlaYWltcnNyRVV9hnxvhWZwcm7/2wBDARMUFBsXGzQdHTRuST5Jbm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm7/wAARCAAVAA4DASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAUGBP/EACAQAAICAgMAAwEAAAAAAAAAAAECAwQAEQUhMRITQVH/xAAVAQEBAAAAAAAAAAAAAAAAAAAAAf/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AKaeeClD9tlxHHvXyIOaFVXUMpBBGwf7khzdtUs8mkjEBWi12T6p11lTx9mOSNYEbckcaFhrzYwFV2hXuQssydM6sSvRJHneMq8ccZLIgBIAJ/TrzDDIP//Z",
         "documents": [
           {
             "id": "qr-se-manual-2023",
@@ -87,7 +87,9 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
             "fileSize": 5865024,
             "localPath": "/downloads/audiovector/r-5/Audiovector-R-5-Brochure.pdf"
           }
-        ]
+        ],
+        "imageUrl": "/downloads/audiovector/r-5/cover.jpg",
+        "imageBlurDataURL": "data:image/jpeg;base64,/9j/2wBDABIMDRANCxIQDhAUExIVGywdGxgYGzYnKSAsQDlEQz85Pj1HUGZXR0thTT0+WXlaYWltcnNyRVV9hnxvhWZwcm7/2wBDARMUFBsXGzQdHTRuST5Jbm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm7/wAARCAAVAA4DASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAMEBQb/xAAlEAABBAECBQUAAAAAAAAAAAABAgMEEQAFEgYTFEFRITVhc7H/xAAWAQEBAQAAAAAAAAAAAAAAAAABAAL/xAAWEQEBAQAAAAAAAAAAAAAAAAAAESH/2gAMAwEAAhEDEQA/ANRqExMGKp5YBANAE1ZxkZ7qIzTwG0OICq8WMr+JlBOkqs1a0jv8+Ml6V7VE+lH5hdamUyXFZmM8qQjeiwauvXGNNoZaS22nahApIHYYYZB//9k="
       },
       {
         "slug": "r-series",
@@ -110,7 +112,9 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
             "fileSize": 27929084,
             "localPath": "/downloads/audiovector/r-series/audiovector_r_series_brochure (1).pdf"
           }
-        ]
+        ],
+        "imageUrl": "/downloads/audiovector/r-series/cover.jpg",
+        "imageBlurDataURL": "data:image/jpeg;base64,/9j/2wBDABIMDRANCxIQDhAUExIVGywdGxgYGzYnKSAsQDlEQz85Pj1HUGZXR0thTT0+WXlaYWltcnNyRVV9hnxvhWZwcm7/2wBDARMUFBsXGzQdHTRuST5Jbm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm7/wAARCAARAA4DASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAUCBAb/xAAgEAACAgIBBQEAAAAAAAAAAAABAgADBBESBQYTMXEh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAf/EABURAQEAAAAAAAAAAAAAAAAAAABB/9oADAMBAAIRAxEAPwDV9XzHwcPy1gFuQUbG/ct1MXqRj7IBizuRXfpmqqmsYWKdKvI/Yyx9+CvYIPEfh+QpicIQiH//2Q=="
       },
       {
         "slug": "trapeze",
@@ -141,7 +145,9 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
             "fileSize": 2019233,
             "localPath": "/downloads/audiovector/trapeze/Whitepaper_AV_Trapeze_2024 Online.pdf"
           }
-        ]
+        ],
+        "imageUrl": "/downloads/audiovector/trapeze/cover.jpg",
+        "imageBlurDataURL": "data:image/jpeg;base64,/9j/2wBDABIMDRANCxIQDhAUExIVGywdGxgYGzYnKSAsQDlEQz85Pj1HUGZXR0thTT0+WXlaYWltcnNyRVV9hnxvhWZwcm7/2wBDARMUFBsXGzQdHTRuST5Jbm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm7/wAARCAAOAA4DASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABQME/8QAIhAAAgICAQMFAAAAAAAAAAAAAQIDBAAFEQYSUSEiMTJx/8QAFAEBAAAAAAAAAAAAAAAAAAAAAv/EABYRAQEBAAAAAAAAAAAAAAAAABEAAf/aAAwDAQACEQMRAD8Ab6mtWqwhNWYxHhix5AHHk/mIaWxLa1Faadg0rIO5gQQx8+mT2use/LCwZAqBgysD7geM0a6oKNRK6BQifUL8AYcWWhf/2Q=="
       }
     ]
   },

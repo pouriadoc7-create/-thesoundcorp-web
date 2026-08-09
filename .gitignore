@@ -40,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# claude code — per-machine local files (kept locally, not tracked)
+.claude/settings.local.json
+.claude/scheduled_tasks.lock

@@ -54,7 +54,7 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
             "title": "2023_audiovector_qr_se_manual.pdf",
             "format": "PDF",
             "fileSize": 453344,
-            "localPath": "/downloads/audiovector/qr-series/qr-se-manual-2023.pdf"
+            "localPath": "/downloads/audiovector/qr-series/2023_audiovector_qr_se_manual.pdf"
           },
           {
             "id": "qr-sub-se-manual-2023",
@@ -62,7 +62,7 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
             "title": "2023_audiovector_qr_sub_se_manual.pdf",
             "format": "PDF",
             "fileSize": 886498,
-            "localPath": "/downloads/audiovector/qr-series/qr-sub-se-manual-2023.pdf"
+            "localPath": "/downloads/audiovector/qr-series/2023_audiovector_qr_sub_se_manual.pdf"
           },
           {
             "id": "qrse-brochure",
@@ -70,7 +70,7 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
             "title": "Audiovector_QRSE_Brochure.pdf",
             "format": "PDF",
             "fileSize": 5454666,
-            "localPath": "/downloads/audiovector/qr-series/qrse-brochure.pdf"
+            "localPath": "/downloads/audiovector/qr-series/Audiovector_QRSE_Brochure.pdf"
           }
         ]
       },
@@ -85,7 +85,7 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
             "title": "Audiovector-R-5-Brochure.pdf",
             "format": "PDF",
             "fileSize": 5865024,
-            "localPath": "/downloads/audiovector/r-5/r-5-brochure.pdf"
+            "localPath": "/downloads/audiovector/r-5/Audiovector-R-5-Brochure.pdf"
           }
         ]
       },
@@ -100,15 +100,15 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
             "title": "01_r_series_manual_audiovector.pdf",
             "format": "PDF",
             "fileSize": 239362,
-            "localPath": "/downloads/audiovector/r-series/r-series-manual.pdf"
+            "localPath": "/downloads/audiovector/r-series/01_r_series_manual_audiovector.pdf"
           },
           {
             "id": "r-series-brochure",
             "type": "brochure",
-            "title": "audiovector_r_series_brochure.pdf",
+            "title": "audiovector_r_series_brochure (1).pdf",
             "format": "PDF",
             "fileSize": 27929084,
-            "localPath": "/downloads/audiovector/r-series/r-series-brochure.pdf"
+            "localPath": "/downloads/audiovector/r-series/audiovector_r_series_brochure (1).pdf"
           }
         ]
       },
@@ -123,7 +123,7 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
             "title": "2024_audiovector_trapeze_manual.pdf",
             "format": "PDF",
             "fileSize": 673536,
-            "localPath": "/downloads/audiovector/trapeze/trapeze-manual-2024.pdf"
+            "localPath": "/downloads/audiovector/trapeze/2024_audiovector_trapeze_manual.pdf"
           },
           {
             "id": "trapeze-brochure",
@@ -131,7 +131,7 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
             "title": "Brochure 8s A4_online.pdf",
             "format": "PDF",
             "fileSize": 10709339,
-            "localPath": "/downloads/audiovector/trapeze/trapeze-brochure.pdf"
+            "localPath": "/downloads/audiovector/trapeze/Brochure 8s A4_online.pdf"
           },
           {
             "id": "trapeze-whitepaper-2024",
@@ -139,7 +139,7 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
             "title": "Whitepaper_AV_Trapeze_2024 Online.pdf",
             "format": "PDF",
             "fileSize": 2019233,
-            "localPath": "/downloads/audiovector/trapeze/trapeze-whitepaper-2024.pdf"
+            "localPath": "/downloads/audiovector/trapeze/Whitepaper_AV_Trapeze_2024 Online.pdf"
           }
         ]
       }

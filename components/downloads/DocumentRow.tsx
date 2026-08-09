@@ -26,17 +26,6 @@ function formatBytes(n?: number): string | null {
   return `${rounded} ${units[i]}`;
 }
 
-/** Present the real filename cleanly on this premium surface: drop the file
- *  extension (the format chip already shows it) and turn "_" separators into
- *  spaces. Pure reformatting of the actual filename — no invented wording. */
-function displayTitle(title: string): string {
-  return title
-    .replace(/\.(pdf|zip|exe|docx?|pptx)$/i, "")
-    .replace(/_+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
 /** Consistent 1.5px document glyph; firmware/software get a distinct chip mark. */
 function DocGlyph({ type }: { type: DownloadDocument["type"] }) {
   if (type === "firmware" || type === "software") {
@@ -70,7 +59,7 @@ export function DocumentRow({ brandSlug, productSlug, doc, context }: DocumentRo
   const t = useTranslations("downloads");
   const size = formatBytes(doc.fileSize);
   const typeLabel = t(`types.${doc.type}`);
-  const title = displayTitle(doc.title);
+  const title = doc.title; // display the EXACT original filename (never altered)
   const source = doc.localPath ?? doc.officialUrl ?? "";
   const filename = source.split("/").pop() || `${doc.id}.${doc.format.toLowerCase()}`;
 
@@ -127,7 +116,7 @@ export function DocumentRow({ brandSlug, productSlug, doc, context }: DocumentRo
         product={productSlug}
         doc={doc.id}
         filename={filename}
-        href={doc.localPath}
+        href={doc.localPath ? encodeURI(doc.localPath) : undefined}
         ariaLabel={t("downloadAria", { title })}
         tooltip={t("downloadTooltip")}
       />

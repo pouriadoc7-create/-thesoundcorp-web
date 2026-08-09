@@ -300,7 +300,7 @@ function ProductsView({
         <span className="text-[10px] uppercase tracking-[0.24em] text-muted">{eyebrow}</span>
       </div>
 
-      <div className="mx-auto mt-6 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto mt-6 grid w-full max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {brand.products.map((product, i) => (
           <Reveal key={product.slug} delayMs={i * 70}>
             <ProductTile brandName={brand.name} product={product} onOpen={() => onOpenProduct(product.slug)} />

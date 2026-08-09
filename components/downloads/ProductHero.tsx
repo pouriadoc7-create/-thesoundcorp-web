@@ -7,6 +7,7 @@ import { ProductImage } from "@/components/products/ProductImage";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import type { DownloadProduct } from "@/lib/types/download";
+import { cardAspectClass } from "@/lib/utils/downloads-view";
 
 interface ProductHeroProps {
   brandName: string;
@@ -29,10 +30,10 @@ export function ProductHero({ brandName, product, docCount }: ProductHeroProps) 
             src={product.imageUrl}
             blurDataURL={product.imageBlurDataURL}
             variant="full"
-            fit="contain"
+            fit="cover"
             priority
             sizes="(max-width: 1024px) 100vw, 520px"
-            className="aspect-[4/5] w-full"
+            className={`${cardAspectClass(product.category)} w-full`}
           />
         </Card>
       </Reveal>

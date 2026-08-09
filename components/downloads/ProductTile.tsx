@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { ProductImage } from "@/components/products/ProductImage";
 import { Badge } from "@/components/ui/Badge";
 import type { DownloadProduct } from "@/lib/types/download";
+import { cardAspectClass } from "@/lib/utils/downloads-view";
 
 interface ProductTileProps {
   brandName: string;
@@ -22,16 +23,17 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
       onClick={onOpen}
       className="card-lux group flex flex-col overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.08] bg-white/[0.02] text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
     >
-      {/* Premium image stage: one consistent portrait aspect across every card,
-          the product contained (never cropped or stretched) and softly framed. */}
-      <div className="relative aspect-[4/5] w-full overflow-hidden border-b border-white/[0.06]">
+      {/* Premium image stage: one consistent aspect per product type (portrait for
+          speakers, square for electronics); the image FILLS the area (object-cover,
+          aspect ratio preserved — never stretched), intelligently centered. */}
+      <div className={`relative w-full overflow-hidden border-b border-white/[0.06] ${cardAspectClass(product.category)}`}>
         <ProductImage
           brand={brandName}
           name={product.name}
           src={product.imageUrl}
           blurDataURL={product.imageBlurDataURL}
           variant="full"
-          fit="contain"
+          fit="cover"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
           className="absolute inset-0 h-full w-full"
         />

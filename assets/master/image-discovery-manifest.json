@@ -1,0 +1,341 @@
+{
+ "generated": "2026-08-08",
+ "note": "Agent 1 (Master Asset Discovery) results — OFFICIAL product-image URLs discovered from manufacturer domains. DATA ONLY: no files were downloaded. Preserved for future USER-AUTHORIZED asset integration. Asset downloading is FROZEN per user directive.",
+ "products": 11,
+ "totalOfficialImages": 32,
+ "results": [
+  {
+   "brand": "Aavik",
+   "product": "I-280",
+   "officialDomain": "aavik-acoustics.com",
+   "productPageUrl": "https://audiogroupdenmark.com/product/aavik-i-280/",
+   "blocked": false,
+   "images": [
+    {
+     "url": "https://audiogroupdenmark.com/wp-content/uploads/2021/09/4K_AAVIK_I-280_LANDINGPAGE.jpg",
+     "kind": "hero",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Primary landing/hero shot (front, angled). This is the ORIGINAL full-size upload (1.02 MB) behind the WordPress '-scaled' version used in og:image; the -scaled variant (2560x1440) is only 117 KB / heavily compressed, so this original is the higher-quality source."
+    },
+    {
+     "url": "https://audiogroupdenmark.com/wp-content/uploads/2021/11/4K_AAVIK_I-280_Back_LeftCorner_Cutout.jpg",
+     "kind": "detail",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Rear/back left-corner cutout (transparent-style product cutout), largest file at 2.93 MB — excellent high-res detail asset."
+    },
+    {
+     "url": "https://audiogroupdenmark.com/wp-content/uploads/2021/11/4K_AAVIK_I-280_Back_RightSkewed_Total.jpg",
+     "kind": "detail",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Rear three-quarter (right-skewed) full-unit view, 1.08 MB."
+    },
+    {
+     "url": "https://audiogroupdenmark.com/wp-content/uploads/2022/02/Aavik_I280_MOBILE_LANDING.png",
+     "kind": "mobile",
+     "onOfficialDomain": true,
+     "contentType": "image/png",
+     "note": "Mobile landing hero variant (portrait crop), PNG 398 KB."
+    }
+   ],
+   "notes": "Official product page: https://audiogroupdenmark.com/product/aavik-i-280/. The brand domain aavik-acoustics.com 301-redirects to audiogroupdenmark.com — Audio Group Denmark is Aavik's own parent/manufacturer, so audiogroupdenmark.com IS the official manufacturer domain (not a retailer or third party); all images are served from its wp-content/uploads. onOfficialDomain=true for all. Image URLs were extracted from og:image / JSON-LD thumbnailUrl and the page <img> tags. The og:image points to '4K_AAVIK_I-280_LANDINGPAGE-scaled.jpg' but I substituted the un-suffixed original '4K_AAVIK_I-280_LANDINGPAGE.jpg' after confirming via curl -I that it returns HTTP 200, image/jpeg, and is ~9x larger (1.02 MB vs 117 KB) than the scaled version. All four URLs HEAD-verified as HTTP 200 with image/* content-type and substantial size. Header/logo/sprite images and images belonging to sibling models (I-580, R-880, etc.) were excluded."
+  },
+  {
+   "brand": "Acoustic Arts (AccusticArts)",
+   "product": "Reference Rack",
+   "officialDomain": "accusticarts.de",
+   "blocked": false,
+   "images": [],
+   "notes": "The official manufacturer site accusticarts.de is fully reachable (homepage HTTP 200) and NOT blocked, but there is NO \"Reference Rack\" product anywhere on it. Verified by: (1) fetching the homepage and /produkte/ product index; (2) parsing the WordPress Yoast sitemap index and full page-sitemap.xml (every product URL listed); (3) scanning post-sitemap and attachment-sitemap (90 media items). Every AccusticArts product is electronics — CD players (PLAYER I-IV), DACs (TUBE-DAC II), preamps, power/mono/stereo amplifiers (AMP/MONO/POWER), transports (DRIVE). No equipment rack, stand, or \"Reference Rack\" exists. Slug probes (reference-rack, rack, racks, referenzrack, zubehoer, reference-rack-ii) all 404'd, and no sitemap loc, product link, attachment, or on-page text matches rack/reference/regal/stand. Per strict source rules I did NOT substitute any third-party source. Conclusion: \"Acoustic Arts Reference Rack\" does not exist as a product on the official accusticarts.de domain, so no official product image could be retrieved. Likely a catalog/brand-mapping error upstream — recommend verifying the product name.",
+   "productPageUrl": ""
+  },
+  {
+   "brand": "Audiovector",
+   "product": "R6 Arreté",
+   "officialDomain": "audiovector.com",
+   "productPageUrl": "https://audiovector.com/r-6/",
+   "blocked": false,
+   "images": [
+    {
+     "url": "https://audiovector.com/wp-content/uploads/2026/01/R_6_ARRETE_hero.jpg",
+     "kind": "hero",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Official og:image / JSON-LD primary image. 2500x1250 (declared in og:image:width/height), 361KB. Highest-resolution product hero on the official product page."
+    },
+    {
+     "url": "https://audiovector.com/wp-content/uploads/2020/07/r6-arrete-black-piano.jpg",
+     "kind": "product",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Full-size finish variant (Black Piano). Full-res upload, WP size suffixes stripped."
+    },
+    {
+     "url": "https://audiovector.com/wp-content/uploads/2020/07/r6-arrete-italian-walnut.jpg",
+     "kind": "product",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Full-size finish variant (Italian Walnut). Full-res upload."
+    },
+    {
+     "url": "https://audiovector.com/wp-content/uploads/2020/07/r6-arrete-white-piano.jpg",
+     "kind": "product",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Full-size finish variant (White Piano). Full-res upload (renamed from r6-arrete-white-piano-1.jpg base)."
+    }
+   ],
+   "notes": "Located official product page at https://audiovector.com/r-6/ via audiovector.com > /speakers/ > R-6 link. Extracted images from og:image, twitter:image, JSON-LD (primaryimage/thumbnailUrl), and wp-content/uploads img/srcset tags. Best asset is the official hero R_6_ARRETE_hero.jpg (og:image, declared 2500x1250, image/jpeg, 361KB) — verified 200 image/jpeg via curl -sSI. Additional full-size finish variants (Black Piano, Italian Walnut, White Piano, African Rosewood) are the product shots used on the page; WordPress size suffixes (-150x150, -300x300, -768x768, etc.) were stripped to their full-size originals and each verified as image/jpeg 200. Rejected non-product assets on the page: Audiovector logo PNGs, other model thumbnails (LCC/NCS/NES/SEC/FGC), and the R-series brochure PNG. All returned URLs are on the official domain audiovector.com (wp-content/uploads)."
+  },
+  {
+   "brand": "Børresen Acoustics",
+   "product": "Børresen 05 Silver Supreme",
+   "officialDomain": "borresen-acoustics.com",
+   "productPageUrl": "https://borresen-acoustics.com/index.php/the-speakers/borresen-05",
+   "blocked": false,
+   "images": [
+    {
+     "url": "https://borresen-acoustics.com/images/2020/09/09/borresen_05_goldenear.jpg",
+     "kind": "hero",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg (inferred from extension; not byte-verified)",
+     "note": "Main product photo of the Børresen 05 floorstander, embedded as the primary single-image on the official 05 product page (SP Page Builder original upload, full-size, no WordPress/size suffix). This is the canonical hero for the 05; Silver Supreme is an edition/finish of this same model and has no separate hero on the official site."
+    },
+    {
+     "url": "https://borresen-acoustics.com/images/2019/03/15/borresen_05_dimensions.png",
+     "kind": "detail",
+     "onOfficialDomain": true,
+     "contentType": "image/png (inferred from extension; not byte-verified)",
+     "note": "Official technical dimensions drawing of the Børresen 05, from the same product page. Full-size original, no size suffix."
+    },
+    {
+     "url": "https://borresen-acoustics.com/images/SILVER_238px.png",
+     "kind": "detail",
+     "onOfficialDomain": true,
+     "contentType": "image/png (verified via Wayback raw replay, 4586 bytes)",
+     "note": "Official 'Silver Supreme' edition badge/emblem (238px wide) shown on the 05 page to denote the Silver Supreme edition. Small badge, not a product hero; included only as the edition-specific mark since no dedicated Silver Supreme photo exists on the official page."
+    }
+   ],
+   "notes": "Official domain confirmed reachable and authoritative, but NOT directly fetchable from this environment: borresen-acoustics.com is behind Cloudflare (162.159.135.42) which rejects every TLS ClientHello from all local clients with fatal alert 40 (handshake_failure) — verified across Schannel curl (SEC_E_ILLEGAL_MESSAGE), OpenSSL-based WebFetch (HANDSHAKE_FAILURE_ON_CLIENT_HELLO), .NET Invoke-WebRequest, and openssl s_client (TLS1.3 group NULL). This is a bot/TLS-fingerprint block, not a site outage — Google (WebSearch) and the Wayback Machine reach it fine. The built-in Browser pane is scoped to the local dev server (external nav denied) and the Claude-in-Chrome extension is not connected, so no real browser was available. r.jina.ai reader was 403/422 rate-limited.\n\nDiscovery method: I recovered the official product page's own HTML from the Wayback Machine (latest 200 snapshot 20220119165356, raw id_ replay) and extracted image URLs directly from it. All URLs returned are authentic paths referenced by the official page and resolve to the manufacturer's own domain (borresen-acoustics.com/images/...). REJECTED nothing from third parties.\n\nCaveats: (1) The /images/ asset files themselves were never archived by Wayback (archive.org availability API returns no snapshots), so I could NOT byte-verify content-type or pixel dimensions for the two main images — content types are inferred from file extension. The SILVER_238px badge WAS archived and confirmed image/png. (2) Børresen markets \"Silver Supreme\" as a premium edition/finish of each 0-series model, not a distinct SKU with its own page — the canonical official page for the model is the standard 05 page, so borresen_05_goldenear.jpg is the best available official product image of the physical speaker. A live re-fetch from a client with a modern browser TLS fingerprint (real Chrome) is recommended to byte-confirm and pull any higher-res/current hero, since the page may have been redesigned since the 2022 archive."
+  },
+  {
+   "brand": "Esoteric",
+   "product": "N-05XD",
+   "officialDomain": "esoteric.jp",
+   "productPageUrl": "https://www.esoteric.jp/en/product/n-05xd/top",
+   "blocked": false,
+   "images": [
+    {
+     "url": "https://www.esoteric.jp/images/products/_tmp/main_img/esoteric/n-05xd_main.jpg",
+     "kind": "hero",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Official product hero image, referenced by og:image and the on-page product <img>. HTTP 200, content-length 247338 bytes (~247KB). Highest/only resolution the site exposes for this product."
+    }
+   ],
+   "notes": "Located the official product page at https://www.esoteric.jp/en/product/n-05xd/top (also /jp/ locale). Both EN and JP pages reference exactly one product image: the main hero at /images/products/_tmp/main_img/esoteric/n-05xd_main.jpg. It is present in the og:image/twitter:image meta and the on-page product <img>. No JSON-LD image, no additional gallery/detail/mobile variants, and no WordPress-style size suffixes exist to strip (site is not WordPress). HEAD request confirms HTTP 200, content-type image/jpeg, content-length 247338 bytes — a genuine, non-thumbnail image. Only header social-icon PNGs were also present and were correctly excluded. All accepted URLs are on the official esoteric.jp domain."
+  },
+  {
+   "brand": "Jadis",
+   "product": "DA88S",
+   "officialDomain": "jadis-electronics.com",
+   "productPageUrl": "https://jadis-electronics.com/jadis-da88/",
+   "blocked": false,
+   "images": [
+    {
+     "url": "https://jadis-electronics.com/wp-content/uploads/2026/04/Capture-decran-2026-04-01-a-15.37.36.png",
+     "kind": "hero",
+     "onOfficialDomain": true,
+     "contentType": "image/png",
+     "note": "Primary product hero. Declared og:image / twitter:image on the DA88(S) page, 1596x1108, 2.46 MB PNG. Full-size original (no WP size suffix). alt text 'Gold amplifier thumbnail'. Best all-round web image."
+    },
+    {
+     "url": "https://jadis-electronics.com/wp-content/uploads/2026/03/DA88RC.tif",
+     "kind": "product",
+     "onOfficialDomain": true,
+     "contentType": "image/tiff",
+     "note": "Highest-resolution ORIGINAL product photo (title 'DA88'), 14.4 MB TIFF from the page body. Verified image/tiff via HEAD. Maximum quality master but TIFF is impractical for direct web use; convert to PNG/JPEG/WebP if a large hero is needed."
+    },
+    {
+     "url": "https://jadis-electronics.com/wp-content/uploads/2026/04/Gemini_Generated_Image_vtqtf0vtqtf0vtqt.jpg",
+     "kind": "detail",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Secondary image referenced in the page JSON-LD, 216 KB JPEG. Filename indicates an AI-generated (Gemini) decorative/lifestyle image rather than a true product photograph — use only as supporting art, not as the canonical product shot."
+    }
+   ],
+   "notes": "Official source confirmed: jadis-electronics.com returned HTTP 200 (WordPress site). No dedicated DA88S slug exists — jadis-da88s/da-88s 404 — the DA88S is presented on the DA88 product page (https://jadis-electronics.com/jadis-da88/), whose body copy reads \"The Jadis DA88S sound is so harmonically rich...\", confirming DA88S is the current version of the DA88. All returned assets are on the manufacturer's own wp-content/uploads path; every URL HEAD-verified as image/* with real byte sizes. No third-party/retailer/social sources used. The og:image PNG (1596x1108) is the recommended primary; the DA88RC.tif is the true highest-res original but needs format conversion for web. Header logos, region-Occitanie sponsor banners, Jadis-HD brand graphics, and WP size-suffixed derivatives (-480x480, -980x980, -1280x1280) were excluded as non-product / downscaled variants."
+  },
+  {
+   "brand": "Jorma Design",
+   "product": "Jorma Trinity loudspeaker cable (closest official match to \"Trinity Statement\")",
+   "officialDomain": "jormadesign.com",
+   "productPageUrl": "https://jormaaudio.com/series/jorma-trinity/",
+   "blocked": false,
+   "images": [
+    {
+     "url": "https://jormaaudio.com/wp-content/uploads/2019/11/models-main-trinity.jpg",
+     "kind": "hero",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Full-size main product hero of the Trinity cable (largest render, 348 KB). No WordPress size suffix; smaller variants (203x300, 692x1024, 768x1137) exist but this is the original upload."
+    },
+    {
+     "url": "https://jormaaudio.com/wp-content/uploads/2019/11/series-trinity.jpg",
+     "kind": "product",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Declared og:image for the Trinity series page, 2200x1067, official series banner image (154 KB)."
+    },
+    {
+     "url": "https://jormaaudio.com/wp-content/uploads/2019/11/models-two-col-trinity-3.jpg",
+     "kind": "detail",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Trinity detail/gallery image from the product page (136 KB)."
+    },
+    {
+     "url": "https://jormaaudio.com/wp-content/uploads/2019/11/models-two-col-trinity-1.jpg",
+     "kind": "detail",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Trinity detail/gallery image from the product page (98 KB)."
+    }
+   ],
+   "notes": "IMPORTANT NAMING NOTE: No product literally called \"Trinity Statement\" exists on the manufacturer's own site. The official domain jormadesign.com loads (HTTP 200) but canonicalizes/links entirely to the brand's current official site jormaaudio.com (same manufacturer, \"Jorma Audio / Jorma Design\"). Its full series catalog is: Digital, Duality, Ethernet, Origo, Origo Encore, Paragon, Phono, Power, Statement Encore, Trinity, Unity, USB Reference. \"Trinity\" and \"Statement Encore\" are two SEPARATE flagship series — there is no combined \"Trinity Statement.\" The closest match to the requested \"Trinity Statement loudspeaker cable\" is the Trinity series (Jorma's current top cable line), whose page at https://jormaaudio.com/series/jorma-trinity/ presents the loudspeaker cable, interconnect, and power cable together. If the intended product is actually the \"Statement Encore\" flagship loudspeaker cable, the correct page is https://jormaaudio.com/series/jorma-statement-encore/speaker — flag for reassignment.\n\nThe Trinity page has no filename explicitly tagged \"speaker/loudspeaker\"; the cable types share a common hero (models-main-trinity.jpg) plus interconnect- and power-specific galleries. Returned images are the main hero (og:image + full-size main upload) and two detail shots. All URLs are on the manufacturer's own domain (jormaaudio.com wp-content/uploads); onOfficialDomain=true. No third-party/retailer/review sources used. All candidates verified via curl -I as content-type image/jpeg, sizes 76 KB-349 KB."
+  },
+  {
+   "brand": "Mastersound",
+   "product": "Compact 845",
+   "officialDomain": "mastersoundsas.it",
+   "productPageUrl": "https://mastersoundsas.it/compact-845",
+   "blocked": false,
+   "images": [
+    {
+     "url": "https://mastersoundsas.it/wp-content/uploads/2025/08/COMPACT845_001.jpg",
+     "kind": "hero",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Primary product hero shot (COMPACT845_001), full-resolution original (~3.6 MB). WordPress size suffix stripped to reach the original upload; -scaled and NxN variants also exist."
+    },
+    {
+     "url": "https://mastersoundsas.it/wp-content/uploads/2025/08/COMPACT845_005.jpg",
+     "kind": "product",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Product view (COMPACT845_005), largest original file (~5.5 MB)."
+    },
+    {
+     "url": "https://mastersoundsas.it/wp-content/uploads/2025/08/COMPACT845_002-1.jpg",
+     "kind": "detail",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Additional product/detail view (COMPACT845_002-1), full-resolution original (~3.8 MB)."
+    },
+    {
+     "url": "https://mastersoundsas.it/wp-content/uploads/2025/08/COMPACT845_003.jpg",
+     "kind": "detail",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Additional product/detail view (COMPACT845_003), full-resolution original (~3.5 MB)."
+    }
+   ],
+   "notes": "Official product page located via the manufacturer's Integrated Amplifiers section (https://mastersoundsas.it/amplificatori-integrati-2/ -> link to https://mastersoundsas.it/compact-845). The page had no og:image/twitter:image meta and JSON-LD \"image\" pointed only to the site logo, so image URLs were extracted from the wp-content/uploads gallery. The gallery contained multiple product photos (COMPACT845_001, _002-1, _003, _004-1, _005, _007, _011...), each served in responsive sizes (300x200 up to 2048x1365), a -scaled variant, and the true untouched original. I stripped WordPress size suffixes and verified the originals exist via curl -I: all return HTTP 200, Content-Type: image/jpeg, multi-MB payloads (3.5-5.5 MB) — confirming they are the highest-resolution masters, not thumbnails. All URLs are on the official mastersoundsas.it domain (same-domain wp-content/uploads). Header/site logos and gravatar/cropped favicon images were rejected as non-product. Third-party review links (audio.com.pl, fairaudio.de, fedeltadelsuono.net) present on the source page were ignored per source rules."
+  },
+  {
+   "brand": "Merason",
+   "product": "DAC 1 MkII",
+   "officialDomain": "merason.com",
+   "productPageUrl": "https://merason.com/dac1-en",
+   "blocked": false,
+   "images": [
+    {
+     "url": "https://images.squarespace-cdn.com/content/v1/694aade551fad3322e70702a/083e5d7a-2913-4979-827d-7d74ad13e28a/Merason_DAC1_Champagne_Front.jpg?format=2500w",
+     "kind": "hero",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Champagne front hero shot; 341KB full-res JPEG on Merason's own Squarespace CDN. Drop ?format for original, or use ?format=2500w for large."
+    },
+    {
+     "url": "https://images.squarespace-cdn.com/content/v1/694aade551fad3322e70702a/cef140e4-7c25-46bc-ae24-4519b5d949c1/Merason_DAC1_Silber_Front.jpg?format=2500w",
+     "kind": "product",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Silver front finish; 291KB full-res JPEG, official CDN."
+    },
+    {
+     "url": "https://images.squarespace-cdn.com/content/v1/694aade551fad3322e70702a/c1295d68-da56-4fd6-9c98-86b1850a29a5/Merason_DAC1_Schwarz_Front.jpg?format=2500w",
+     "kind": "product",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Black (Schwarz) front finish; 330KB full-res JPEG, official CDN."
+    },
+    {
+     "url": "https://images.squarespace-cdn.com/content/v1/694aade551fad3322e70702a/26741b2c-0bbc-4e84-b4a8-4bc91513db4e/Merason_DAC1_Silver_Back.jpg?format=2500w",
+     "kind": "detail",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Rear panel / connectivity view (silver). Original filename ended .jpg.webp on page; base .jpg served as image/jpeg."
+    }
+   ],
+   "notes": "Official product page for the Merason DAC 1 MkII is https://merason.com/dac1-en (English; German at /dac1). Found via homepage product links (/dac1, /dac1-en). The site runs on Squarespace, so product images are hosted on Merason's own tenant of images.squarespace-cdn.com (content path v1/694aade551fad3322e70702a — Merason's account), which counts as the manufacturer's official CDN. No og:image/twitter:image meta tags are present; JSON-LD \"image\" only referenced the Merason logo. Product images were extracted from data-src/src attributes. The page offers the DAC 1 MkII in three finishes (Champagne, Silver/Silber, Black/Schwarz) plus rear-panel shots; original CDN filenames (Merason_DAC1_*_Front/Back) are used, with Squarespace size suffixes stripped and ?format=2500w appended for near-original resolution (omit the query for the true original). HEAD requests to this CDN return a bogus Content-Length: 1 quirk, but GET confirmed real files (Champagne 341KB, Silver 291KB, Black 330KB) all Content-Type image/jpeg. All returned images are on the official domain; no third-party/retailer sources used."
+  },
+  {
+   "brand": "TEAC",
+   "product": "UD-701N",
+   "officialDomain": "teac-audio.com",
+   "productPageUrl": "https://eu.teac-audio.com/en-GLOBAL/audio-hifi/amplifiers-receivers/amplifiers/preamplifiers/ud-701n-network-dac-pre-amp/p/249477",
+   "blocked": false,
+   "images": [
+    {
+     "url": "https://eu.teac-audio.com/en-GLOBAL/medias/249477-1200Wx1200H?context=bWFzdGVyfGltYWdlc3wxMTE3MzF8aW1hZ2UvanBlZ3xpbWFnZXMvaGI2L2hmOS85MDY3MjM0MTk3NTM0LmpwZ3w3ZjE1MTcxNzY5NTQxM2IxMmU2NWE4YzYxZTFlMDE1NTc2MTY3ZWI3ZThkMjE5ZThhNjc2NmQxOGY5ODAxMjdl",
+     "kind": "hero",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Primary product/hero image from the page's JSON-LD \"image\" field. Front view, 1200x1200 (largest rendition offered by the SAP Commerce media server), 111,731 bytes, HTTP 200 verified."
+    },
+    {
+     "url": "https://eu.teac-audio.com/en-GLOBAL/medias/249477-1-1200Wx1200H?context=bWFzdGVyfGltYWdlc3wxNDc1NTl8aW1hZ2UvanBlZ3xpbWFnZXMvaDQ5L2g3OC85MDY3MjM0Nzg3MzU4LmpwZ3xhN2RhMWJhZGQxNzAwYzc0MDFjOTZlZmY1NTIzYWI3MDBjNmExOWMwN2VlNzMyYWJhYjY4YjZiZTg3ODk3MzA1",
+     "kind": "detail",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Second gallery image (angled/detail view), 1200x1200, 147,559 bytes, HTTP 200 verified image/jpeg."
+    }
+   ],
+   "notes": "Official site teac-audio.com is reachable but redirects to the regional SAP Commerce (hybris) storefront at eu.teac-audio.com; the canonical global-English product page is under /en-GLOBAL/. Located the product via the store's built-in search (/en-GLOBAL/search?text=UD-701N). Images are served by the same-domain SAP media server under /en-GLOBAL/medias/ with a signed ?context= token (host is eu.teac-audio.com, a subdomain of the official domain) — all onOfficialDomain=true. The largest rendition the media server exposes is 1200Wx1200H; there are no larger originals reachable (the raw upload is not publicly addressable without a size-suffixed rendition + valid context hash). No og:image/twitter:image meta tags present; the hero came from JSON-LD. Two additional gallery items (product codes 249478/249479) rendered only as 96/300px thumbnails on the page, so full-size versions were not returned. Both returned URLs were HEAD-verified as content-type image/jpeg. No third-party sources used."
+  },
+  {
+   "brand": "Van den Hul",
+   "product": "The Mountain Hybrid (3T) interconnect",
+   "officialDomain": "vandenhul.com",
+   "productPageUrl": "https://www.vandenhul.com/product/3t-the-mountain-hybrid-halogen-free/",
+   "blocked": false,
+   "images": [
+    {
+     "url": "https://www.vandenhul.com/wp-content/uploads/2018/05/KBL_19b-Van-den-Hul-The-Mountain-3T-XLR.jpg",
+     "kind": "hero",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Declared og:image AND JSON-LD primary/thumbnail image. Full-size original (WP size suffixes stripped), 1200x801 per og:image meta, 92KB. Official product hero of The Mountain Hybrid 3T XLR."
+    },
+    {
+     "url": "https://www.vandenhul.com/wp-content/uploads/2018/05/KBL_19-Van-den-Hul-The-Mountain-3T-XLR.jpg",
+     "kind": "product",
+     "onOfficialDomain": true,
+     "contentType": "image/jpeg",
+     "note": "Alternate product photo (KBL_19 series) of the same cable, full-size original, 75KB. Same wp-content/uploads gallery as the hero."
+    },
+    {
+     "url": "https://www.vandenhul.com/wp-content/uploads/2018/05/themountain.png",
+     "kind": "detail",
+     "onOfficialDomain": true,
+     "contentType": "image/png",
+     "note": "Large 1.05MB PNG named 'themountain' from the same product upload set; appears to be a high-res render/graphic for The Mountain. Included as a detail/secondary asset."
+    }
+   ],
+   "notes": "Found via vandenhul.com internal search (?s=The+Mountain). Official product page: /product/3t-the-mountain-hybrid-halogen-free/. Extracted images from og:image, twitter:image, JSON-LD (@id #primaryimage + thumbnailUrl) and wp-content/uploads img/srcset. Stripped WordPress size suffixes (-300x300, -600x401) to recover full-size originals; ignored those thumbnails plus unrelated uploads (van_den_Hul_The_CNT-1.jpg, The-Nova.jpg, VdH_Grail_SE.png) which belong to other products/menus. All returned URLs are on the manufacturer's own domain (www.vandenhul.com wp-content/uploads) and confirmed via curl -I to return HTTP 200 with image/* content-type. Primary recommendation: the KBL_19b hero (og:image / JSON-LD primary). Note the product is a balanced XLR variant of The Mountain Hybrid; van den Hul's photography for this model shows the XLR-terminated cable."
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+{
+  "brand": "Chord Electronics",
+  "slug": "chord-electronics",
+  "domain": "https://chordelectronics.co.uk",
+  "note": "Add {url, category, product?, angle?, filename?} entries. category must match a Master Assets folder name.",
+  "assets": []
+}

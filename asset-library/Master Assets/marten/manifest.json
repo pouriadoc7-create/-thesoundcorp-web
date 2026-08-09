@@ -1,0 +1,13 @@
+{
+  "brand": "Marten",
+  "slug": "marten",
+  "domain": "https://www.marten.se",
+  "note": "Seeded from Marten's official WordPress media (www.marten.se only). Logo is inline/theme SVG on the site — flagged for manual capture (the only icon file is a 32/192px favicon hosted on usercontent.one, a non-official host the downloader refuses).",
+  "assets": [
+    { "url": "https://www.marten.se/wp-content/uploads/2026/07/Dexter_lineup4.jpg", "category": "03 Products", "product": "Dexter", "angle": "front" },
+    { "url": "https://www.marten.se/wp-content/uploads/2026/07/Dexter_lineup_behind.jpg", "category": "03 Products", "product": "Dexter", "angle": "rear" },
+    { "url": "https://www.marten.se/wp-content/uploads/2026/07/Dexter_lineup2.jpg", "category": "02 Hero Images", "filename": "marten-dexter-hero.jpg" },
+    { "url": "https://www.marten.se/wp-content/uploads/2026/07/Dexter_Quintet_System2.jpg", "category": "04 Lifestyle", "filename": "marten-dexter-lifestyle.jpg" },
+    { "url": "https://www.marten.se/wp-content/uploads/2026/07/Dexter_Quintet_System1-1.jpg", "category": "05 Rooms", "filename": "marten-dexter-listening-room.jpg" }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "when": null,
+  "brand": "Marten",
+  "log": [
+    {
+      "url": "https://www.marten.se/wp-content/uploads/2026/07/Dexter_lineup4.jpg",
+      "dest": "03 Products\\dexter\\Original\\dexter-front.jpg",
+      "bytes": 876443,
+      "type": "image/jpeg"
+    },
+    {
+      "url": "https://www.marten.se/wp-content/uploads/2026/07/Dexter_lineup_behind.jpg",
+      "dest": "03 Products\\dexter\\Original\\dexter-rear.jpg",
+      "bytes": 1063674,
+      "type": "image/jpeg"
+    },
+    {
+      "url": "https://www.marten.se/wp-content/uploads/2026/07/Dexter_lineup2.jpg",
+      "dest": "02 Hero Images\\marten-dexter-hero.jpg",
+      "bytes": 657596,
+      "type": "image/jpeg"
+    },
+    {
+      "url": "https://www.marten.se/wp-content/uploads/2026/07/Dexter_Quintet_System2.jpg",
+      "dest": "04 Lifestyle\\marten-dexter-lifestyle.jpg",
+      "bytes": 692291,
+      "type": "image/jpeg"
+    },
+    {
+      "url": "https://www.marten.se/wp-content/uploads/2026/07/Dexter_Quintet_System1-1.jpg",
+      "dest": "05 Rooms\\marten-dexter-listening-room.jpg",
+      "bytes": 812872,
+      "type": "image/jpeg"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "brand": "Davis Acoustics",
+  "slug": "davis-acoustics",
+  "domain": "https://www.davis-acoustics.com",
+  "note": "Add {url, category, product?, angle?, filename?} entries. category must match a Master Assets folder name.",
+  "assets": []
+}

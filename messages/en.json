@@ -1,0 +1,340 @@
+{
+  "nav": {
+    "home": "Home Page",
+    "brands": "Brands",
+    "products": "Products",
+    "gallery": "Gallery",
+    "downloads": "Downloads",
+    "about": "About",
+    "contact": "Contact",
+    "primary": "Main navigation",
+    "footer": "Footer navigation"
+  },
+  "header": {
+    "toggleNavigation": "Toggle navigation",
+    "brandsMenu": "Brands",
+    "skipToContent": "Skip to content"
+  },
+  "hero": {
+    "headline": "High-end audio, as it was meant to be heard.",
+    "scroll": "Scroll",
+    "tagline": "Premium Audio Brands Distributor",
+    "description": "Official importer and distributor of premium Hi-Fi / Hi-End audio brands.",
+    "exploreBrands": "Explore Brands",
+    "aboutUs": "About Us"
+  },
+  "brandsGrid": {
+    "eyebrow": "The portfolio",
+    "heading": "Our Brands",
+    "viewAll": "View all brands",
+    "count": "{count} brands, one standard"
+  },
+  "home": {
+    "statement": {
+      "eyebrow": "Philosophy",
+      "lead": "More than a distributor — the bridge between the world's reference audio houses and the listeners who want to hear exactly what their makers intended.",
+      "body": "We hold a deliberately small roster, import it officially, and stand behind every system long after it leaves the showroom."
+    },
+    "pillars": {
+      "eyebrow": "What we do",
+      "oneTitle": "Curation",
+      "oneText": "A tightly held roster of marques we believe in — chosen for how they sound, never how they sell.",
+      "twoTitle": "Official import",
+      "twoText": "Brought in through official channels, with full manufacturer warranty and provenance.",
+      "threeTitle": "Lifetime support",
+      "threeText": "Guidance, room-matched setup and service for the life of the system."
+    },
+    "explore": {
+      "eyebrow": "Go further",
+      "productsTitle": "Products",
+      "productsText": "Browse systems and components across every brand we carry.",
+      "downloadsTitle": "Download Center",
+      "downloadsText": "Official manuals, brochures and firmware — straight from the source.",
+      "contactTitle": "Visit us",
+      "contactText": "Hear it for yourself. Find our showroom in Tehran.",
+      "cta": "Enter"
+    }
+  },
+  "footer": {
+    "rights": "© {year} {siteName}. All rights reserved."
+  },
+  "brandsPage": {
+    "eyebrow": "Brands",
+    "heading": "Our Brand Partners",
+    "description": "{siteName} is the official importer and distributor of {count} of the world's finest Hi-Fi / Hi-End audio brands.",
+    "documentsCount": "{count, plural, one {# document} other {# documents}}"
+  },
+  "brandDetail": {
+    "comingSoon": "Detailed information about {brand} is coming soon.",
+    "distributorFact": "Official distributor",
+    "productCount": "{count, plural, one {# product} other {# products}}",
+    "intro": "{brand} is one of the {count} world-class marques distributed by {siteName} across Iran. Audition the range in our Tehran showroom.",
+    "featured": "Featured products",
+    "noProducts": "Selected {brand} products are being catalogued. Contact us for current availability and pricing.",
+    "catalogue": "Download catalogue",
+    "officialDocuments": "{count, plural, one {# official document} other {# official documents}}",
+    "inquire": "Inquire about {brand}",
+    "storyTitle": "Brand story",
+    "storyComingSoon": "A full profile of {brand} — history, engineering philosophy and honours — is being prepared.",
+    "whatsappText": "Hello, I'm interested in {brand}. Could you share availability and pricing?"
+  },
+  "about": {
+    "eyebrow": "About Us",
+    "title": "The {siteName} Story",
+    "description": "Our full company story is on its way. Check back soon to learn more about who we are and what drives our commitment to Hi-Fi / Hi-End audio.",
+    "cta": "Browse Our Brands",
+    "content": {
+      "kicker": "The Sound — Tehran",
+      "headline1": "Some things are better",
+      "headline2": "heard than explained.",
+      "lead": "The Sound is an independent high-end audio destination in Tehran, bringing together a carefully selected collection of exceptional audio brands.",
+      "body1": "Our approach is simple. We choose products for their sound, design and quality — and recommend systems that make sense for the person, the music and the space.",
+      "body2": "From a single component to a complete system, every selection is considered individually, with the attention and time it deserves.",
+      "mark": "THE SOUND",
+      "sub": "Hi-End Audio · Tehran, Iran",
+      "coda": "Listen first.",
+      "cue": "Scroll"
+    }
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Get in Touch",
+    "description": "Reach us directly through any of the channels below — call, message, or drop by. We're always happy to talk audio.",
+    "items": {
+      "phone": "Phone",
+      "whatsapp": "WhatsApp",
+      "instagram": "Instagram",
+      "email": "Email",
+      "address": "Address",
+      "youtube": "YouTube",
+      "addressValue": "Manzariyeh, Tehran, Iran",
+      "comingSoon": "Coming Soon"
+    },
+    "hero": {
+      "eyebrow": "Get in touch",
+      "headingLine1": "For Those",
+      "headingLine2": "Who Listen.",
+      "lead1": "Great sound begins with knowing what matters.",
+      "lead2": "We'd be pleased to hear from you.",
+      "location": "Manzariyeh, Tehran"
+    },
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "you@email.com",
+      "message": "Message",
+      "messagePlaceholder": "How can we help you?",
+      "send": "Send message",
+      "sending": "Sending…",
+      "successTitle": "Thank you.",
+      "successBody": "Your message has been sent. We'll be in touch shortly.",
+      "successBodyMail": "Your message is ready in your email app — just hit send. We'll be in touch shortly.",
+      "errorTitle": "Message not sent.",
+      "errorBody": "Something went wrong. Please try again, or reach us on WhatsApp.",
+      "whatsappFallback": "Or reach us instantly on WhatsApp",
+      "validation": "Please enter your name, a valid email, and a message."
+    },
+    "findus": {
+      "eyebrow": "Find us",
+      "titleLine1": "Manzariyeh,",
+      "titleLine2": "Tehran.",
+      "subtitle": "Visit our private listening lounge — by appointment. Reference systems, curated and calibrated for those who truly listen.",
+      "openMaps": "Open in Maps",
+      "mapAriaLabel": "Open our location in Google Maps"
+    },
+    "map": {
+      "title": "Find Us",
+      "open": "Open in Google Maps",
+      "ariaLabel": "Open our location in Google Maps"
+    }
+  },
+  "social": {
+    "sectionLabel": "Social and contact links",
+    "whatsapp": "Contact us on WhatsApp",
+    "instagram": "Follow us on Instagram",
+    "email": "Email us",
+    "phone": "Call us",
+    "location": "View our location on Google Maps"
+  },
+  "products": {
+    "eyebrow": "Products",
+    "title": "Our Product Catalogue",
+    "catalogHeading": "Product catalogue",
+    "description": "A curated selection of reference components from the world's finest audio houses. Filter by category or brand, or search to find your next system.",
+    "cta": "Browse Our Brands",
+    "searchLabel": "Search products",
+    "searchPlaceholder": "Search by product or brand…",
+    "filterCategory": "Filter by category",
+    "filterBrand": "Brand",
+    "allCategories": "All",
+    "allBrands": "All brands",
+    "resultsCount": "{count, plural, =0 {No products} one {# product} other {# products}}",
+    "noResults": "No products match your filters.",
+    "clearFilters": "Clear filters",
+    "sampleNote": "Sample catalogue — representative products shown for demonstration until full details are published.",
+    "categories": {
+      "loudspeakers": "Loudspeakers",
+      "amplifiers": "Amplifiers",
+      "digital-sources": "Digital Sources",
+      "accessories": "Accessories"
+    },
+    "detail": {
+      "back": "All products",
+      "specifications": "Technical specifications",
+      "specsNote": "Specifications are indicative and may be refined against the manufacturer's final datasheet.",
+      "officialDocuments": "Official documents",
+      "inquire": "Inquire on WhatsApp",
+      "related": "Related products",
+      "inquiryMessage": "Hello, I'm interested in the {brand} {product}. Could you share pricing and availability?"
+    }
+  },
+  "gallery": {
+    "eyebrow": "Gallery",
+    "title": "The Gallery",
+    "description": "Step inside our world — listening rooms, reference components and the moments in between. Filter by theme, or open any image full-screen.",
+    "cta": "Browse Our Brands",
+    "filterLabel": "Filter gallery by category",
+    "allCategories": "All",
+    "photoCount": "{count, plural, =0 {No photographs} one {# photograph} other {# photographs}}",
+    "openImage": "Open image",
+    "counter": "{current, number} / {total, number}",
+    "close": "Close",
+    "previous": "Previous image",
+    "next": "Next image",
+    "empty": "No images in this category yet.",
+    "sampleNote": "Placeholder imagery shown for demonstration — final photography coming soon.",
+    "categories": {
+      "listening-rooms": "Listening Rooms",
+      "loudspeakers": "Loudspeakers",
+      "amplifiers": "Amplifiers",
+      "sources": "Sources",
+      "events": "Events",
+      "behind-the-scenes": "Behind the Scenes"
+    }
+  },
+  "downloads": {
+    "eyebrow": "Official documentation",
+    "title": "Downloads",
+    "description": "Manuals, datasheets and technical documents — sourced directly from each manufacturer's official site, and downloaded without ever leaving {siteName}.",
+    "brandCount": "{count, plural, =0 {No brands} one {# brand} other {# brands}}",
+    "productCount": "{count, plural, =0 {No products} one {# product} other {# products}}",
+    "documentCount": "{count, plural, =0 {No documents} one {# document} other {# documents}}",
+    "searchLabel": "Search downloads",
+    "searchPlaceholder": "Search by brand, product, model or document…",
+    "clearSearch": "Clear search",
+    "filterAll": "All",
+    "crumbBrands": "All brands",
+    "productsEyebrow": "Products",
+    "moreBrandsSoon": "More brands are being added",
+    "brandEyebrow": "Manufacturer",
+    "brandMeta": "{products, plural, one {# product} other {# products}} · {documents, plural, one {# document} other {# documents}}",
+    "explore": "Explore",
+    "openBrand": "Open {brand} downloads",
+    "viewDocuments": "Documents",
+    "modelCode": "Model {code}",
+    "resultsCount": "{count, plural, =0 {No results} one {# result} other {# results}}",
+    "noResults": "Nothing found",
+    "noResultsHint": "Try a brand, a model number like “NP5”, or a document name.",
+    "noDocuments": "No documents are published for this product yet.",
+    "official": "Official",
+    "downloadTooltip": "Download · official source",
+    "downloadAria": "Download {title}",
+    "breadcrumbLabel": "Breadcrumb",
+    "dlStatus": {
+      "loading": "Downloading…",
+      "success": "Download complete",
+      "error": "Download failed"
+    },
+    "status": {
+      "current": "Current",
+      "legacy": "Legacy"
+    },
+    "groups": {
+      "manuals": "Manuals",
+      "quickStart": "Quick Start",
+      "datasheets": "Datasheets & Specifications",
+      "technical": "Technical Documents",
+      "brochures": "Brochures",
+      "firmware": "Firmware & Software",
+      "other": "Other"
+    },
+    "types": {
+      "user-manual": "User Manual",
+      "quick-start": "Quick Start Guide",
+      "datasheet": "Datasheet",
+      "technical": "Technical Document",
+      "brochure": "Brochure",
+      "firmware": "Firmware",
+      "software": "Software",
+      "other": "Document"
+    }
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "cta": "Back to home"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again.",
+    "retry": "Try again",
+    "goHome": "Go home"
+  },
+  "localeSwitcher": {
+    "label": "Language",
+    "en": "English",
+    "fa": "فارسی"
+  },
+  "common": {
+    "backToTop": "Back to top",
+    "breadcrumb": "Breadcrumb",
+    "home": "Home",
+    "search": {
+      "open": "Search",
+      "placeholder": "Search brands, products, pages…",
+      "label": "Search the site",
+      "empty": "No results found.",
+      "groupPages": "Pages",
+      "groupBrands": "Brands",
+      "groupProducts": "Products"
+    }
+  },
+  "metadata": {
+    "home": {
+      "title": "TheSoundCorp — Hi-Fi / Hi-End Audio Distribution",
+      "description": "Official importer and distributor of premium Hi-Fi / Hi-End audio brands."
+    },
+    "about": {
+      "title": "About",
+      "description": "Learn more about {siteName}, an official importer and distributor of Hi-Fi / Hi-End audio brands."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Get in touch with {siteName}."
+    },
+    "products": {
+      "title": "Products",
+      "description": "Explore the product catalogue from {siteName} — loudspeakers, amplifiers, digital sources and accessories."
+    },
+    "productDetail": {
+      "description": "{product} by {brand}, distributed by {siteName}."
+    },
+    "gallery": {
+      "title": "Gallery",
+      "description": "Browse the {siteName} photo gallery."
+    },
+    "downloads": {
+      "title": "Downloads",
+      "description": "Official manuals, datasheets and technical documents from each manufacturer, delivered directly through {siteName}."
+    },
+    "brands": {
+      "title": "Brands",
+      "description": "Browse every Hi-Fi / Hi-End audio brand distributed by {siteName}."
+    },
+    "brandDetail": {
+      "description": "{brand}, distributed by {siteName}."
+    }
+  }
+}

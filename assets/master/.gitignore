@@ -1,0 +1,6 @@
+# Master asset binaries are large and reproducible from the manifests + scripts/.
+# We commit the folder structure and the *-manifest.json files, not the binaries.
+*
+!*/
+!.gitignore
+!**/*-manifest.json

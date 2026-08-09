@@ -1,0 +1,7 @@
+{
+  "brand": "Vienna Acoustics",
+  "slug": "vienna-acoustics",
+  "domain": "https://www.vienna-acoustics.com",
+  "note": "Add {url, category, product?, angle?, filename?} entries. category must match a Master Assets folder name.",
+  "assets": []
+}

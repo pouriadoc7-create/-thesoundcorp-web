@@ -1,0 +1,978 @@
+@import "tailwindcss";
+
+/*
+ * Satoshi (Latin display/body face, `en`) — self-hosted so the ACTIVE font can
+ * be <link rel=preload>-ed per locale (see app/[locale]/layout.tsx). It was
+ * previously loaded via next/font, but next/font preloads a font on every route
+ * its loader's file wraps — which, in the shared [locale] layout, meant the fa
+ * pages preloaded Satoshi and the en pages preloaded Vazirmatn (the wrong,
+ * unused face). The "Satoshi Fallback" face carries the EXACT size/metric
+ * overrides next/font computed, so there is zero CLS change from the swap.
+ */
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/Satoshi-Variable.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi Fallback";
+  src: local("Arial");
+  ascent-override: 92.36%;
+  descent-override: 21.95%;
+  line-gap-override: 9.14%;
+  size-adjust: 109.35%;
+}
+
+/*
+ * Design tokens. This site ships a single fixed dark theme (no light-mode
+ * variant exists anywhere in the UI), so tokens are fixed values rather
+ * than the create-next-app default of swapping CSS vars per color scheme.
+ * Anything defined under @theme also becomes a Tailwind utility (e.g.
+ * --color-surface -> bg-surface, --breakpoint-3xl -> the `3xl:` variant).
+ */
+@theme {
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+  /* Secondary / de-emphasised text. Tuned to clear WCAG AA (~5.6:1 on the
+     near-black background, ~5:1 on the elevated surface) while staying dimmer
+     than zinc-400, so the white→muted hierarchy is preserved. Use `text-muted`
+     for secondary copy in place of the old text-zinc-500 (which was 4.35:1 and
+     failed AA) and the stray text-gray-500. */
+  --color-muted: #83838d;
+  /* Matte, faintly-warm surfaces (was slate-blue #111827) — reads as
+     brushed graphite rather than "UI grey". */
+  --color-surface: #121317;
+  --color-surface-muted: #171719;
+
+  /* Signature gold accent, used sparingly (nav underline, CTA glow, hovers). */
+  --color-gold: #d4af37;
+  --color-gold-soft: #e4c878;
+  --color-gold-deep: #b8912e;
+
+  --font-sans: var(--font-sans-latin);
+  /* No mono webfont is loaded (font-mono isn't used anywhere in the UI);
+     this keeps the utility class available with a sane system fallback
+     instead of paying for an unused font download. */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Ultrawide breakpoint, on top of Tailwind's default scale */
+  --breakpoint-3xl: 1920px;
+
+  /* Panel radius used by glass/elevated surfaces (mega menu, cards) */
+  --radius-panel: 24px;
+
+  /* Shared easing/duration for premium, non-jarring motion */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: dark;
+
+  /* Latin font stack (was injected by next/font on <html>; now global since
+     Satoshi is self-hosted above). The "Satoshi Fallback" face keeps CLS ~0. */
+  --font-sans-latin: "Satoshi", "Satoshi Fallback", -apple-system, "Segoe UI", sans-serif;
+
+  /*
+   * Z-index scale. Not all values are consumed yet (modal/toast have no
+   * component today) — keeping them here means future overlays pick a
+   * documented layer instead of an arbitrary number.
+   */
+  --z-header: 50;
+  --z-dropdown: 50;
+  --z-overlay: 40;
+  --z-modal: 100;
+  --z-toast: 110;
+
+  /*
+   * Actual rendered height of <header> (logo height + its vertical
+   * padding, see components/layout/Header.tsx). Single source of truth
+   * for anything that needs to sit flush below the header — the desktop
+   * mega menu and the mobile nav backdrop both position off this instead
+   * of a hardcoded value, so the two can't drift out of sync.
+   */
+  --header-height: 124px;
+
+  /* Premium depth: layered soft shadow, plus a faint gold glow for accents. */
+  --shadow-luxe: 0 30px 60px -30px rgba(0, 0, 0, 0.85), 0 12px 28px -14px rgba(0, 0, 0, 0.6);
+  --glow-gold: 0 18px 50px -18px rgba(212, 175, 55, 0.28);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-height: 160px;
+  }
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga", "calt";
+}
+
+/* Premium text selection — a soft gold wash. */
+::selection {
+  background: color-mix(in srgb, var(--color-gold-soft) 30%, transparent);
+  color: #fff;
+}
+
+/* Smooth in-page scrolling, with the sticky header accounted for when jumping
+   to anchors (skip-link, back-to-top). Disabled under reduced-motion below. */
+html {
+  /* Slightly smaller root scale for a cleaner, more refined density (a premium
+     trait). Everything rem-based scales down a touch; the generous section
+     rhythm keeps whitespace expensive. Expressed as a percentage (not a fixed
+     15px) so it stays relative to the user's own browser font-size preference
+     — 93.75% of a default 16px is 15px, but a user who raises their base size
+     still scales up proportionally (accessibility). */
+  font-size: 93.75%;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 1rem);
+}
+
+/* Subtle, unobtrusive dark scrollbars. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.26);
+  background-clip: padding-box;
+}
+
+/* Tighten large display type a touch for a more crafted, editorial hierarchy.
+   Scoped to LTR so it never touches Persian (see the fa override below). */
+[dir="ltr"] h1,
+[dir="ltr"] h2 {
+  letter-spacing: -0.015em;
+}
+[dir="ltr"] h3 {
+  letter-spacing: -0.01em;
+}
+
+/* Persian/Arabic script is cursive — any letter-spacing breaks the joins
+   between letters. Force it off across the entire fa locale, overriding any
+   tracking-* utility inherited from shared components (eyebrows, nav, etc.). */
+html[lang="fa"] * {
+  letter-spacing: normal !important;
+}
+
+/* ============================================================
+   Typographic scale & primitives
+   One fluid, tokenized display ramp — clamp-based, so headings
+   scale SMOOTHLY with the viewport instead of jumping at each
+   breakpoint (and never freeze in a dead-zone between them). Each
+   step sets geometry only (size / leading / tracking); weight and
+   colour stay with the call site, so adopting a step is a pure
+   responsive refinement, not a restyle. Plus `.eyebrow`, the one
+   canonical kicker (small uppercase gold label above a title) that
+   replaces ~20 drifting ad-hoc recipes. Persian tracking is
+   neutralised by the html[lang="fa"] rule above.
+   ============================================================ */
+/* In @layer components so a Tailwind utility (e.g. a looser `leading-*` on a
+   lead paragraph, or a `text-*` colour) can still override a step when a call
+   site needs it — utilities win over the components layer. */
+@layer components {
+  .display-1 { font-size: clamp(2.5rem, 1.55rem + 4vw, 4.75rem); line-height: 1.04; letter-spacing: -0.02em; }
+  .display-2 { font-size: clamp(1.5rem, 1.05rem + 2.3vw, 3.25rem); line-height: 1.1; letter-spacing: -0.015em; }
+  .display-3 { font-size: clamp(1.2rem, 1.05rem + 0.85vw, 1.9rem); line-height: 1.18; letter-spacing: -0.01em; }
+  .eyebrow {
+    font-size: clamp(0.625rem, 0.585rem + 0.18vw, 0.875rem);
+    font-weight: 500;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    color: color-mix(in srgb, var(--color-gold-soft) 90%, transparent);
+  }
+}
+
+/*
+ * Slow, low-contrast halo for the floating WhatsApp button. Kept subtle
+ * (small scale, fades to nothing) so it reads as "premium" rather than a
+ * loud attention-grabber. Applied via motion-safe: so it's inert for users
+ * who prefer reduced motion.
+ */
+/* Floating action button attention halo. */
+@keyframes waPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   Premium motion system
+   Every effect is opt-in (via a class or data-attribute) and is
+   fully disabled under prefers-reduced-motion at the bottom of
+   this block. Motion is deliberately soft and slow — a settle,
+   not a bounce — using the shared --ease-premium curve.
+   ============================================================ */
+
+/* -- Fade-up on scroll --------------------------------------
+   Elements marked [data-reveal] start slightly low and clear,
+   then settle when the ScrollReveal observer adds .is-visible.
+   Stagger neighbours with an inline --reveal-delay. */
+/* Driven by the <Reveal> client component, which owns the is-visible class in
+   React state — so the hidden→shown change happens after hydration and never
+   races it. The hidden state applies only while [data-reveal] lacks
+   .is-visible; once React adds it (post-mount), the element settles. */
+[data-reveal]:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+[data-reveal] {
+  transition: opacity 0.7s var(--ease-premium), transform 0.7s var(--ease-premium);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+/* -- Page transition ----------------------------------------
+   A soft cross-fade of incoming page content on every
+   navigation (applied by app/[locale]/template.tsx). Opacity
+   only, so it never fights the per-element fade-up above. */
+@keyframes pageEnter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.page-enter {
+  animation: pageEnter 0.45s var(--ease-premium) both;
+}
+
+/* -- Luxury button ------------------------------------------
+   Soft lift, a gentle press, and a single slow sheen that
+   sweeps once on hover. The highlight is low-opacity so it
+   reads as a sheen, not a flash. */
+.btn-lux {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-premium), box-shadow 0.4s var(--ease-premium),
+    border-color 0.4s var(--ease-premium), opacity 0.4s var(--ease-premium);
+}
+.btn-lux:hover {
+  transform: translateY(-2px);
+}
+.btn-lux:active {
+  transform: translateY(0) scale(0.985);
+}
+.btn-lux::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 65%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.9s var(--ease-premium);
+  pointer-events: none;
+}
+.btn-lux:hover::after {
+  transform: translateX(130%);
+}
+/* On dark/outline buttons the sheen is dimmer so it stays subtle. */
+.btn-lux--ghost::after {
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 65%
+  );
+}
+
+/* -- Luxury card hover --------------------------------------
+   Rises on a layered soft shadow with a whisper of gold at the edge. */
+.card-lux {
+  position: relative;
+  /* Resting depth on a dark UI comes from a top edge-light + a soft grounding
+     shadow, not a harsh drop shadow — reads as a floating glass panel. */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 4px rgba(0, 0, 0, 0.35);
+  transition: transform 0.5s var(--ease-premium), border-color 0.5s var(--ease-premium),
+    background-color 0.5s var(--ease-premium), box-shadow 0.5s var(--ease-premium);
+}
+/* Animated edge-light border that appears only on hover — a soft gold→white
+   arc that rotates slowly around the card, giving a premium "lit edge" like
+   Linear/Arc. The angle is a registered custom property so it animates via
+   transform-free interpolation; only the hovered card paints. Reduced-motion
+   keeps a static lit edge (see the reduced-motion block). */
+@property --card-glow-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.card-lux::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--card-glow-angle),
+    transparent 0deg,
+    rgba(212, 175, 55, 0.5) 46deg,
+    rgba(255, 255, 255, 0.42) 82deg,
+    rgba(212, 175, 55, 0.32) 120deg,
+    transparent 175deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-premium);
+  pointer-events: none;
+}
+.card-lux:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-luxe),
+    0 0 0 1px rgba(212, 175, 55, 0.14), 0 30px 66px -28px rgba(212, 175, 55, 0.12);
+}
+.card-lux:hover::after {
+  opacity: 1;
+  animation: cardGlowSpin 4.5s linear infinite;
+}
+@keyframes cardGlowSpin {
+  to {
+    --card-glow-angle: 360deg;
+  }
+}
+
+/* ============================================================
+   Premium visual system — glass, holographic accents, depth,
+   floating and animated gradients. Kept subtle and elegant;
+   all motion is disabled under prefers-reduced-motion below.
+   ============================================================ */
+
+/* Refined layered glass surface (header, panels, elevated cards). */
+.glass-panel {
+  background: color-mix(in srgb, var(--color-surface) 58%, transparent);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), var(--shadow-luxe);
+}
+
+/* Subtle holographic top light-line — a whisper of white→gold→white,
+   drawn as an overlay so it layers over any surface. */
+.holo-edge {
+  position: relative;
+  isolation: isolate;
+}
+.holo-edge::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    rgba(212, 175, 55, 0.3),
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* Brushed-platinum text — an extremely subtle silver/platinum optical wash
+   applied via background-clip to premium display and navigation type. Every
+   stop is a cool light neutral (silver → white → faint platinum), so on the
+   dark UI it reads as a clean near-white with only a whisper of brushed metal —
+   no rainbow, no RGB, no neon, no glow, and no obvious gradient. Safe on Persian
+   too: it changes the text fill, never the letter joins. */
+.text-holo {
+  background-image: linear-gradient(
+    105deg,
+    #e8ebf0 0%,
+    #ffffff 46%,
+    #ffffff 58%,
+    #eceef2 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Premium hairline separator (gold-tinted center fade). */
+.hr-premium {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    rgba(212, 175, 55, 0.22),
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+}
+
+/* Gentle floating for decorative accents only. */
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.float-slow {
+  animation: floatY 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Very slow animated gold gradient — for decorative accent text/edges. */
+@keyframes gradientDrift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradientDrift 8s linear infinite;
+}
+
+/* Ambient depth background — two soft radial glows that drift very slowly
+   behind all content, plus a faint noise texture for a premium, non-flat
+   surface. Fixed + pointer-events-none; transform-only so it stays on the GPU.
+   Drift is disabled under prefers-reduced-motion (the glows remain, static). */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ambient-bg::before,
+.ambient-bg::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
+.ambient-bg::before {
+  width: 62vmax;
+  height: 62vmax;
+  top: -22vmax;
+  left: -12vmax;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.09), transparent 60%);
+  animation: ambientDrift1 30s ease-in-out infinite;
+}
+.ambient-bg::after {
+  width: 52vmax;
+  height: 52vmax;
+  right: -14vmax;
+  bottom: -18vmax;
+  background: radial-gradient(circle, rgba(140, 158, 255, 0.05), transparent 62%);
+  animation: ambientDrift2 38s ease-in-out infinite;
+}
+.ambient-bg .noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@keyframes ambientDrift1 {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(6vmax, 4vmax, 0);
+  }
+}
+@keyframes ambientDrift2 {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-5vmax, -4vmax, 0);
+  }
+}
+
+/* -- Gold-glow CTA modifier ---------------------------------
+   For the primary action: a soft warm halo blooms on hover. */
+.btn-lux--gold:hover {
+  box-shadow: var(--glow-gold);
+}
+
+/* -- Elegant nav underline ----------------------------------
+   A centred gold hairline that sweeps out on hover / current page. */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -7px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.32s var(--ease-premium), opacity 0.32s var(--ease-premium);
+  opacity: 0;
+  pointer-events: none;
+}
+.nav-link:hover::after,
+.nav-link[aria-current="page"]::after,
+.nav-link[aria-expanded="true"]::after {
+  transform: scaleX(1);
+  opacity: 0.9;
+}
+
+/* -- Soft glass surface -------------------------------------- */
+.glass {
+  background: color-mix(in srgb, var(--color-surface) 62%, transparent);
+  backdrop-filter: blur(18px) saturate(1.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* -- Blur-to-sharp reveal ------------------------------------
+   A cinematic variant of the fade-up (opt in via <Reveal blur>). */
+[data-reveal-blur]:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(20px) scale(1.012);
+  filter: blur(14px);
+}
+[data-reveal-blur] {
+  transition: opacity 0.85s var(--ease-premium), transform 0.85s var(--ease-premium),
+    filter 0.85s var(--ease-premium);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform, filter;
+}
+
+/* -- Elegant loading ----------------------------------------
+   A slow shimmer across the wordmark plus a thin sweeping line. */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes lineSweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+.loader-shimmer {
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0.28) 20%,
+    #ffffff 50%,
+    rgba(255, 255, 255, 0.28) 80%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 2.6s linear infinite;
+}
+
+/* -- Logo: cinematic reveal + one platinum light sweep ------
+   The brand mark fades and settles once on initial page load (GPU
+   transform/opacity only — no layout shift), then a single, almost
+   imperceptible platinum sheen crosses it, like light catching brushed
+   metal. A shorter micro-reveal replays only when the mobile nav opens.
+   Nothing loops; all of it is disabled under reduced-motion below. */
+@keyframes logoReveal {
+  from { opacity: 0; transform: translateY(4px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes logoMenuReveal {
+  from { opacity: 0; transform: translateY(-3px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes logoSweep {
+  0% { opacity: 0; background-position: 160% 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { opacity: 0; background-position: -60% 0; }
+}
+/* Three gentle "heartbeat" pulses on first page load, then completely static.
+   Scale stays within 2.5% and each peak lifts brightness a hair — luxury,
+   cinematic, understated; never bouncy. Plays ONCE (no loop); `both` fill locks
+   the end state at scale(1)/brightness(1) so the mark is fully still afterward.
+   Natural pauses between beats (not a mechanical loop). Disabled under
+   reduced-motion below. */
+@keyframes logoHeartbeat {
+  0% { transform: scale(1); filter: brightness(1); }
+  6% { transform: scale(1.025); filter: brightness(1.04); }
+  14% { transform: scale(1); filter: brightness(1); }
+  32% { transform: scale(1); filter: brightness(1); }
+  38% { transform: scale(1.025); filter: brightness(1.04); }
+  46% { transform: scale(1); filter: brightness(1); }
+  64% { transform: scale(1); filter: brightness(1); }
+  70% { transform: scale(1.025); filter: brightness(1.04); }
+  78% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+.logo-reveal {
+  animation: logoHeartbeat 3200ms var(--ease-premium) both;
+  will-change: transform, filter;
+}
+/* One slow platinum reflection, screen-blended so it only adds light (no wash,
+   no glow, no colour). Contained to the mark by `isolate` on .logo-reveal. */
+.logo-sweep {
+  background-image: linear-gradient(
+    100deg,
+    transparent 43%,
+    rgba(226, 232, 240, 0.08) 48%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(226, 232, 240, 0.08) 52%,
+    transparent 57%
+  );
+  background-repeat: no-repeat;
+  background-size: 220% 100%;
+  background-position: 160% 0;
+  mix-blend-mode: screen;
+  /* Sweep disabled — the logo's only load motion is now the heartbeat above. */
+  opacity: 0;
+}
+.logo-reveal[data-menu-open="true"] .logo-img {
+  animation: logoMenuReveal 600ms var(--ease-premium);
+}
+
+/* -- Contact page: seamless flowing signal waveform --------
+   The gold waveform is ONE continuous path drawn across two identical periods
+   (0..2880 over a 1440 viewBox) and scrolled left by exactly one period, so it
+   reads as an endless, jump-free flowing signal — slow, smooth, understated.
+   One SVG = one unbroken line: no tiling, no seam.
+
+   DESKTOP (>= md): the inner <g class="contact-flow"> translates by one period
+   in the SVG's own user space (-1440). Robustly seamless at any size. This is
+   the original, approved rendering — untouched. */
+@keyframes contactWaveFlow {
+  from { transform: translateX(0); }
+  to { transform: translateX(-1440px); }
+}
+.contact-flow {
+  animation: contactWaveFlow 22s linear infinite;
+  will-change: transform;
+}
+
+/* MOBILE (< md): same look, but the jank is fixed. On phones the group-transform
+   above forced the Gaussian-blur glow to re-rasterize every frame (main thread,
+   esp. iOS Safari) — that was the stutter. Here the ENTIRE svg (.contact-flow-m)
+   is one continuous path and it is the element that translates, so the browser
+   rasterizes the whole waveform + glow ONCE into a single GPU layer and each
+   frame is a pure compositor move. It scrolls left by exactly one on-screen
+   period (--wave-shift, set in JS = 1.6 x height, the height-driven slice scale),
+   so the loop is jump-free and seamless at any viewport. The wave still lifts up
+   over the headline/copy (the deliberate desktop-like overlap). */
+.contact-wave-m {
+  position: absolute;
+  inset: 0;
+  transform: translateY(-18%) scale(1.08);
+}
+@keyframes contactWaveFlowM {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(calc(var(--wave-shift, 0px) * -1), 0, 0); }
+}
+.contact-flow-m {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%; /* placeholder until JS sets the exact px width (viewport + one period) */
+  height: 100%;
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  animation: contactWaveFlowM 22s linear infinite;
+}
+/* Find Us map — the gold location pin's slow radar pulse (matches the approved
+   Concept-B mockup). Champagne-gold, understated, disabled under reduced-motion. */
+@keyframes contactPing {
+  0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.35); }
+  70%, 100% { box-shadow: 0 0 0 26px rgba(212, 175, 55, 0); }
+}
+.contact-ping {
+  animation: contactPing 3.4s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-flow,
+  .contact-flow-m,
+  .contact-ping { animation: none !important; }
+}
+
+/* -- Reduced motion: disable everything, reveal immediately -- */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal].is-visible,
+  [data-reveal-blur],
+  [data-reveal-blur].is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+  .page-enter { animation: none !important; }
+  .btn-lux,
+  .btn-lux::after,
+  .card-lux,
+  .nav-link::after { transition: none !important; }
+  .btn-lux:hover,
+  .btn-lux:active,
+  .card-lux:hover { transform: none !important; }
+  .btn-lux:hover::after { transform: translateX(-130%) !important; }
+  .loader-shimmer { animation: none !important; }
+  .float-slow,
+  .animate-gradient { animation: none !important; }
+  .ambient-bg::before,
+  .ambient-bg::after { animation: none !important; }
+  .card-lux:hover::after { animation: none !important; }
+  .logo-reveal,
+  .logo-reveal[data-menu-open="true"] .logo-img {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .logo-sweep { animation: none !important; opacity: 0 !important; }
+  html { scroll-behavior: auto !important; }
+}
+
+/* ============================================================
+   About — "Some things are better heard than explained."
+   The approved dark editorial concept (components/about/AboutConcept.tsx).
+   Everything is scoped under .about-page and every SVG id is ab-prefixed,
+   so nothing here touches the header, footer, fonts or other pages.
+   Single visual world by intent (architectural darkness) — no light theme.
+   Motion is transform/opacity only and disabled under reduced-motion.
+   ============================================================ */
+.about-page {
+  --ab-champ: #cdbfa1;
+  --ab-hair: rgba(205, 191, 161, 0.5);
+  --ab-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  background: #050506;
+  color: #e9ebee;
+  font-family: var(--font-sans-latin);
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.ab-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* soft scroll reveals (only once JS marks the page ready) */
+.about-page.motion [data-r] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition: opacity 1.4s var(--ab-ease), transform 1.4s var(--ab-ease);
+}
+.about-page.motion [data-r].in { opacity: 1; transform: none; }
+.about-page.motion [data-r][data-d="1"] { transition-delay: 0.14s; }
+.about-page.motion [data-r][data-d="2"] { transition-delay: 0.28s; }
+
+/* hero */
+.ab-hero {
+  position: relative;
+  /* Fixed header allowance — deliberately NOT the live --header-height var. The
+     header rewrites that var on every frame while it shrinks/grows on scroll, so
+     tying the hero height to it made the whole (tall, SVG-filtered) About page
+     reflow every frame — a scroll<->reflow feedback loop that pegged CPU/GPU and
+     jittered the header. A constant fully decouples About's layout from the header. */
+  min-height: calc(100svh - 110px);
+  overflow: hidden;
+  background: radial-gradient(130% 130% at 74% 34%, #0c0d11, #050506 60%);
+}
+.ab-hero .ab-stage { position: absolute; inset: 0; z-index: 0; will-change: transform; }
+.ab-art { display: block; }
+.ab-hero .ab-art { position: absolute; top: 34%; left: 78%; width: 112vh; height: 112vh; transform: translate(-50%, -50%); }
+.ab-hero .ab-glow {
+  position: absolute; z-index: 1; top: -16%; left: 40%; width: 66vw; height: 80vh; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(205, 191, 161, 0.09), transparent 70%); will-change: transform;
+}
+.ab-hero .ab-fade {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(90deg, #050506 6%, rgba(5, 5, 6, 0.5) 40%, transparent 68%), linear-gradient(0deg, #050506 3%, transparent 26%);
+}
+.ab-hero .ab-inner {
+  position: relative; z-index: 3; height: 100%; min-height: inherit; max-width: 1360px; margin: 0 auto;
+  padding: 0 6.4vw; display: flex; flex-direction: column; justify-content: center;
+}
+.ab-kicker { font-size: 11px; letter-spacing: 0.42em; text-transform: uppercase; color: #565b63; font-weight: 400; margin-bottom: 34px; }
+.ab-headline { font-weight: 230; letter-spacing: -0.018em; line-height: 1.09; color: #eef0f2; font-size: clamp(2.1rem, 5.2vw, 4.55rem); max-width: 15ch; text-wrap: balance; }
+.ab-hair { height: 1px; width: 0; background: linear-gradient(90deg, var(--ab-champ), transparent); margin-top: 42px; transition: width 1.8s var(--ab-ease) 0.5s; }
+.ab-hair.in { width: min(46%, 330px); }
+.ab-cue { position: absolute; left: 6.4vw; bottom: 38px; z-index: 3; display: flex; align-items: center; gap: 12px; font-size: 10.5px; letter-spacing: 0.34em; text-transform: uppercase; color: #565b63; }
+.ab-cue .ab-ln { display: block; width: 44px; height: 1px; background: linear-gradient(90deg, #565b63, transparent); animation: abCue 3.8s var(--ab-ease) infinite; }
+@keyframes abCue { 0%, 100% { opacity: 0.35; transform: translateX(0); } 50% { opacity: 0.85; transform: translateX(8px); } }
+
+/* statement */
+.ab-statement { max-width: 1120px; margin: 0 auto; padding: 21vh 6.4vw 17vh; }
+.ab-lead { font-weight: 250; font-size: clamp(1.5rem, 2.5vw, 2.1rem); line-height: 1.5; letter-spacing: -0.01em; color: #dcdfe4; max-width: 24ch; }
+.ab-body { margin-top: min(12vh, 128px); max-width: 38ch; margin-inline-start: auto; font-weight: 300; font-size: clamp(1.06rem, 1.3vw, 1.25rem); line-height: 1.85; color: #9297a0; }
+.ab-body p + p { margin-top: 1.7em; }
+
+/* detail (heat-sink) */
+.ab-detail { position: relative; min-height: calc(100svh - 110px); overflow: hidden; background: #050506; } /* fixed allowance, not live --header-height (see .ab-hero note) */
+.ab-detail .ab-stage { position: absolute; inset: -4%; will-change: transform; }
+.ab-detail .ab-art { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ab-detail .ab-cover {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(120% 100% at 50% 46%, transparent 34%, #050506 88%), linear-gradient(0deg, #050506, transparent 22%), linear-gradient(180deg, #050506, transparent 20%);
+}
+.ab-detail .ab-veil { position: absolute; inset: 0; background: #050506; opacity: 0.72; transition: opacity 2s var(--ab-ease); }
+.ab-detail.in .ab-veil { opacity: 0; }
+
+/* signature */
+.ab-sign { padding: 27vh 6.4vw; text-align: center; background: linear-gradient(180deg, #050506, #0a0b0e 55%, #050506); }
+.ab-div { width: 1px; height: 64px; margin: 0 auto 46px; background: linear-gradient(180deg, transparent, var(--ab-hair), transparent); }
+.ab-mark { font-weight: 400; letter-spacing: 0.48em; font-size: clamp(1rem, 1.7vw, 1.32rem); color: #eef0f2; padding-left: 0.48em; }
+.ab-sub { margin-top: 22px; font-weight: 300; letter-spacing: 0.22em; font-size: clamp(0.66rem, 0.9vw, 0.76rem); color: #565b63; }
+
+/* coda */
+.ab-coda { min-height: 64vh; display: flex; align-items: center; justify-content: center; background: #050506; }
+.ab-coda span { font-weight: 300; font-size: clamp(0.82rem, 1vw, 0.94rem); letter-spacing: 0.16em; color: #565b63; }
+
+/* dedicated mobile composition */
+@media (max-width: 520px) {
+  .ab-hero .ab-art { left: 56%; top: 30%; width: 150vh; height: 150vh; }
+  .ab-hero .ab-glow { left: 8%; width: 100vw; height: 52vh; }
+  .ab-hero .ab-fade { background: linear-gradient(0deg, #050506 18%, rgba(5, 5, 6, 0.4) 52%, transparent 82%), radial-gradient(120% 68% at 52% 24%, transparent, rgba(5, 5, 6, 0.5)); }
+  .ab-hero .ab-inner { justify-content: flex-end; padding: 0 26px 15vh; }
+  .ab-kicker { margin-bottom: 22px; letter-spacing: 0.36em; }
+  .ab-headline { font-size: clamp(2rem, 8.4vw, 2.7rem); max-width: 13ch; }
+  .ab-hair.in { width: 56%; }
+  .ab-cue { left: 26px; bottom: 26px; }
+  .ab-statement { padding: 16vh 26px 12vh; }
+  .ab-lead { font-size: 1.42rem; max-width: none; }
+  .ab-body { margin-top: 9vh; max-width: none; margin-left: 0; font-size: 1.06rem; }
+  .ab-sign { padding: 20vh 26px; }
+  .ab-mark { letter-spacing: 0.34em; }
+  .ab-coda { min-height: 50vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-page.motion [data-r] { opacity: 1 !important; transform: none !important; transition: none; }
+  .ab-hair { transition: none; }
+  .ab-hair.in { width: min(46%, 330px); }
+  .ab-cue .ab-ln { animation: none; }
+  .ab-hero .ab-stage, .ab-hero .ab-glow, .ab-detail .ab-stage { transform: none !important; will-change: auto; }
+  .ab-detail .ab-veil { opacity: 0 !important; }
+}
+
+/* Persian / RTL variant (fa locale). Mirrors the directional composition —
+   art position, the light-fade, the hairline, the scroll cue — and swaps to the
+   Persian webface (Vazirmatn). Text alignment flips automatically from dir="rtl"
+   + start-based blocks, and the body offset already uses margin-inline-start.
+   The English/LTR rendering is completely untouched. */
+.about-page[dir="rtl"] {
+  font-family: var(--font-vazirmatn), "Vazirmatn", system-ui, sans-serif;
+}
+.about-page[dir="rtl"] .ab-hero .ab-art { left: 22%; }
+.about-page[dir="rtl"] .ab-hero .ab-fade {
+  background: linear-gradient(270deg, #050506 6%, rgba(5, 5, 6, 0.5) 40%, transparent 68%), linear-gradient(0deg, #050506 3%, transparent 26%);
+}
+.about-page[dir="rtl"] .ab-hair { background: linear-gradient(270deg, var(--ab-champ), transparent); }
+.about-page[dir="rtl"] .ab-cue { left: auto; right: 6.4vw; }
+.about-page[dir="rtl"] .ab-cue .ab-ln { background: linear-gradient(270deg, #565b63, transparent); }
+/* Keep the Latin THE SOUND wordmark spaced even in fa (the global fa
+   letter-spacing:normal rule would otherwise cramp it). */
+.about-page[dir="rtl"] .ab-mark { letter-spacing: 0.3em !important; padding-left: 0; padding-right: 0.3em; }
+@media (max-width: 520px) {
+  .about-page[dir="rtl"] .ab-hero .ab-art { left: 44%; }
+  .about-page[dir="rtl"] .ab-hero .ab-glow { left: auto; right: 8%; }
+}
+
+/* ============================================================
+   Download Center — quiet-luxury interactions. Scoped under .dl-*,
+   additive only; nothing here touches other pages. Transform/opacity
+   only (GPU), and every effect is disabled under reduced-motion.
+   ============================================================ */
+
+/* Level cross-fade: Brands → Brand → Products → Product → Documents.
+   Re-keyed per level in DownloadsExplorer, so it replays on each drill. */
+@keyframes dlViewIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.dl-view {
+  animation: dlViewIn 0.5s var(--ease-premium) both;
+}
+
+/* Brand tile: cursor-aware gold spotlight + a whisper of magnetic drift on the
+   inner content. Both driven by --mx/--my/--tx/--ty set in BrandTile. */
+.dl-brand {
+  --tx: 0px;
+  --ty: 0px;
+}
+.dl-spotlight {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    240px circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in srgb, var(--color-gold) 12%, transparent),
+    color-mix(in srgb, var(--color-gold) 4%, transparent) 42%,
+    transparent 72%
+  );
+  transition: opacity 0.55s var(--ease-premium);
+}
+
+/* Hide the browser-native search clear button — the Download Center search has
+   its own custom clear affordance, so the extra native "x" clashed with it. */
+.dl-search::-webkit-search-cancel-button,
+.dl-search::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.dl-brand:hover .dl-spotlight,
+.dl-brand:focus-visible .dl-spotlight {
+  opacity: 1;
+}
+.dl-brand-inner {
+  transform: translate3d(var(--tx, 0), var(--ty, 0), 0);
+  transition: transform 0.5s var(--ease-premium);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dl-view { animation: none !important; }
+  .dl-brand-inner { transform: none !important; }
+  .dl-spotlight { display: none !important; }
+}

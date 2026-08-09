@@ -1,0 +1,7 @@
+{
+  "brand": "Audes",
+  "slug": "audes",
+  "domain": "https://audes.eu",
+  "note": "Add {url, category, product?, angle?, filename?} entries. category must match a Master Assets folder name.",
+  "assets": []
+}

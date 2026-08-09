@@ -44,6 +44,17 @@ export const BRAND_LOGOS: Record<string, string> = {
  * no layout shift). Slugs not listed render at their natural size (scale 1).
  * Shared by the homepage "Our Brands" grid and the /brands directory.
  */
+/**
+ * Slugs whose official logo asset is NOT the light/dark-background variant the
+ * rest of the wall uses — it's dark or dark-dominant, so on the near-black UI it
+ * is invisible/faint. We render these as a clean WHITE silhouette via CSS
+ * `brightness-0 invert`, matching the predominantly-white logo wall — the asset
+ * file is never modified and shape/aspect ratio are preserved (a filter, not a
+ * transform). Measured faint: borresen (#1e3663 navy), davis (dark greyscale),
+ * aavik (a ~92% dark-red icon). Add a slug here if its mark reads dark on dark.
+ */
+export const LOGO_LIGHTEN: ReadonlySet<string> = new Set(["borresen", "davis", "aavik"]);
+
 export const LOGO_SCALE: Record<string, number> = {
   // compact marks — enlarged
   aavik: 1.464,

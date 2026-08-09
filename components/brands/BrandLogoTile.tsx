@@ -1,6 +1,6 @@
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Link } from "@/i18n/navigation";
-import { BRAND_LOGOS, LOGO_SCALE } from "@/lib/data/brand-logos";
+import { BRAND_LOGOS, LOGO_LIGHTEN, LOGO_SCALE } from "@/lib/data/brand-logos";
 import type { Brand } from "@/lib/types/brand";
 import { cn } from "@/lib/utils/cn";
 
@@ -38,7 +38,12 @@ export function BrandLogoTile({ brand, docsLabel, className }: BrandLogoTileProp
           logoUrl={BRAND_LOGOS[brand.slug]}
           sizes="(max-width: 768px) 40vw, (max-width: 1024px) 22vw, 180px"
           className="h-11 w-full"
-          imgClassName="opacity-80 transition-opacity duration-300 group-hover:opacity-100"
+          imgClassName={cn(
+            "opacity-100",
+            // Dark monochrome asset → render as a white silhouette so it's visible
+            // on the near-black tile (CSS only; the asset file is untouched).
+            LOGO_LIGHTEN.has(brand.slug) && "brightness-0 invert"
+          )}
           wordmarkClassName="text-[15px] font-medium text-white/90 xl:text-lg"
         />
       </div>

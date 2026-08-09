@@ -10,6 +10,10 @@ export interface OfficialDownloadArgs {
   doc: string;
   /** Fallback filename if the response omits Content-Disposition. */
   filename: string;
+  /** When set, fetch this same-origin URL directly (a locally-hosted file under
+   *  /public) instead of the proxy. The stream/progress/blob/save flow is
+   *  identical — only the source URL differs. */
+  href?: string;
 }
 
 /**
@@ -41,7 +45,7 @@ export function useOfficialDownload() {
   }, []);
 
   const download = useCallback(
-    async ({ brand, product, doc, filename }: OfficialDownloadArgs) => {
+    async ({ brand, product, doc, filename, href }: OfficialDownloadArgs) => {
       if (inFlight.current) return;
       inFlight.current = true;
       if (resetTimer.current) window.clearTimeout(resetTimer.current);
@@ -49,9 +53,13 @@ export function useOfficialDownload() {
       setProgress(null);
 
       try {
-        const url = `/api/download?brand=${encodeURIComponent(brand)}&product=${encodeURIComponent(
-          product
-        )}&doc=${encodeURIComponent(doc)}`;
+        // Local (imported) files are fetched directly from /public; remote
+        // official files go through the same-origin proxy.
+        const url = href
+          ? href
+          : `/api/download?brand=${encodeURIComponent(brand)}&product=${encodeURIComponent(
+              product
+            )}&doc=${encodeURIComponent(doc)}`;
         const res = await fetch(url, { headers: { accept: "*/*" } });
         if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
 

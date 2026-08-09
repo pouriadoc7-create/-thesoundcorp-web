@@ -31,8 +31,8 @@ export function ProductHero({ brandName, product, docCount }: ProductHeroProps) 
             variant="full"
             fit="contain"
             priority
-            sizes="(max-width: 1024px) 100vw, 480px"
-            className="aspect-[4/3] w-full"
+            sizes="(max-width: 1024px) 100vw, 520px"
+            className="aspect-[4/5] w-full"
           />
         </Card>
       </Reveal>

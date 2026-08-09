@@ -25,7 +25,10 @@ const sanitize = (n) => (n.replace(/[^A-Za-z0-9._-]+/g, "_").slice(0, 180) || "f
 const jobs = [];
 for (const b of brands)
   for (const p of b.products)
-    for (const d of p.documents)
+    for (const d of p.documents) {
+      // Locally-hosted (imported) files have no officialUrl — this script only
+      // fetches REMOTE official files, so skip them.
+      if (!d.officialUrl) continue;
       jobs.push({
         brand: b.slug,
         brandName: b.name,
@@ -39,6 +42,7 @@ for (const b of brands)
         url: d.officialUrl,
         domain: b.officialDomain,
       });
+    }
 
 async function download(job) {
   const dir = path.join(OUT, "brands", job.brand, "products", job.product, "documents");

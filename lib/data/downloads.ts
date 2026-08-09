@@ -42,19 +42,104 @@ export const DOWNLOAD_BRANDS: DownloadBrand[] = [
     "blurb": "Danish loudspeakers, designed and built in Copenhagen.",
     "products": [
       {
-        "slug": "r-series-general",
-        "name": "R-Series (general)",
+        "slug": "qr-series",
+        "name": "QR-Series",
         "category": "Speakers",
-        "status": "current",
+        "imageUrl": "/downloads/audiovector/qr-series/cover.jpg",
+        "imageBlurDataURL": "data:image/jpeg;base64,/9j/2wBDABIMDRANCxIQDhAUExIVGywdGxgYGzYnKSAsQDlEQz85Pj1HUGZXR0thTT0+WXlaYWltcnNyRVV9hnxvhWZwcm7/2wBDARMUFBsXGzQdHTRuST5Jbm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm7/wAARCAAVAA4DASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAUGBP/EACAQAAICAgMAAwEAAAAAAAAAAAECAwQAEQUhMRITQVH/xAAVAQEBAAAAAAAAAAAAAAAAAAAAAf/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AKaeeClD9tlxHHvXyIOaFVXUMpBBGwf7khzdtUs8mkjEBWi12T6p11lTx9mOSNYEbckcaFhrzYwFV2hXuQssydM6sSvRJHneMq8ccZLIgBIAJ/TrzDDIP//Z",
         "documents": [
           {
-            "id": "audiovector-r-series-brochure-pdf",
+            "id": "qr-se-manual-2023",
+            "type": "user-manual",
+            "title": "2023_audiovector_qr_se_manual.pdf",
+            "format": "PDF",
+            "fileSize": 453344,
+            "localPath": "/downloads/audiovector/qr-series/qr-se-manual-2023.pdf"
+          },
+          {
+            "id": "qr-sub-se-manual-2023",
+            "type": "user-manual",
+            "title": "2023_audiovector_qr_sub_se_manual.pdf",
+            "format": "PDF",
+            "fileSize": 886498,
+            "localPath": "/downloads/audiovector/qr-series/qr-sub-se-manual-2023.pdf"
+          },
+          {
+            "id": "qrse-brochure",
+            "type": "brochure",
+            "title": "Audiovector_QRSE_Brochure.pdf",
+            "format": "PDF",
+            "fileSize": 5454666,
+            "localPath": "/downloads/audiovector/qr-series/qrse-brochure.pdf"
+          }
+        ]
+      },
+      {
+        "slug": "r-5",
+        "name": "R-5",
+        "category": "Speakers",
+        "documents": [
+          {
+            "id": "r-5-brochure",
+            "type": "brochure",
+            "title": "Audiovector-R-5-Brochure.pdf",
+            "format": "PDF",
+            "fileSize": 5865024,
+            "localPath": "/downloads/audiovector/r-5/r-5-brochure.pdf"
+          }
+        ]
+      },
+      {
+        "slug": "r-series",
+        "name": "R-Series",
+        "category": "Speakers",
+        "documents": [
+          {
+            "id": "r-series-manual",
+            "type": "user-manual",
+            "title": "01_r_series_manual_audiovector.pdf",
+            "format": "PDF",
+            "fileSize": 239362,
+            "localPath": "/downloads/audiovector/r-series/r-series-manual.pdf"
+          },
+          {
+            "id": "r-series-brochure",
             "type": "brochure",
             "title": "audiovector_r_series_brochure.pdf",
             "format": "PDF",
-            "officialUrl": "https://audiovector.com/wp-admin/admin-ajax.php?action=useyourdrive-download&dl=1&&id=1l4f_4saInC11YaJqXlK_aMvCShUQaHLR&account_id=114613767597958525337&listtoken=3e95f9f5b67bb4d4bf09ca9ca9ce66a4",
-            "language": "EN",
-            "fileSize": 27929084
+            "fileSize": 27929084,
+            "localPath": "/downloads/audiovector/r-series/r-series-brochure.pdf"
+          }
+        ]
+      },
+      {
+        "slug": "trapeze",
+        "name": "TRAPEZE",
+        "category": "Speakers",
+        "documents": [
+          {
+            "id": "trapeze-manual-2024",
+            "type": "user-manual",
+            "title": "2024_audiovector_trapeze_manual.pdf",
+            "format": "PDF",
+            "fileSize": 673536,
+            "localPath": "/downloads/audiovector/trapeze/trapeze-manual-2024.pdf"
+          },
+          {
+            "id": "trapeze-brochure",
+            "type": "brochure",
+            "title": "Brochure 8s A4_online.pdf",
+            "format": "PDF",
+            "fileSize": 10709339,
+            "localPath": "/downloads/audiovector/trapeze/trapeze-brochure.pdf"
+          },
+          {
+            "id": "trapeze-whitepaper-2024",
+            "type": "technical",
+            "title": "Whitepaper_AV_Trapeze_2024 Online.pdf",
+            "format": "PDF",
+            "fileSize": 2019233,
+            "localPath": "/downloads/audiovector/trapeze/trapeze-whitepaper-2024.pdf"
           }
         ]
       }

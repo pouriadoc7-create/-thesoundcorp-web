@@ -26,6 +26,17 @@ function formatBytes(n?: number): string | null {
   return `${rounded} ${units[i]}`;
 }
 
+/** Present the real filename cleanly on this premium surface: drop the file
+ *  extension (the format chip already shows it) and turn "_" separators into
+ *  spaces. Pure reformatting of the actual filename — no invented wording. */
+function displayTitle(title: string): string {
+  return title
+    .replace(/\.(pdf|zip|exe|docx?|pptx)$/i, "")
+    .replace(/_+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 /** Consistent 1.5px document glyph; firmware/software get a distinct chip mark. */
 function DocGlyph({ type }: { type: DownloadDocument["type"] }) {
   if (type === "firmware" || type === "software") {
@@ -59,7 +70,9 @@ export function DocumentRow({ brandSlug, productSlug, doc, context }: DocumentRo
   const t = useTranslations("downloads");
   const size = formatBytes(doc.fileSize);
   const typeLabel = t(`types.${doc.type}`);
-  const filename = doc.officialUrl.split("/").pop() || `${doc.id}.${doc.format.toLowerCase()}`;
+  const title = displayTitle(doc.title);
+  const source = doc.localPath ?? doc.officialUrl ?? "";
+  const filename = source.split("/").pop() || `${doc.id}.${doc.format.toLowerCase()}`;
 
   const meta = [doc.format, doc.language, doc.version, doc.date, size].filter(Boolean) as string[];
 
@@ -80,7 +93,7 @@ export function DocumentRow({ brandSlug, productSlug, doc, context }: DocumentRo
           <div className="mb-0.5 text-[10px] uppercase tracking-[0.16em] text-muted">{context}</div>
         ) : null}
         <div className="line-clamp-2 text-[13.5px] font-medium text-zinc-100 transition-colors duration-500 group-hover/row:text-white sm:text-sm">
-          {doc.title}
+          {title}
         </div>
         <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-muted">
           <span className="font-medium tracking-wide text-zinc-400">{typeLabel}</span>
@@ -114,7 +127,8 @@ export function DocumentRow({ brandSlug, productSlug, doc, context }: DocumentRo
         product={productSlug}
         doc={doc.id}
         filename={filename}
-        ariaLabel={t("downloadAria", { title: doc.title })}
+        href={doc.localPath}
+        ariaLabel={t("downloadAria", { title })}
         tooltip={t("downloadTooltip")}
       />
     </div>

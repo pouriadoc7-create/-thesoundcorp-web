@@ -61,7 +61,7 @@ describe("document grouping", () => {
   });
 
   it("groupDocuments returns only non-empty groups in canonical order", () => {
-    const product = getDownloadProduct("audiovector", "r-series-general")!;
+    const product = getDownloadProduct("audiovector", "trapeze")!;
     const groups = groupDocuments(product.documents);
     expect(groups.length).toBeGreaterThan(0);
     for (const g of groups) expect(g.docs.length).toBeGreaterThan(0);
@@ -73,11 +73,11 @@ describe("document grouping", () => {
 
 describe("lookups & counts", () => {
   it("findDocument resolves valid ids and rejects invalid ones", () => {
-    const found = findDocument("audiovector", "r-series-general", "audiovector-r-series-brochure-pdf");
+    const found = findDocument("audiovector", "r-series", "r-series-brochure");
     expect(found?.brand.slug).toBe("audiovector");
-    expect(found?.doc.officialUrl).toMatch(/^https:\/\/audiovector\.com\//);
-    expect(findDocument("audiovector", "r-series-general", "nope")).toBeUndefined();
-    expect(findDocument("nope", "r-series-general", "audiovector-r-series-brochure-pdf")).toBeUndefined();
+    expect(found?.doc.localPath).toMatch(/^\/downloads\/audiovector\//);
+    expect(findDocument("audiovector", "r-series", "nope")).toBeUndefined();
+    expect(findDocument("nope", "r-series", "r-series-brochure")).toBeUndefined();
   });
 
   it("countAllDocuments equals the sum of per-brand counts", () => {

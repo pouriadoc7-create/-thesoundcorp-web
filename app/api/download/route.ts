@@ -80,6 +80,12 @@ export async function GET(req: NextRequest): Promise<Response> {
 
   const { brand, doc } = found;
 
+  // Locally-hosted (imported) files live under /public and are served directly as
+  // static assets — this proxy exists only to safely stream REMOTE official files.
+  if (!doc.officialUrl) {
+    return fail(404, "This document is served as a local file, not via the proxy.");
+  }
+
   // Defense in depth: even though the URL comes from our own dataset, refuse
   // anything that is not https on one of the brand's official domains.
   if (!isUrlOnBrandDomains(doc.officialUrl, brand)) {

@@ -22,16 +22,20 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
       onClick={onOpen}
       className="card-lux group flex flex-col overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.08] bg-white/[0.02] text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
     >
-      <ProductImage
-        brand={brandName}
-        name={product.name}
-        src={product.imageUrl}
-        blurDataURL={product.imageBlurDataURL}
-        variant="full"
-        fit="contain"
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 420px"
-        className="aspect-[16/10] w-full border-b border-white/[0.06]"
-      />
+      {/* Premium image stage: one consistent portrait aspect across every card,
+          the product contained (never cropped or stretched) and softly framed. */}
+      <div className="relative aspect-[4/5] w-full overflow-hidden border-b border-white/[0.06]">
+        <ProductImage
+          brand={brandName}
+          name={product.name}
+          src={product.imageUrl}
+          blurDataURL={product.imageBlurDataURL}
+          variant="full"
+          fit="contain"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
+          className="absolute inset-0 h-full w-full"
+        />
+      </div>
 
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-muted">
@@ -44,13 +48,15 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
           ) : null}
         </div>
 
-        <h2 className="mt-2 break-words text-lg font-medium text-zinc-100 transition-colors duration-500 group-hover:text-white">
+        <h2 className="mt-2 break-words text-xl font-medium text-zinc-100 transition-colors duration-500 group-hover:text-white">
           {product.name}
         </h2>
 
-        <div className="mt-3 flex items-center gap-2.5">
-          {product.modelCode ? <Badge tone="gold">{t("modelCode", { code: product.modelCode })}</Badge> : null}
-        </div>
+        {product.modelCode ? (
+          <div className="mt-3 flex items-center gap-2.5">
+            <Badge tone="gold">{t("modelCode", { code: product.modelCode })}</Badge>
+          </div>
+        ) : null}
 
         <div className="mt-5 flex items-center justify-between border-t border-white/[0.06] pt-4">
           <span className="text-[11px] uppercase tracking-[0.16em] text-muted">

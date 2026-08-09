@@ -21,7 +21,7 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
     <button
       type="button"
       onClick={onOpen}
-      className="card-lux group flex flex-col overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.08] bg-white/[0.02] text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+      className="card-lux group flex flex-col overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.08] bg-white/[0.02] text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:text-start"
     >
       {/* Premium image stage: one consistent aspect per product type (portrait for
           speakers, square for electronics); the image FILLS the area (object-cover,
@@ -39,8 +39,8 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
         />
       </div>
 
-      <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-muted">
+      <div className="flex flex-1 flex-col items-center p-5 sm:items-start">
+        <div className="flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.18em] text-muted sm:justify-start">
           <span>{product.category}</span>
           {product.status ? (
             <>
@@ -55,12 +55,12 @@ export function ProductTile({ brandName, product, onOpen }: ProductTileProps) {
         </h2>
 
         {product.modelCode ? (
-          <div className="mt-3 flex items-center gap-2.5">
+          <div className="mt-3 flex items-center justify-center gap-2.5 sm:justify-start">
             <Badge tone="gold">{t("modelCode", { code: product.modelCode })}</Badge>
           </div>
         ) : null}
 
-        <div className="mt-5 flex items-center justify-between border-t border-white/[0.06] pt-4">
+        <div className="mt-5 flex w-full flex-col items-center gap-2.5 border-t border-white/[0.06] pt-4 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
           <span className="text-[11px] uppercase tracking-[0.16em] text-muted">
             {t("documentCount", { count: docCount })}
           </span>

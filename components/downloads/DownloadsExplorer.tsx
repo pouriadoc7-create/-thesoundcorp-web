@@ -302,7 +302,12 @@ function ProductsView({
 
       <div className="mx-auto mt-6 grid w-full max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {brand.products.map((product, i) => (
-          <Reveal key={product.slug} delayMs={i * 70}>
+          <Reveal
+            key={product.slug}
+            delayMs={i * 70}
+            // Mobile: a comfortable, centered card width instead of edge-to-edge.
+            className="mx-auto w-full max-w-[400px] sm:max-w-none"
+          >
             <ProductTile brandName={brand.name} product={product} onOpen={() => onOpenProduct(product.slug)} />
           </Reveal>
         ))}

@@ -18,14 +18,17 @@ export function DocumentGroup({ groupKey, docs, brandSlug, productSlug }: Docume
 
   return (
     <section>
-      <header className="flex items-center gap-4">
-        <h3 className="text-[11px] font-medium uppercase tracking-[0.24em] text-zinc-400">
-          {t(`groups.${groupKey}`)}
-        </h3>
-        <span className="text-[11px] tabular-nums text-muted">
-          {String(docs.length).padStart(2, "0")}
-        </span>
-        <span aria-hidden="true" className="hr-premium flex-1" />
+      {/* Centered stack on mobile; the original inline row from sm: upward. */}
+      <header className="flex flex-col items-center gap-2 text-center sm:flex-row sm:gap-4 sm:text-start">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <h3 className="text-[11px] font-medium uppercase tracking-[0.24em] text-zinc-400">
+            {t(`groups.${groupKey}`)}
+          </h3>
+          <span className="text-[11px] tabular-nums text-muted">
+            {String(docs.length).padStart(2, "0")}
+          </span>
+        </div>
+        <span aria-hidden="true" className="hr-premium w-16 sm:w-auto sm:flex-1" />
       </header>
 
       <div className="mt-3 overflow-hidden rounded-[var(--radius-panel)] border border-white/[0.06] bg-white/[0.015]">

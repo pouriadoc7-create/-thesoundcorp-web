@@ -65,26 +65,28 @@ export function DocumentRow({ brandSlug, productSlug, doc, context }: DocumentRo
 
   const meta = [doc.format, doc.language, doc.version, doc.date, size].filter(Boolean) as string[];
 
+  // Mobile: a centered stack (glyph → title/meta → download). sm+: the original
+  // inline row, unchanged.
   return (
-    <div className="group/row relative flex items-center gap-3 py-3.5 ps-4 pe-2 sm:gap-4 sm:ps-5">
-      {/* Inline-start hairline that draws in on hover. */}
+    <div className="group/row relative flex flex-col items-center gap-3 px-4 py-4 text-center sm:flex-row sm:gap-4 sm:py-3.5 sm:ps-5 sm:pe-2 sm:text-start">
+      {/* Inline-start hairline that draws in on hover (desktop row only). */}
       <span
         aria-hidden="true"
-        className="absolute inset-y-2 left-0 w-px origin-center scale-y-0 bg-gradient-to-b from-transparent via-[color:var(--color-gold)]/60 to-transparent transition-transform duration-500 ease-[var(--ease-premium)] group-hover/row:scale-y-100 rtl:left-auto rtl:right-0"
+        className="absolute inset-y-2 left-0 hidden w-px origin-center scale-y-0 bg-gradient-to-b from-transparent via-[color:var(--color-gold)]/60 to-transparent transition-transform duration-500 ease-[var(--ease-premium)] group-hover/row:scale-y-100 sm:block rtl:left-auto rtl:right-0"
       />
 
       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.02] text-zinc-400 transition-colors duration-500 group-hover/row:border-[color:var(--color-gold)]/30 group-hover/row:text-[color:var(--color-gold-soft)]">
         <DocGlyph type={doc.type} />
       </span>
 
-      <div className="min-w-0 flex-1">
+      <div className="w-full min-w-0 sm:flex-1">
         {context ? (
           <div className="mb-0.5 text-[10px] uppercase tracking-[0.16em] text-muted">{context}</div>
         ) : null}
         <div className="line-clamp-2 text-[13.5px] font-medium text-zinc-100 transition-colors duration-500 group-hover/row:text-white sm:text-sm">
           {title}
         </div>
-        <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-muted">
+        <div className="mt-1 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[11px] text-muted sm:justify-start">
           <span className="font-medium tracking-wide text-zinc-400">{typeLabel}</span>
           {meta.map((m, i) => (
             <span key={`${m}-${i}`} className="flex items-center gap-2">

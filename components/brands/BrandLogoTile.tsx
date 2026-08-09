@@ -20,6 +20,7 @@ interface BrandLogoTileProps {
  */
 export function BrandLogoTile({ brand, docsLabel, className }: BrandLogoTileProps) {
   const scale = LOGO_SCALE[brand.slug];
+  const lighten = LOGO_LIGHTEN.has(brand.slug);
 
   return (
     <Link
@@ -30,7 +31,13 @@ export function BrandLogoTile({ brand, docsLabel, className }: BrandLogoTileProp
       )}
     >
       <div
-        className="flex flex-1 items-center justify-center"
+        // w-full is load-bearing: the card is `flex-col items-center`, which
+        // sizes children to content — and the logo is a next/image `fill` (an
+        // absolutely-positioned <img> with zero intrinsic width). Without an
+        // explicit width here, the inner `w-full` span has nothing to resolve
+        // against and collapses to 0px, hiding every logo. Every other
+        // <BrandLogo> usage passes a fixed px width for the same reason.
+        className="flex w-full flex-1 items-center justify-center"
         style={scale ? { transform: `scale(${scale})` } : undefined}
       >
         <BrandLogo
@@ -38,12 +45,14 @@ export function BrandLogoTile({ brand, docsLabel, className }: BrandLogoTileProp
           logoUrl={BRAND_LOGOS[brand.slug]}
           sizes="(max-width: 768px) 40vw, (max-width: 1024px) 22vw, 180px"
           className="h-11 w-full"
-          imgClassName={cn(
-            "opacity-100",
-            // Dark monochrome asset → render as a white silhouette so it's visible
-            // on the near-black tile (CSS only; the asset file is untouched).
-            LOGO_LIGHTEN.has(brand.slug) && "brightness-0 invert"
-          )}
+          // Most logos render in their real brand colours — every asset is either
+          // light-on-dark or a self-contained dark badge (e.g. Davis' black plate
+          // with its gold roundel + French-flag stripe), so they read on the
+          // near-black tile as-is. The exceptions in LOGO_LIGHTEN are dark mono
+          // marks with no light element of their own (Borresen navy, Aavik's
+          // maroon icon); they'd vanish here, so we render the brand's reversed
+          // white treatment via `brightness-0 invert`.
+          imgClassName={cn("opacity-100", lighten && "brightness-0 invert")}
           wordmarkClassName="text-[15px] font-medium text-white/90 xl:text-lg"
         />
       </div>

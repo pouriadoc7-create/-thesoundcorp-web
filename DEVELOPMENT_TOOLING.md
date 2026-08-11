@@ -59,7 +59,30 @@ Suites that measure engine-independent facts (layout overflow, the link graph)
 run on **chromium only** — running them five times would cost wall-clock without
 adding signal. The a11y sweep runs on chromium + mobile-safari.
 
-**Current status: 130 passed, 0 failed** across all engines (~9 min full sweep).
+### Reading the results — a full run exits 1, and that is expected
+
+**`npm run test:e2e` currently reports 166 passed · 145 skipped · 64 failed.**
+Every one of those 64 is an environment failure on this Windows machine, not a
+code defect. Judge changes by **chromium** and **visual**, which are green.
+
+| Project | Verdict | Why |
+|---|---|---|
+| **chromium** | ✅ trustworthy | Green. This is the signal. |
+| **visual** | ✅ trustworthy | Green, 37/37. |
+| **mobile-chrome** | ✅ trustworthy | Green. |
+| firefox (27) | ⚠️ ignore | `browserType.launch: spawn UNKNOWN` — the bundled Firefox binary never starts. Every test fails at launch. |
+| webkit (18) | ⚠️ ignore | See HSTS note below. |
+| mobile-safari (19) | ⚠️ ignore | Same HSTS cause; the "44px touch target" failure is a downstream effect of the resulting unstyled page. |
+
+**The WebKit cause is worth understanding, because it looks like a real bug.**
+`next.config.ts` sends `Strict-Transport-Security` on every route. WebKit honours
+HSTS even for `127.0.0.1`, where Chrome and Firefox exempt localhost. Same-origin
+assets get upgraded to `https://127.0.0.1:3100/…`, fail with `SSL connect error`,
+and CSS/JS never load. Production **is** HTTPS, so this affects only local
+testing — do not "fix" it by weakening the header.
+
+> Before assuming you broke something, diff the failure set against those
+> buckets. A new failure in **chromium** or **visual** is the one that is real.
 
 ### Visual regression
 
@@ -109,41 +132,61 @@ not a certificate — screen-reader flow and focus order still need a human.
 `npm run audit:lighthouse` builds nothing, starts the production server on 3101,
 audits 6 pages and writes HTML + JSON to `.lighthouse/` (gitignored).
 
-**Baseline captured 2026-08-11 (mobile):**
+**Baseline captured 2026-08-11 (mobile, Google Chrome 151, at `de78895`):**
 
 | Page | Perf | A11y | Best practices | SEO | LCP | CLS | TBT |
 |---|---|---|---|---|---|---|---|
-| `/en` | 90 | 98 | 100 | 92 | 3.3 s | 0 | 180 ms |
-| `/fa` | **78** | 98 | 100 | 92 | 3.3 s | **0.265** | 120 ms |
-| `/en/brands` | 90 | 100 | 100 | 92 | 3.5 s | 0 | 110 ms |
-| `/en/products` | 92 | 100 | 100 | 92 | 3.0 s | 0 | 160 ms |
-| `/en/downloads` | 93 | 100 | 100 | 92 | 3.1 s | 0 | 110 ms |
-| `/en/contact` | 94 | 100 | 100 | 92 | 3.0 s | 0 | 100 ms |
+| `/en` | 84 | 98 | 100 | 92 | 4.1 s | 0 | 190 ms |
+| `/fa` | 89 | 98 | 100 | 92 | 3.4 s | 0 | 160 ms |
+| `/en/brands` | 90 | 100 | 100 | 92 | 3.5 s | 0 | 140 ms |
+| `/en/products` | 93 | 100 | 100 | 92 | 3.1 s | 0 | 110 ms |
+| `/en/downloads` | 89 | 100 | 100 | 92 | 3.2 s | 0 | 230 ms |
+| `/en/contact` | 87 | 100 | 100 | 92 | 3.9 s | 0 | 150 ms |
 
-> **Real finding: `/fa` has CLS 0.265** while every other page measures 0.
-> That is a genuine layout shift on the Persian home page and the single
-> clearest performance defect on the site. It is consistent with the already-
-> noted "preload the FA Vazirmatn font" item in CLAUDE.md §10 — the Persian
-> face swaps in after first paint and reflows the hero. **Not fixed here**
-> (this session was tooling only).
+**Every page now measures CLS 0.** Performance scores move ±6 between runs on a
+loaded workstation, so treat them as a band, not a number — CLS, LCP and the
+a11y/SEO columns are the stable signals. Compare like with like: an Edge run and
+a Chrome run are not interchangeable.
+
+> **A defect this tooling found, and how it was fixed.** The first audit measured
+> **`/fa` CLS 0.265** against 0 everywhere else (performance 78 vs 90). It was
+> *not* the Vazirmatn font, which was the standing hypothesis in CLAUDE.md §10.
+>
+> The real cause: `app/[locale]/loading.tsx` existing at all makes the App Router
+> wrap every `[locale]` page in a Suspense boundary, and that boundary is baked
+> into the **prerendered** HTML — the shell ships the fallback inline, then
+> `<footer>`, then the real content in a hidden div swapped in by an inline
+> script. At `min-h-[60vh]` the fallback was ~494px, putting the footer at y=605
+> in an 823px viewport, where it was visible and then jumped ~3.8k px. Layout
+> shift scales by visible fraction: 218/823 = **0.265 exactly**.
+>
+> Fixed in `de78895` by making the fallback `min-h-dvh`, so the footer stays
+> below the fold until the real content replaces it. **/fa CLS 0.265 → 0,
+> performance 78 → 89.** Any change to that file must keep the fallback ≥100dvh.
+>
+> Worth remembering: the obvious hypothesis was wrong, and only reading the
+> report's own "Avoid large layout shifts" audit identified the actual element.
 
 ### Browser selection — why it is not simply "Chrome"
 
 `findChrome()` in `scripts/lighthouse.mjs` resolves, in order: `CHROME_PATH` →
-Google Chrome → **Microsoft Edge** → Playwright's Chromium. Two hard-won
-reasons for that order:
+Google Chrome → **Microsoft Edge** → Playwright's Chromium.
 
-- **Google Chrome is not installed on this machine.** `npx playwright install
-  chrome` runs the official installer and **failed — it needs Administrator**.
-  (It still exits 0, so the exit code lies; read its output.) To get real
-  Chrome, run from an elevated terminal:
+**Google Chrome 151 is installed, so audits run on the reference browser.** The
+fallbacks stay because the order was earned, and a fresh machine will hit the
+same two walls:
+
+- **`npx playwright install chrome` needs Administrator.** Unelevated it fails —
+  and **still exits 0**, so the exit code lies. Read its output, not its status.
+  From an elevated terminal:
   ```bash
   npx playwright install chrome
   ```
-- **Playwright's Chromium cannot be launched standalone** on this machine — it
-  fails with *"side-by-side configuration is incorrect"* because it depends on
-  the environment Playwright's own launcher sets up. It works perfectly *under*
-  Playwright, which is why the e2e suite is unaffected.
+- **Playwright's Chromium cannot be launched standalone** — it fails with
+  *"side-by-side configuration is incorrect"* because it depends on the
+  environment Playwright's own launcher sets up. It works perfectly *under*
+  Playwright, which is why the e2e suite is unaffected. That is why it is the
+  last resort and Edge outranks it.
 
 So the script launches the browser **through Playwright** and hands Lighthouse
 the CDP port (`--port`). This also sidesteps a Windows-specific
@@ -176,9 +219,13 @@ pulls `PRODUCTS` + `BRANDS` into every client bundle. The analyzer will show it.
 ## 6. Link checking
 
 - **Internal** — `e2e/links.spec.ts`, part of `npm run test:e2e`. Crawls every
-  anchor on the representative pages and asserts each in-site target resolves.
-  Also asserts **every local download returns HTTP 200 with a PDF content-type**,
-  which protects the byte-for-byte document rule in CLAUDE.md §13.
+  anchor on the representative pages and asserts each in-site target resolves —
+  currently **94 unique internal targets, 3 external hosts** (the count is
+  logged on every run). Also asserts **every local download returns HTTP 200
+  with a PDF content-type**, which protects the byte-for-byte document rule in
+  CLAUDE.md §13.
+  Requests go out in batches of 12 with a 120s budget: checked one at a time,
+  94 targets overran the 30s default and the run died mid-crawl.
 - **External** — `npm run check:links:external`, a separate script that **always
   exits 0**. Third-party hosts rate-limit and block datacentre traffic, so a
   failure there is a prompt to look, not proof of a dead link. Requires a server

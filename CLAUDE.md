@@ -35,17 +35,15 @@ store (no cart, no checkout, no payments).
 
 **Rendering model:** almost everything is a Server Component and prerendered (98 static
 pages). Client components are deliberate and few (`DownloadsExplorer`, `MobileNav`,
-`CommandPalette`, `Lightbox`, motion primitives, menu‑lab concepts). The 157 KB downloads
+`CommandPalette`, `Lightbox`, motion primitives). The 157 KB downloads
 catalogue is passed as a **prop** from the server page so it never enters the client bundle.
 
 **Important architectural facts**
 - `proxy.ts` is the next-intl middleware. Its matcher excludes `api`, `_next`, `_vercel`,
-  **`menu-lab`**, and any path with a file extension.
+  and any path with a file extension.
 - `app/[locale]/products/[slug]` and `app/[locale]/brands/[slug]` set
   `export const dynamicParams = false` + `generateStaticParams()` so unknown slugs return a
   **real 404** (this fixed a soft‑404 bug — do not remove).
-- `app/menu-lab/` has its **own** `<html>`/`<body>` layout, outside the `[locale]` tree and
-  outside the next-intl provider. It is a temporary design lab (§8).
 
 ---
 
@@ -57,7 +55,6 @@ app/
                        gallery, downloads, contact, layout, template, loading, error, not-found
   api/contact/route.ts   contact form → SMTP (rate-limited)
   api/download/route.ts  SSRF-safe streaming proxy for REMOTE official files
-  menu-lab/            TEMPORARY design lab (own layout + lab.css)  ← not linked from the site
   globals.css          Tailwind v4 tokens + global design system
   sitemap.ts robots.ts manifest.ts icon.png apple-icon.png
 components/
@@ -67,7 +64,6 @@ components/
   products/  ProductCard, ProductCatalog, ProductGallery, ProductImage, WhatsAppInquiry
   brands/BrandLogoTile · sections/ · ui/ · motion/ · features/ · gallery/ · about/ ·
   contact/ · seo/JsonLd · icons/
-  menu-lab/  types.ts, data.ts, concepts/Concept{Strata,Orbital,Editorial,Glass,Acoustic,Aperture}.tsx (+ CSS)
 lib/
   data/      brands.ts (26), brand-logos.ts (+LOGO_SCALE, LOGO_LIGHTEN),
              download-logo-scale.ts, downloads.ts (Download Center catalogue),
@@ -103,7 +99,8 @@ brand-document-index/  688 official-doc URLs across 26 brands (research output)
 - **Server:** `ssh tsc-vps` → 45.91.169.245, root. App at `/var/www/thesoundcorp`
   (a **non-git deployed tree**), pm2 process `thesoundcorp` on **port 3100**,
   node v20.20.2, npm 11.17.0.
-- **NOT deployed / not pushed:** `e7e6f5e` (the menu lab). It is local-only by design.
+- **`origin/master` and `origin/main` are ahead of production.** Everything committed since
+  `57fe106` is pushed to GitHub but **not deployed** — deploying is a separate manual step (§11).
 
 ---
 
@@ -175,31 +172,19 @@ Message-key parity between `messages/en.json` and `messages/fa.json` must be mai
 
 ---
 
-# 8. Menu Lab — current design exploration (ACTIVE TASK)
+# 8. Menu Lab — REMOVED
 
-Route: **`/menu-lab`** (dev/LAN only, never linked from the site, `robots: noindex`).
-Commit `e7e6f5e`, local-only. Purpose: the owner finds the production mobile menu "too basic,
-conventional, flat, template-like" and asked for six radically different concepts to review
-before anything is integrated.
+The `/menu-lab` design-exploration route and its six mobile-navigation concepts were
+**deleted from the project** on 2026-08-11 at the owner’s instruction. 17 files under
+`app/menu-lab/` and `components/menu-lab/` were removed, along with the `menu-lab` entry in
+the `proxy.ts` matcher. Nothing was integrated into the production navigation.
 
-Six independent, fully working prototypes — each owns its trigger, open **and reverse-close**
-choreography, all 7 destinations, the 26-brand submenu, live search, EN/فارسی with RTL
-mirroring, and a back-to-lab control in every state:
+The concepts remain in git history and are recoverable from the restore points
+`PRE-MENULAB-REMOVAL-V1` / `backup/pre-menulab-removal` (see §15), so nothing is lost.
 
-| # | Concept | File | Interaction philosophy |
-|---|---------|------|------------------------|
-| 01 | Holographic Strata | `ConceptStrata.tsx` `.cst-` | 7 glass sheets at different z-depths; drag travels through the stack with true parallax |
-| 02 | Orbital Resonance | `ConceptOrbital.tsx` `.cor-` | Weighted dial, centre off-screen; momentum + friction + magnetic detents; geared inner ring for brands |
-| 03 | Cinematic Editorial | `ConceptEditorial.tsx` `.ced-` | Oversized type on a rotating drum; letterbox shutter; mask-wipe reveals; brands filmstrip |
-| 04 | Optical Glass | `ConceptGlass.tsx` `.cgl-` | 7 optical fins pivot from edge-on; drag rakes specular light across the array |
-| 05 | Acoustic Resonance | `ConceptAcoustic.tsx` `.cac-` | Real damped-string sim (mode n=7); destinations at antinodes; touch excites the medium |
-| 06 | Spatial Aperture | `ConceptAperture.tsx` `.cap-` | 8-blade iris + knurled focus ring; focus-pull through a depth stack with CoC falloff |
-
-Shared: `components/menu-lab/{types.ts,data.ts}` (real nav + real 26 brands),
-`app/menu-lab/{layout,page}.tsx` (+ `lab.css`). Concepts are **code-split** — only the opened
-one downloads. Class prefixes are unique; no collisions.
-
-**Status: awaiting the owner's verdict. Nothing has been integrated. Do not pick a winner.**
+**The production mobile menu is unchanged and remains the only navigation** —
+`components/layout/MobileNav.tsx`, `Header.tsx`, `lib/hooks/useMobileMenu.ts` and
+`LocaleSwitcher.tsx` were never touched by the lab or by its removal.
 
 ---
 
@@ -207,7 +192,7 @@ one downloads. Class prefixes are unique; no collisions.
 
 - `npm run lint` · `npm run typecheck` · `npm run test` (**56/56**) · `npm run build` — all green
   at `e7e6f5e`.
-- **Production build:** 98 static pages; `/menu-lab` builds as a static route.
+- **Production build:** 98 static pages.
 - **Soft-404 fix** verified in a real production build: invalid product/brand slugs → 404 (en+fa),
   valid → 200.
 - **Downloads assets:** all 4 covers + 9 PDFs return 200 with correct content-types and exact
@@ -217,9 +202,10 @@ one downloads. Class prefixes are unique; no collisions.
   (before: card 121px wide, left 15 / right 254 — after: 360px, left 15 / right 15).
 - **Live public site** verified over the internet with Desktop Chrome, iPhone Safari, iPhone
   Chrome, Android Chrome and iPad Safari user-agents — all 200, all showing the new version.
-- **Menu lab:** all six concepts confirmed shipping (CSS + JS) in the production build output;
-  platform-hazard sweep passed (no `filter: blur()` on large layers, `@supports`-guarded
-  `backdrop-filter`, safe-area insets, `svh`+`vh` fallback, reduced-motion in all six).
+- **Browser-level tooling** (Playwright e2e/a11y/visual, Lighthouse, bundle analysis, link
+  checking) is installed and documented in **DEVELOPMENT_TOOLING.md**. Read its §2 before
+  trusting a red `npm run test:e2e`: a full cross-engine run legitimately exits 1 on this
+  machine, and only **chromium** and **visual** are real signal.
 
 ---
 
@@ -354,13 +340,13 @@ issue (an inbound allow rule for `node.exe` already exists for the Public profil
 
 - **Remote:** `origin` = https://github.com/pouriadoc7-create/-thesoundcorp-web.git
   (note the leading `-` in the repo name).
-- **`main`** = default branch, `968ee12` — content-identical to `origin/master`.
-- **`master`** = working line, local `e7e6f5e`, **`origin/master` = `57fe106`**.
-  → **`e7e6f5e` (menu lab) is the only unpushed commit.**
+- **`master`** = working line. **`main`** = default branch, kept content-identical to `master`.
+  Both are pushed and in sync; production lags both (§4).
 - Workflow used all session: commit on `master` → push `master` → propagate to `main` with a
   `--no-ff` merge from an isolated worktree (never rebase, never force).
 
-**Key restore points** (tag → commit): `PRE-MENU-LAB-V1` → `57fe106` ·
+**Key restore points** (tag → commit): `PRE-MENULAB-REMOVAL-V1` → `0e4207a` (last commit
+that still contained `/menu-lab`) · `PRE-MENU-LAB-V1` → `57fe106` ·
 `PRE-PROD-DEPLOY-V1` → `80f5dc9` · `PRE-AUDIOVECTOR-IMPORT-V1` → `3abdb16` ·
 `PRE-DOWNLOADS-CLEAR-V1` → `ed874aa` · `PRE-P0P1-FIXES-V1` → `8d0a095` ·
 `PRE-AGENT-TEAM-V1` / `PRE-GITHUB-SYNC-V1` → `dca6a07` · `FULL-SITE-RECOVERY-V1`.
@@ -370,30 +356,30 @@ Matching `backup/pre-*` branches exist for each. Plus 4 `archive/contact-b-*` br
 
 # 16. Current task & recommended next steps
 
-**Current task:** the owner is reviewing the six mobile-menu concepts at `/menu-lab` on an
-iPhone 17 Pro Max and an Android phone. **Do not choose a winner, do not integrate, do not
-delete the current menu.** Wait for an explicit approval naming a concept.
+**No design exploration is in flight.** The menu-lab concepts were removed (§8) without any
+being integrated, so the production mobile navigation stands as-is. If the owner revisits the
+"the mobile menu feels too conventional" brief, start from a fresh checkpoint — do not
+resurrect the lab unless asked.
 
-**When a concept is approved:**
-1. `/safe-checkpoint` → tag + backup branch.
-2. Port the approved concept into `components/layout/MobileNav.tsx` (or a new component the
-   `Header` swaps in), wiring it to the **real** `NAV_LINKS`, `BRANDS`, next-intl `useTranslations`,
-   `Link` from `@/i18n/navigation`, and the real `LocaleSwitcher` — the lab versions are
-   self-contained prototypes with their own data and stubbed links.
-3. Keep the production a11y contract: `role="dialog"`, `aria-modal`, `inert` background,
-   focus trap, ≥44px targets, iOS scroll-lock, `prefers-reduced-motion`.
-4. Full gate + real-device check, then commit. Ask before pushing/deploying.
-5. Decide whether `/menu-lab` and the `proxy.ts` matcher entry stay or are removed.
+**Immediate next step: deploy.** `origin/master` is well ahead of the live site, which still
+runs `57fe106`. Deploying is the manual `/root/deploy-now.sh` step in §11 and needs explicit
+owner approval.
 
-**Other queued work (owner-supplied assets required):** product photos, product specs, brand
-descriptions, and the remaining 25 brands' download files (batches of ~5–6 brands).
+**Other queued work (owner-supplied assets required):** product photos (1/12 have real
+images), product specs (0/12 verified), brand descriptions (0/26), and the remaining 25
+brands' download files (batches of ~5–6 brands).
+
+**Known open defect:** none outstanding from the audit; the `/fa` layout shift (CLS 0.265)
+was fixed in `de78895`. See DEVELOPMENT_TOOLING.md §4 for the current Lighthouse baseline.
 
 ---
 
 # 17. MUST NOT change or overwrite
 
 - **The production mobile menu** — `components/layout/MobileNav.tsx`, `Header.tsx`,
-  `lib/hooks/useMobileMenu.ts`, `LocaleSwitcher.tsx` — until a concept is explicitly approved.
+  `lib/hooks/useMobileMenu.ts`, `LocaleSwitcher.tsx`. It is the site's only navigation and
+  survived the menu-lab experiment untouched (§8). Do not replace it without an explicit,
+  named instruction from the owner.
 - **`asset-library/Master Assets/**`** — the owner's master source files. Read/copy only.
   Never modify, rename, move or delete. (Intentionally untracked.)
 - **Any PDF/document** — see §13. Byte-for-byte, exact filename, always.

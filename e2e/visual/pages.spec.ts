@@ -34,9 +34,15 @@ const VIEWPORTS = [
 async function settle(page: import("@playwright/test").Page) {
   await page.evaluate(async () => {
     const step = window.innerHeight;
-    for (let y = 0; y < document.body.scrollHeight; y += step) {
+    // Hard iteration cap. scrollHeight is re-read each pass and the page GROWS
+    // as lazy images load, so an uncapped loop can keep chasing its own tail on
+    // long pages (the gallery, product detail) until the test times out.
+    const MAX_STEPS = 40;
+    let y = 0;
+    for (let i = 0; i < MAX_STEPS && y < document.documentElement.scrollHeight; i++) {
       window.scrollTo(0, y);
       await new Promise((r) => setTimeout(r, 60));
+      y += step;
     }
     window.scrollTo(0, 0);
   });
@@ -59,7 +65,11 @@ async function settle(page: import("@playwright/test").Page) {
     })
     .catch(() => {});
 
-  await page.waitForLoadState("networkidle").catch(() => {});
+  // Explicit cap. Without one this inherits the TEST timeout, so an image-heavy
+  // page that never reaches true network idle consumes the entire budget and
+  // fails as an inscrutable "Target page closed" rather than just proceeding.
+  // Idle is a nice-to-have here; the image wait above is the real guarantee.
+  await page.waitForLoadState("networkidle", { timeout: 8000 }).catch(() => {});
   await page.waitForTimeout(250);
 }
 

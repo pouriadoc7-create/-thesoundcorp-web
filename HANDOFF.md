@@ -143,7 +143,16 @@ HTML probe** against the real production CSS: before → card 121px, left 15 / r
 that includes the built CSS plus the exact markup, load it in the pane, and measure. Layout
 computes even though React state does not.
 
-## 8. Menu Lab (the current task)
+## 8. Menu Lab (built, reviewed, then removed)
+
+> **Outcome (2026-08-11): the lab was deleted from the project without any concept being
+> integrated.** All 17 files under `app/menu-lab/` and `components/menu-lab/` were removed and
+> the `menu-lab` entry was dropped from the `proxy.ts` matcher. The production mobile
+> navigation was never modified. The concepts remain recoverable from git history via the
+> `PRE-MENULAB-REMOVAL-V1` tag / `backup/pre-menulab-removal` branch.
+>
+> The account below is kept as the historical record of what was built and why — not as a
+> description of the current codebase.
 
 The owner wants the mobile menu completely rethought — "too basic, conventional, flat,
 template-like". I scaffolded an isolated `/menu-lab` route and ran **six `ui-luxury-design-engineer`
@@ -201,6 +210,11 @@ Notable engineering from the agents:
   (~5–6 brands at a time) without being re-told.
 
 ## 11. Where things stand
+
+> Superseded — this section described the state on 2026-08-10. Since then the browser-level
+> tooling landed (see **DEVELOPMENT_TOOLING.md**), the `/fa` layout shift was fixed, the menu
+> lab was removed, and `master` + `main` were pushed and brought into sync. **CLAUDE.md §4 and
+> §15 are the current source of truth for branch and production state.**
 
 - Working tree **clean**. `master` = `e7e6f5e`; `origin/master` = `57fe106`; `main` = `968ee12`.
 - **`e7e6f5e` (menu lab) is the only unpushed commit.** Production runs `57fe106`.

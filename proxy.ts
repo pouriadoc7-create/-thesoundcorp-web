@@ -34,7 +34,5 @@ export const config = {
   // Run on every path except Next.js internals and files with an extension
   // (static assets). This still covers /robots.txt, /sitemap.xml, etc. via
   // the routes themselves living outside the locale prefix.
-  // `menu-lab` is a temporary, self-contained design-exploration route that owns
-  // its own layout and locale state, so it opts out of locale prefixing.
-  matcher: ["/((?!api|_next|_vercel|menu-lab|.*\\..*).*)"],
+  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };

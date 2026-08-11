@@ -34,6 +34,12 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Archived design-concept experiments — reference material, not part of the app build.
     "design-archive/**",
+    // Agent worktrees are transient CHECKOUTS of this same repo under
+    // .claude/worktrees/<name>/. Linting them re-lints every file a second
+    // time via a path that no root-relative ignore (e.g. "design-archive/**")
+    // can match, so an already-ignored file fails the gate purely because a
+    // worktree happens to exist.
+    ".claude/**",
     // Test/report artifacts.
     "test-results/**",
     "playwright-report/**",

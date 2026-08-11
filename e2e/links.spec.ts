@@ -12,6 +12,10 @@ import { ALL_PAGES } from "./routes";
  * `npm run check:links:external` for an explicit, network-dependent sweep.
  */
 test.describe("internal links resolve", () => {
+  // Crawls 18 pages, then verifies every unique in-site target the site links
+  // to — well over a hundred requests. That cannot fit the 30s default.
+  test.describe.configure({ timeout: 120_000 });
+
   test.beforeEach(() => {
     test.skip(test.info().project.name !== "chromium", "link graph is engine-independent");
   });
@@ -45,14 +49,23 @@ test.describe("internal links resolve", () => {
       }
     }
 
+    // Check in bounded batches rather than one at a time. Sequentially this
+    // took long enough to trip the test timeout; batching keeps it quick
+    // without opening a hundred sockets against the dev server at once.
     const broken: string[] = [];
-    for (const [target, sources] of seen) {
-      const res = await request.get(target, { maxRedirects: 5 });
-      if (res.status() >= 400) {
-        broken.push(
-          `${target} -> HTTP ${res.status()}  (linked from ${[...new Set(sources)].join(", ")})`,
-        );
-      }
+    const targets = [...seen.entries()];
+    const BATCH = 12;
+
+    for (let i = 0; i < targets.length; i += BATCH) {
+      const results = await Promise.all(
+        targets.slice(i, i + BATCH).map(async ([target, sources]) => {
+          const res = await request.get(target, { maxRedirects: 5 });
+          return res.status() >= 400
+            ? `${target} -> HTTP ${res.status()}  (linked from ${[...new Set(sources)].join(", ")})`
+            : null;
+        }),
+      );
+      broken.push(...results.filter((r): r is string => r !== null));
     }
 
     // Surface the external surface area so a human can eyeball it without

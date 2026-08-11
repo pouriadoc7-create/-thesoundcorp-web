@@ -80,7 +80,13 @@ test.describe("downloads", () => {
   test("brand grid renders and AudioVector has documents", async ({ page }) => {
     await page.goto("/en/downloads");
     // All 26 brands are listed even when they have no documents yet.
-    const tiles = page.getByRole("button").or(page.getByRole("link"));
-    await expect(tiles.filter({ hasText: /audiovector/i }).first()).toBeVisible();
+    //
+    // Match on the ACCESSIBLE NAME, not text content. A BrandTile renders the
+    // brand as a logo image plus generic copy ("Manufacturer … Explore"), and
+    // carries the brand name only in its aria-label ("Open Audiovector
+    // downloads"). A `hasText` filter therefore finds nothing at viewports
+    // where no brand text is rendered — which is a locator mismatch, not a
+    // rendering bug.
+    await expect(page.getByRole("button", { name: /audiovector/i }).first()).toBeVisible();
   });
 });

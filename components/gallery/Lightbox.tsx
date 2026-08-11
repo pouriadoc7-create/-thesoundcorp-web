@@ -77,6 +77,11 @@ export function Lightbox({ images, index, onIndexChange, onClose }: LightboxProp
   if (!image) return null;
 
   return (
+    // Backdrop click-to-close is a MOUSE convenience that duplicates controls
+    // keyboard users already have: Escape (line ~44), the focused close button,
+    // and a focus trap. Adding a key listener here would be redundant, and
+    // making the backdrop focusable would put a phantom stop in the tab order.
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
     <div
       ref={dialogRef}
       role="dialog"
@@ -88,6 +93,9 @@ export function Lightbox({ images, index, onIndexChange, onClose }: LightboxProp
       onTouchEnd={onTouchEnd}
     >
       {/* Top bar: counter + close */}
+      {/* Pure event plumbing — stops a click on the bar from reaching the
+          backdrop's close handler. Not an interactive element. */}
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div
         className="flex items-center justify-between px-5 py-4 text-white/80 sm:px-8"
         onClick={(e) => e.stopPropagation()}
@@ -123,6 +131,8 @@ export function Lightbox({ images, index, onIndexChange, onClose }: LightboxProp
           </button>
         ) : null}
 
+        {/* Event plumbing only — keeps a click on the image from closing the viewer. */}
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
         <div className="relative flex max-h-full items-center justify-center" onClick={(e) => e.stopPropagation()}>
           <Image
             key={image.id}
@@ -153,6 +163,8 @@ export function Lightbox({ images, index, onIndexChange, onClose }: LightboxProp
       </div>
 
       {/* Caption */}
+      {/* Event plumbing only — selecting caption text must not close the viewer. */}
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div className="px-5 py-5 text-center sm:px-8" onClick={(e) => e.stopPropagation()}>
         <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/50">
           {t(`categories.${image.category}`)}

@@ -1,0 +1,21 @@
+# Build output and dependencies
+.next/
+out/
+build/
+node_modules/
+coverage/
+.lighthouse/
+playwright-report/
+test-results/
+
+# Generated / vendored
+package-lock.json
+next-env.d.ts
+public/
+messages/
+asset-library/
+brand-document-index/
+design-archive/
+
+# Auto-managed by `next dev` — reformatting it just creates churn.
+AGENTS.md

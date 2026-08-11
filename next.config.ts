@@ -62,4 +62,8 @@ const nextConfig: NextConfig = {
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
+// Bundle analysis is NOT wired in here. This project builds with Turbopack,
+// and `@next/bundle-analyzer` is a webpack plugin — it silently never runs.
+// Use `npm run analyze`, which calls Turbopack's own `--experimental-analyze`
+// and therefore reports on the bundler that actually ships.
 export default withNextIntl(nextConfig);

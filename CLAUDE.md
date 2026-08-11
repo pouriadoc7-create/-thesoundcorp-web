@@ -329,8 +329,17 @@ npm run start      # serve the production build
 npm run lint       # eslint
 npm run typecheck  # tsc --noEmit
 npm run test       # vitest run (56 tests)
+npm run validate   # lint · typecheck · test · build in one command
 ```
 Full gate before any important commit: **lint · typecheck · test · build**.
+
+Browser-level tooling (Playwright e2e/a11y/visual, Lighthouse, bundle analysis, link
+checking, Prettier, the read-only Obsidian MCP) is documented in **DEVELOPMENT_TOOLING.md**.
+Two things there are load-bearing and easy to get wrong:
+- `npm run analyze` uses Turbopack's `--experimental-analyze`. **Do not add
+  `@next/bundle-analyzer`** — it is webpack-only and silently produces nothing here.
+- `npm run format` would reformat 212 of 215 files. It has deliberately never been run;
+  read §7 of that document before running it.
 
 LAN IP is currently **192.168.1.6** (Wi-Fi). Detect it with:
 ```bash

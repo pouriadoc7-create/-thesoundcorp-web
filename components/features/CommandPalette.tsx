@@ -154,10 +154,16 @@ export function CommandPalette() {
   if (!open) return null;
 
   return (
+    // Backdrop click-to-close is a MOUSE convenience. Keyboard users already
+    // have Escape (line ~139), a focus trap, and the focused search input —
+    // a key listener here would be redundant and a tabbable backdrop harmful.
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
       className="fixed inset-0 z-[var(--z-modal)] flex items-start justify-center bg-black/70 p-4 pt-[12vh] backdrop-blur-md motion-safe:animate-[pageEnter_0.2s_var(--ease-premium)]"
       onClick={close}
     >
+      {/* Event plumbing only — clicks inside the panel must not reach the backdrop. */}
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
       <div
         ref={dialogRef}
         role="dialog"

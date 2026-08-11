@@ -44,3 +44,13 @@ next-env.d.ts
 # claude code — per-machine local files (kept locally, not tracked)
 .claude/settings.local.json
 .claude/scheduled_tasks.lock
+
+# playwright — run artifacts only. Visual BASELINES under e2e/visual/**-snapshots
+# are intentionally tracked: they are the regression contract, not output.
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# lighthouse reports (local diagnostic, regenerated on demand)
+/.lighthouse/
